@@ -1,7 +1,7 @@
 import { Link, Outlet } from 'react-router-dom'
 import Logo from '@/components/Logo'
 import NavMenu from '@/components/NavMenu'
-
+import { ToastContainer } from 'react-toastify'
 
 export const AppLayout = () => {
     return (
@@ -28,7 +28,18 @@ export const AppLayout = () => {
             <footer>
                 <p className='py-5 text-center'>Todos los derechos reservados {new Date().getFullYear()}</p>
             </footer>
+
+            <ToastContainer
+                pauseOnHover={false}
+                pauseOnFocusLoss={false}
+                position='bottom-right'
+                theme={'dark'}
+            />
         </>
+
+
+
+
 
     )
 }

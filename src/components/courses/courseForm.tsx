@@ -1,18 +1,11 @@
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
+import type { CourseFormData } from "types";
 
 
 type CourseFormProps = {
-    register: UseFormRegister<{
-        courseName: string;
-        department: string;
-        description: string;
-    }>
-    errors: FieldErrors<{
-        courseName: string;
-        department: string;
-        description: string;
-    }>
+    register: UseFormRegister<CourseFormData>
+    errors: FieldErrors<CourseFormData>
 }
 
 export default function CourseForm({ errors, register }: CourseFormProps) {
@@ -24,7 +17,7 @@ export default function CourseForm({ errors, register }: CourseFormProps) {
                 </label>
                 <input
                     id="courseName"
-                    className="w-full p-3  border border-gray-200"
+                    className="w-full p-3  border border-sky-700 rounded-xl"
                     type="text"
                     placeholder="Nombre del Curso"
                     {...register("courseName", {
@@ -39,11 +32,11 @@ export default function CourseForm({ errors, register }: CourseFormProps) {
 
             <div className="mb-5 space-y-3">
                 <label htmlFor="department" className="text-sm uppercase font-bold">
-                    Departamento al que pertenece el curso
+                    Departamento
                 </label>
                 <select
                     id="department"
-                    className="w-full p-3 border border-gray-200"
+                    className="w-full p-3 border border-sky-700 rounded-xl"
                     {...register("department", { required: "El departamento es obligatorio" })}
                 >
                     <option value="">-- Selecciona un departamento --</option>
@@ -63,7 +56,7 @@ export default function CourseForm({ errors, register }: CourseFormProps) {
                 </label>
                 <textarea
                     id="description"
-                    className="w-full p-3  border border-gray-200"
+                    className="w-full p-3  border border-sky-700 rounded-xl"
                     placeholder="Descripción del Curso"
                     {...register("description", {
                         required: "Una descripción del curso es obligatoria"

@@ -1,36 +1,50 @@
-import CourseForm from "@/components/courses/courseForm"
-import { useForm } from "react-hook-form"
-import { useMutation } from "@tanstack/react-query"
-
-import { toast } from "react-toastify"
 import { Link, useNavigate } from "react-router-dom"
-import type { CourseFormData } from "@/types/index"
-import { createCourse } from "@/api/CoursesAPI"
+import CourseForm from "./courseForm"
+import { useForm } from "react-hook-form"
+import type { Course, CourseFormData } from "@/types/index"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { updateCourse } from "@/api/CoursesAPI"
+import { toast } from "react-toastify"
 
-export const CreateCourseView = () => {
+type editCourseFormProps = {
+    data: CourseFormData
+    courseId: Course['_id']
+}
+
+export default function EditCourseForm({ data, courseId }: editCourseFormProps) {
 
     const navigate = useNavigate()
 
     const initialValues: CourseFormData = {
-        courseName: "",
-        description: "",
-        department: ""
+        courseName: data.courseName,
+        description: data.description,
+        department: data.department
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
+    const queryClient = useQueryClient()
+
     const { mutate } = useMutation({
-        mutationFn: createCourse,
+        mutationFn: updateCourse,
         onError: (error) => {
             toast.error(error.message)
         },
         onSuccess: (data) => {
+            queryClient.invalidateQueries({queryKey: ['editCourse', courseId]})
             toast.success(data)
-            navigate("/")
+            navigate('/')
         }
     })
 
-    const handleForm = (data: CourseFormData) => mutate(data)
+
+    const handleForm = (formData: CourseFormData) => {
+        const data = {
+            formData,
+            courseId
+        }
+        mutate(data)
+    }
 
 
     return (
@@ -38,8 +52,8 @@ export const CreateCourseView = () => {
             <div className="max-w-lg mx-auto ">
 
 
-                <h1 className="text-2xl font-black">Añadir Nuevo Curso</h1>
-                <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para crear un nuevo curso.</p>
+                <h1 className="text-2xl font-black">editar Curso</h1>
+                <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para editar el curso.</p>
 
                 <nav className="my-5 flex flex-col md:flex-row gap-3">
                     <Link
@@ -72,7 +86,7 @@ export const CreateCourseView = () => {
 
                         <input
                             type="submit"
-                            value='Crear Curso'
+                            value='Editar Curso'
                             className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
                         />
 
