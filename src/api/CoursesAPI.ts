@@ -60,3 +60,17 @@ export async function updateCourse({ formData, courseId }: CourseAPIType) {
     }
 
 }
+
+export async function deleteCorse(courseId: Course['_id']) {
+    try {
+        const { data } = await api.delete(`/courses/${courseId}`)
+        return data
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+
+}
+

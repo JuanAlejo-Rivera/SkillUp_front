@@ -1,10 +1,11 @@
-import { getCourses } from "@/api/CoursesAPI"
-import { useQuery } from "@tanstack/react-query"
+import { deleteCorse, getCourses } from "@/api/CoursesAPI"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 
 import { Fragment } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
+import { toast } from "react-toastify"
 
 
 export const DashboardView = () => {
@@ -14,9 +15,23 @@ export const DashboardView = () => {
         queryKey: ['courses'],
         queryFn: getCourses
     })
-    // console.log(data)
-    if (isLoading) return 'Cargando...'
 
+    const queryClient = useQueryClient()
+    
+    const {mutate} = useMutation({
+        mutationFn: deleteCorse,
+        onError:(error) =>{
+            toast.error(error.message)
+        },
+        onSuccess:(data) =>{
+            queryClient.invalidateQueries({queryKey:['courses']})
+            toast.success(data)
+        }
+    })
+
+
+
+    if (isLoading) return 'Cargando...'
     if (data) return (
         <>
             <div className="max-w-3xl mx-auto">
@@ -78,7 +93,7 @@ export const DashboardView = () => {
                                                     <button
                                                         type='button'
                                                         className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                                        onClick={() => { }}
+                                                        onClick={() => mutate(course._id)}
                                                     >
                                                         Eliminar Curso
                                                     </button>

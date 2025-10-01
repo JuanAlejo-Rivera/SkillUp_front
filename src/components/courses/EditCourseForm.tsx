@@ -31,6 +31,7 @@ export default function EditCourseForm({ data, courseId }: editCourseFormProps) 
             toast.error(error.message)
         },
         onSuccess: (data) => {
+            // queryClient.invalidateQueries({queryKey: ['courses']}) 
             queryClient.invalidateQueries({queryKey: ['editCourse', courseId]})
             toast.success(data)
             navigate('/')
@@ -86,7 +87,7 @@ export default function EditCourseForm({ data, courseId }: editCourseFormProps) 
 
                         <input
                             type="submit"
-                            value='Editar Curso'
+                            value='Guardar Cambios'
                             className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
                         />
 
