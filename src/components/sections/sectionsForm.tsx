@@ -19,7 +19,7 @@ export default function SectionForm({ errors, register }: CourseFormProps) {
                     id="title"
                     className="w-full p-3  border border-sky-700 rounded-xl"
                     type="text"
-                    placeholder="Nombre del Curso"
+                    placeholder="Nombre de la sección"
                     {...register("title", {
                         required: "El Titulo de la sección es obligatorio",
                     })}
@@ -37,7 +37,7 @@ export default function SectionForm({ errors, register }: CourseFormProps) {
                 <textarea
                     id="description"
                     className="w-full p-3  border border-sky-700 rounded-xl"
-                    placeholder="Descripción del Curso"
+                    placeholder="Descripción de la sección"
                     {...register("description", {
                         required: "Una descripción de la sección es obligatoria"
                     })}

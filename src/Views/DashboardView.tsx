@@ -55,6 +55,7 @@ export const DashboardView = () => {
                                     <div className="min-w-0 flex-auto space-y-2">
                                         <Link
                                             to={`/courses/${course._id}/sections`}
+                                            state={{ courseName: course.courseName }}
                                             className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
                                         >{course.courseName}</Link>
                                         <p className="text-sm text-gray-400">
@@ -81,6 +82,7 @@ export const DashboardView = () => {
                                                 <MenuItem>
                                                     <Link
                                                         to={`/courses/${course._id}/sections`}
+                                                        state={{ courseName: course.courseName }}
                                                         className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                                         Ver Secciones
                                                     </Link>

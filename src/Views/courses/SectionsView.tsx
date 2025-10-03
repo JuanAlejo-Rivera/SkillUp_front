@@ -2,7 +2,7 @@ import { getSections } from "@/api/SectionAPI"
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { useQuery } from "@tanstack/react-query"
-import { Link, useParams } from "react-router-dom"
+import { Link, useLocation, useParams } from "react-router-dom"
 import { Fragment } from 'react'
 
 export const SectionsView = () => {
@@ -10,12 +10,13 @@ export const SectionsView = () => {
   const params = useParams()
   const courseId = params.courseId!
 
+  const location = useLocation();
+  const courseName = location.state?.courseName;
 
   const { data, isLoading } = useQuery({
     queryKey: ['sections'],
     queryFn: () => getSections(courseId)
   })
-
 
   if (isLoading) return 'Cargando...'
 
@@ -23,7 +24,11 @@ export const SectionsView = () => {
     <>
       <div className="max-w-3xl mx-auto">
 
-        <h1 className="text-5-xl font-black">Mis secciones</h1>
+        <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
+          {courseName}
+        </h6>
+
+        <h1 className="text-xl font-black">Mis secciones</h1>
         <p className="text-2xl font-light text-gray-500 mt-5">Maneja y administra tus secciones</p>
 
         <nav className="my-5 flex flex-col md:flex-row gap-3">
@@ -48,7 +53,7 @@ export const SectionsView = () => {
               <li key={sections._id} className="flex justify-between gap-x-6 px-5 py-10">
                 <div className="flex min-w-0 gap-x-4">
                   <div className="min-w-0 flex-auto space-y-2">
-                    <Link to={`/sections/view`}
+                    <Link to={`/lessonsView/sections/${sections._id}`}
                       className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
                     >{sections.title}</Link>
 
@@ -71,15 +76,15 @@ export const SectionsView = () => {
                         className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
                       >
                         <MenuItem>
-                          <Link to={`/sections/view`}
+                          <Link to={`/lessonsView/sections/${sections._id}`}
                             className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                            Ver Secciones
+                            Ver Lecciones
                           </Link>
                         </MenuItem>
                         <MenuItem>
-                          <Link to={`/courses/${sections._id}/edit`}
+                          <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
                             className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                            Editar Curso
+                            Editar Sección
                           </Link>
                         </MenuItem>
                         <MenuItem>
@@ -88,7 +93,7 @@ export const SectionsView = () => {
                             className='block px-3 py-1 text-sm leading-6 text-red-500'
                             onClick={() => { }}
                           >
-                            Eliminar Curso
+                            Eliminar Sección
                           </button>
                         </MenuItem>
                       </MenuItems>

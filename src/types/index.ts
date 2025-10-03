@@ -45,6 +45,13 @@ export const dashboardSectionSchema = z.array(
     })
 )
 
+export const editSectionSchema = sectionShema.pick({
+    _id: true,
+    title: true,
+    description: true,
+})
+
+
 
 
 export type Section = z.infer<typeof sectionShema>

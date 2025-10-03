@@ -5,6 +5,8 @@ import { CreateCourseView } from "./Views/courses/CreateCourseView"
 import { SectionsView } from "./Views/courses/SectionsView"
 import EditCourseView from "./Views/courses/EditCourseView"
 import { CreateSectionView } from "./Views/courses/CreateSectionView"
+import { LessonsView } from "./Views/courses/LessonsView"
+import { EditSectionView } from "./Views/courses/EditSectionView"
 
 export default function Router() {
     return (
@@ -16,6 +18,9 @@ export default function Router() {
                     <Route path="/courses/:courseId/edit" element={<EditCourseView/>}/>
                     <Route path="/courses/:courseId/sections" element={<SectionsView/>}/>
                     <Route path="/create-section" element={<CreateSectionView/>}/>
+                    <Route path="/lessonsView/sections/:sectionId" element={<LessonsView/>}/>
+                    <Route path="/lessonsView/sections/:sectionId" element={<LessonsView/>}/>
+                    <Route path="/courses/:courseId/sections/:sectionId/edit" element={<EditSectionView/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
