@@ -26,3 +26,26 @@ export const edictCourseSchema = courseSchema.pick({
 
 export type Course = z.infer<typeof courseSchema>
 export type CourseFormData = Pick<Course, "courseName" | "description" | "department">
+
+
+/** Sections */
+
+export const sectionShema = z.object({
+    _id: z.string(),
+    title: z.string(),
+    description: z.string(),
+})
+
+
+export const dashboardSectionSchema = z.array(
+    sectionShema.pick({
+        _id: true,
+        title: true,
+        description: true,
+    })
+)
+
+
+
+export type Section = z.infer<typeof sectionShema>
+export type SectionFormData = Pick<Section, "title" | "description">

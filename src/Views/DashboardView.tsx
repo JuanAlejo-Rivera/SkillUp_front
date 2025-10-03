@@ -17,14 +17,14 @@ export const DashboardView = () => {
     })
 
     const queryClient = useQueryClient()
-    
-    const {mutate} = useMutation({
+
+    const { mutate } = useMutation({
         mutationFn: deleteCorse,
-        onError:(error) =>{
+        onError: (error) => {
             toast.error(error.message)
         },
-        onSuccess:(data) =>{
-            queryClient.invalidateQueries({queryKey:['courses']})
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ['courses'] })
             toast.success(data)
         }
     })
@@ -53,7 +53,8 @@ export const DashboardView = () => {
                             <li key={course._id} className="flex justify-between gap-x-6 px-5 py-10">
                                 <div className="flex min-w-0 gap-x-4">
                                     <div className="min-w-0 flex-auto space-y-2">
-                                        <Link to={``}
+                                        <Link
+                                            to={`/courses/${course._id}/sections`}
                                             className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
                                         >{course.courseName}</Link>
                                         <p className="text-sm text-gray-400">
@@ -78,7 +79,8 @@ export const DashboardView = () => {
                                                 className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
                                             >
                                                 <MenuItem>
-                                                    <Link to={`/sections/view`}
+                                                    <Link
+                                                        to={`/courses/${course._id}/sections`}
                                                         className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                                         Ver Secciones
                                                     </Link>
@@ -107,13 +109,8 @@ export const DashboardView = () => {
                     </ul>
 
                 ) : (
-                    <p className="text-center text-gray-600 uppercase p-5 border border-gray-300 rounded-lg">No hay cursos aun</p>
+                    <p className="text-center text-gray-600 uppercase p-5 border border-gray-300 rounded-lg">No hay cursos disponibles</p>
                 )}
-
-
-
-
-
             </div>
         </>
     )
