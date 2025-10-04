@@ -52,7 +52,7 @@ export const CreateSectionView = () => {
                     <Link
                         to={"/courses/:courseId/sections"}
                         className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
-                    >
+                    > 
                         Volver a secciones
                     </Link>
                 </nav>
