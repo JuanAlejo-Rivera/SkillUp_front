@@ -3,12 +3,12 @@ import ErrorMessage from "../ErrorMessage";
 import type { SectionFormData } from "types";
 
 
-type CourseFormProps = {
+type SectionFormProps = {
     register: UseFormRegister<SectionFormData>
     errors: FieldErrors<SectionFormData>
 }
 
-export default function SectionForm({ errors, register }: CourseFormProps) {
+export default function SectionForm({ errors, register }: SectionFormProps) {
     return (
         <>
             <div className="mb-5 space-y-3">

@@ -1,5 +1,5 @@
 import { getSectionById } from "@/api/SectionAPI"
-import { EditSectionForm } from "@/components/sections/EditSectionForm"
+import EditSectionForm from "@/components/sections/EditSectionForm"
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, useParams } from "react-router-dom"
 
@@ -19,8 +19,8 @@ export const EditSectionView = () => {
 
     if (isLoading) return 'Cargando...'
     if (isError) return <Navigate to={'/404'} />
-    // if (data) return <EditCourseForm data={data} courseId={sectionId} />
-    if (data) return <EditSectionForm/>
+    if (data) return <EditSectionForm data={data} courseId={courseId} sectionId = {sectionId}/>
+    // if (data) return <EditSectionForm/>
 
 }
 

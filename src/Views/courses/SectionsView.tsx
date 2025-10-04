@@ -1,9 +1,10 @@
-import { getSections } from "@/api/SectionAPI"
+import { deleteSection, getSections } from "@/api/SectionAPI"
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link, useLocation, useParams } from "react-router-dom"
 import { Fragment } from 'react'
+import { toast } from "react-toastify"
 
 export const SectionsView = () => {
 
@@ -12,10 +13,22 @@ export const SectionsView = () => {
 
   const location = useLocation();
   const courseName = location.state?.courseName;
+  const queryClient = useQueryClient()
 
   const { data, isLoading } = useQuery({
     queryKey: ['sections'],
     queryFn: () => getSections(courseId)
+  })
+
+  const { mutate } = useMutation({
+    mutationFn: deleteSection,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['sections'] })
+      toast.success(data)
+    }
   })
 
   if (isLoading) return 'Cargando...'
@@ -91,7 +104,7 @@ export const SectionsView = () => {
                           <button
                             type='button'
                             className='block px-3 py-1 text-sm leading-6 text-red-500'
-                            onClick={() => { }}
+                            onClick={() => mutate({ courseId, sectionId: sections._id })}
                           >
                             Eliminar Sección
                           </button>

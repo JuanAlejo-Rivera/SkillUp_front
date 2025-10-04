@@ -38,7 +38,6 @@ type GetSectionAPIType = {
 
 
 export async function getSectionById({ courseId, sectionId }: GetSectionAPIType) {
-    console.log(courseId, sectionId)
     try {
         const { data } = await api.get(`/courses/${courseId}/sections/${sectionId}`)
         const response = editSectionSchema.safeParse(data)
@@ -51,4 +50,37 @@ export async function getSectionById({ courseId, sectionId }: GetSectionAPIType)
             throw new Error(error.response.data.error)
         }
     }
+}
+
+type updateSecionAPIType = {
+    courseId: Course['_id']
+    sectionId: Section['_id']
+    formData: SectionFormData
+}
+
+
+export async function updateSection({ courseId, sectionId, formData }: updateSecionAPIType) {
+    console.log('course: ' + courseId)
+    console.log('section:' + sectionId)
+    try {
+        const { data } = await api.put(`/courses/${courseId}/sections/${sectionId}`, formData)
+        return data
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function deleteSection({ courseId, sectionId }: GetSectionAPIType) {
+    try {
+        const { data } = await api.delete(`/courses/${courseId}/sections/${sectionId}`)
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+
 }
