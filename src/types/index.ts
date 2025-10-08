@@ -51,8 +51,19 @@ export const editSectionSchema = sectionShema.pick({
     description: true,
 })
 
-
-
-
 export type Section = z.infer<typeof sectionShema>
 export type SectionFormData = Pick<Section, "title" | "description">
+
+/** Lessons */
+
+export const LessonSchema = z.object({
+    title: z.string(),
+    description: z.string(),
+    videoUrl: z.string(),
+    fileUrl: z.string(),
+    imageUrl: z.string()
+})
+
+
+export type Lesson = z.infer<typeof LessonSchema>
+export type LessonFormData = Pick<Lesson, "title" | "description" | "videoUrl" | "fileUrl" | "imageUrl">

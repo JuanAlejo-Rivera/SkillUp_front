@@ -7,8 +7,6 @@ export const LessonsView = () => {
 
   const params = useParams()
   const courseId = params.courseId!
-  const sectionId = params.sectionId!
-
 
   return (
     <>
