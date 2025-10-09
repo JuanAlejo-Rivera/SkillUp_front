@@ -7,6 +7,7 @@ import EditCourseView from "./Views/courses/EditCourseView"
 import { CreateSectionView } from "./Views/courses/CreateSectionView"
 import { LessonsView } from "./Views/courses/LessonsView"
 import { EditSectionView } from "./Views/courses/EditSectionView"
+import { EditLessonView } from "./Views/courses/EditLessonView"
 
 export default function Router() {
     return (
@@ -20,6 +21,7 @@ export default function Router() {
                     <Route path="/create-section" element={<CreateSectionView/>}/>
                     <Route path="/courses/:courseId/sections/:sectionId/edit" element={<EditSectionView/>}/>
                     <Route path="/courses/:courseId/sections/:sectionId/edit/lessons" element={<LessonsView/>}/>
+                    <Route path="/courses/:courseId/sections/:sectionId/lesson/:lessonId/edit" element={<EditLessonView/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

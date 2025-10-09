@@ -57,6 +57,7 @@ export type SectionFormData = Pick<Section, "title" | "description">
 /** Lessons */
 
 export const LessonSchema = z.object({
+    _id: z.string(),
     title: z.string(),
     description: z.string(),
     videoUrl: z.string(),
@@ -65,5 +66,17 @@ export const LessonSchema = z.object({
 })
 
 
+export const LessonViewSchema = z.array(
+    LessonSchema.pick({
+        _id: true,
+        title: true,
+        description: true,
+        videoUrl: true,
+        fileUrl: true,
+        imageUrl: true
+    })
+)
+
+
 export type Lesson = z.infer<typeof LessonSchema>
-export type LessonFormData = Pick<Lesson, "title" | "description" | "videoUrl" | "fileUrl" | "imageUrl">
+export type LessonFormData = Pick<Lesson, "_id" | "title" | "description" | "videoUrl" | "fileUrl" | "imageUrl">
