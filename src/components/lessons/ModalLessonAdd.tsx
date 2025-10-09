@@ -1,13 +1,11 @@
-import { Fragment, useRef } from 'react';
+import { Fragment } from 'react';
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { PlusIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createLesson } from '@/api/LessonsAPI';
 import { toast } from 'react-toastify';
 import type { Lesson, LessonFormData } from '@/types/index';
 import { useForm } from 'react-hook-form';
-import ErrorMessage from '../ErrorMessage';
 import LessonForm from './LessonForm';
 
 export default function ModalLessonAdd() {
@@ -35,11 +33,6 @@ export default function ModalLessonAdd() {
     const courseId = params.courseId!
     const sectionId = params.sectionId!
 
-    // Refs para inputs ocultos
-    // const videoRef = useRef<HTMLInputElement>(null);
-    // const docRef = useRef<HTMLInputElement>(null);
-    // const imageRef = useRef<HTMLInputElement>(null);
-
     const queryClient = useQueryClient();
 
     const { mutate } = useMutation({
@@ -48,7 +41,7 @@ export default function ModalLessonAdd() {
             toast.error(error.message)
         },
         onSuccess: (data) => {
-            queryClient.invalidateQueries({queryKey:['lessons']})
+            queryClient.invalidateQueries({ queryKey: ['lessons'] })
             toast.success(data)
             reset()
             navigate(`/courses/${courseId}/sections/${sectionId}/edit/lessons`)
@@ -64,10 +57,6 @@ export default function ModalLessonAdd() {
         mutate(data)
     }
 
-
-    // const handleBoxClick = (ref: React.RefObject<HTMLInputElement>) => {
-    //     ref.current?.click();
-    // };
 
     return (
         <Transition appear show={show} as={Fragment}>

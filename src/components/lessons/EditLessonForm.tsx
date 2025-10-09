@@ -25,7 +25,7 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId }: 
         imageUrl: data.imageUrl
     }
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm({ defaultValues: initialValues })
     const queryClient = useQueryClient()
 
     const { mutate } = useMutation({
@@ -36,6 +36,7 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId }: 
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['sections', sectionId] })
             queryClient.invalidateQueries({ queryKey: ['editSection', sectionId] })
+            queryClient.invalidateQueries({ queryKey: ['lessons']})
             toast.success(data)
             navigate(`/courses/${courseId}/sections/${sectionId}/edit/lessons`)
         }
@@ -79,6 +80,7 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId }: 
                     <LessonForm
                         register={register}
                         errors={errors}
+                        setValue={setValue}
                     />
 
                     <div className="flex justify-end mt-10">

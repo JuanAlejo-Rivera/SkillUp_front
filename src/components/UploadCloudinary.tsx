@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { DocumentTextIcon } from "@heroicons/react/20/solid";
 
 type UploadFileProps = {
   label: string;
@@ -21,10 +22,16 @@ export default function UploadFile({ label, accept, onUploadComplete }: UploadFi
     formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
     try {
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/auto/upload`,
-        { method: "POST", body: formData }
-      );
+      const fileName = file.name.split(".")[0];
+
+      const uploadUrl = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/auto/upload?public_id=${encodeURIComponent(fileName)}`;
+
+      const res = await fetch(uploadUrl, {
+        method: "POST",
+        body: formData,
+      });
+
+
 
 
 
@@ -49,11 +56,14 @@ export default function UploadFile({ label, accept, onUploadComplete }: UploadFi
     if (fileUrl.match(/\.(mp4|mov|avi|web)$/i))
       return <video src={fileUrl} controls className="w-24 h-24 rounded-lg" />;
 
-    if (fileUrl.match(/\.(pdf|doc|docx|xlsx|pptx)$/i))
+    if (fileUrl.match(/\.pdf$/i))
       return (
-        <a href={fileUrl} target="_blank" rel="noreferrer" className="text-blue-600 underline">
-          Ver archivo
-        </a>
+        <div className="w-24 h-24 border rounded-lg flex items-center justify-center bg-gray-50">
+          <a href={fileUrl} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
+            <DocumentTextIcon className="w-10 h-10 text-red-500" />
+            <span className="text-xs text-gray-500 mt-1">PDF</span>
+          </a>
+        </div>
       );
 
     return (
