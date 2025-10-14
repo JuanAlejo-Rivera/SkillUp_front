@@ -14,9 +14,9 @@ export default function ModalLessonAdd() {
         _id: "",
         title: "",
         description: "",
-        videoUrl: "",
-        fileUrl: "",
-        imageUrl: ""
+        videoUrl: [],
+        fileUrl: [],
+        imageUrl: []
     }
 
     const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm({ defaultValues: initialValues })

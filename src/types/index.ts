@@ -57,13 +57,14 @@ export type SectionFormData = Pick<Section, "title" | "description">
 /** Lessons */
 
 export const LessonSchema = z.object({
-    _id: z.string(),
-    title: z.string(),
-    description: z.string(),
-    videoUrl: z.string(),
-    fileUrl: z.string(),
-    imageUrl: z.string()
-})
+  _id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  videoUrl: z.array(z.string()), 
+  fileUrl: z.array(z.string()),   
+  imageUrl: z.array(z.string()),  
+});
+
 
 
 export const LessonViewSchema = z.array(

@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+.separation_line_lessons {
+    @apply w-[90%] h-[2px] bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 mb-4
+}
+

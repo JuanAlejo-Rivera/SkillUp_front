@@ -37,6 +37,7 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId }: 
             queryClient.invalidateQueries({ queryKey: ['sections', sectionId] })
             queryClient.invalidateQueries({ queryKey: ['editSection', sectionId] })
             queryClient.invalidateQueries({ queryKey: ['lessons']})
+            queryClient.invalidateQueries({ queryKey: ['editLesson', lessonId] })
             toast.success(data)
             navigate(`/courses/${courseId}/sections/${sectionId}/edit/lessons`)
         }
