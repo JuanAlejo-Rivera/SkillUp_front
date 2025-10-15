@@ -1,6 +1,7 @@
-import { deleteLesson, getLessons } from "@/api/LessonsAPI";
+import { deleteLesson, getLessons, updateLesson } from "@/api/LessonsAPI";
 import ModalLessonAdd from "@/components/lessons/ModalLessonAdd";
 import UploadFile from "@/components/UploadCloudinary";
+import type { LessonFormData } from "@/types/index";
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon, DocumentTextIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -37,11 +38,39 @@ export const LessonsView = () => {
   });
 
 
+
   const [pendingUpdates, setPendingUpdates] = useState<Record<string, {
     videoUrl?: string[];
     imageUrl?: string[];
     fileUrl?: string[];
   }>>({});
+
+  const [resetTrigger, setResetTrigger] = useState(false);
+
+  const updateLessonMutation = useMutation({
+    mutationFn: updateLesson,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      toast.success(data)
+      queryClient.invalidateQueries({ queryKey: ['lessons'] })
+      queryClient.invalidateQueries({ queryKey: ['editLesson'] })
+      queryClient.invalidateQueries({ queryKey: ['editSection'] })
+      queryClient.invalidateQueries({ queryKey: ['sections'] })
+    }
+  })
+
+  const handleUpdateForm = async (lessonId: string, formData: LessonFormData) => {
+    const data = { formData, courseId, sectionId, lessonId };
+    await updateLessonMutation.mutateAsync(data);
+
+    setResetTrigger(true);
+    setTimeout(() => setResetTrigger(false), 200); // se apaga el trigger
+  };
+
+
+
 
 
   if (isLoading) return "Cargando...";
@@ -148,11 +177,16 @@ export const LessonsView = () => {
                           ...prev,
                           [lessons._id]: {
                             ...prev[lessons._id],
-                            videoUrl: [...(prev[lessons._id]?.videoUrl || []), ...urls],
+                            videoUrl: Array.from(
+                              new Set([...(prev[lessons._id]?.videoUrl || []), ...urls])
+                            ),
                           },
                         }))
                       }
+                      resetTrigger={resetTrigger}
                     />
+
+
                     {Array.isArray(lessons.videoUrl) && lessons.videoUrl.length > 0 ? (
                       <div className="flex flex-wrap gap-4 mt-4">
                         {lessons.videoUrl.map((url) => (
@@ -180,17 +214,20 @@ export const LessonsView = () => {
                           ...prev,
                           [lessons._id]: {
                             ...prev[lessons._id],
-                            videoUrl: [...(prev[lessons._id]?.videoUrl || []), ...urls],
+                            imageUrl: [...(prev[lessons._id]?.imageUrl || []), ...urls],
                           },
                         }))
                       }
+                      resetTrigger={resetTrigger}
                     />
+
 
                     {Array.isArray(lessons.imageUrl) && lessons.imageUrl.length > 0 ? (
                       <div className="flex flex-wrap gap-4 mt-4">
                         {lessons.imageUrl.map((url) => (
 
                           <a
+                            key={`${lessons._id}-${url}`}
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -220,10 +257,11 @@ export const LessonsView = () => {
                           ...prev,
                           [lessons._id]: {
                             ...prev[lessons._id],
-                            videoUrl: [...(prev[lessons._id]?.videoUrl || []), ...urls],
+                            fileUrl: [...(prev[lessons._id]?.fileUrl || []), ...urls],
                           },
                         }))
                       }
+                      resetTrigger={resetTrigger}
                     />
 
                     {Array.isArray(lessons.fileUrl) && lessons.fileUrl.length > 0 ? (
@@ -284,9 +322,20 @@ export const LessonsView = () => {
 
                     <input
                       type="submit"
-                      value='Guardar Cambios'
-                      className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
+                      value={updateLessonMutation.isPending ? "Guardando..." : "Guardar Cambios"}
+                      disabled={updateLessonMutation.isPending}
+                      onClick={() =>
+                        handleUpdateForm(lessons._id, {
+                          ...lessons, // datos actuales de la lección
+                          ...(pendingUpdates[lessons._id] || {}), // los archivos subidos o cambios pendientes
+                        })
+                      }
+                      className={`w-full sm:w-auto px-5 py-2 rounded-md text-white font-medium transition ${updateLessonMutation.isPending
+                        ? "bg-sky-400 cursor-not-allowed"
+                        : "bg-sky-700 hover:bg-sky-800"
+                        }`}
                     />
+
 
                   </div>
                 </li>

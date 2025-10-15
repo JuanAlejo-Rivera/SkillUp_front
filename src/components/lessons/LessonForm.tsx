@@ -56,7 +56,7 @@ export default function LessonForm({ errors, register, setValue }: LessonFormPro
         {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
       </div>
 
-      <div>
+      {/* <div>
         <p className="text-lg font-semibold text-slate-700 mb-3">Archivos adjuntos</p>
         <div className="grid grid-cols-3 gap-6">
 
@@ -88,7 +88,7 @@ export default function LessonForm({ errors, register, setValue }: LessonFormPro
           />
 
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
