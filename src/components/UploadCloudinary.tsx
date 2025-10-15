@@ -7,7 +7,7 @@ type UploadFileProps = {
   accept?: string;
   multiple?: boolean;
   onUploadComplete: (urls: string[]) => void;
-  resetTrigger?: boolean; // 👈 usado para limpiar desde el padre
+  resetTrigger?: boolean;
 };
 
 export default function UploadFile({
@@ -20,7 +20,6 @@ export default function UploadFile({
   const [fileUrls, setFileUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 👇 Si el padre cambia resetTrigger, limpiamos el estado local
   useEffect(() => {
     setFileUrls([]);
   }, [resetTrigger]);
@@ -49,7 +48,6 @@ export default function UploadFile({
 
       const urls = await Promise.all(uploadPromises);
 
-      // ✅ Actualiza el estado local y notifica al padre
       setFileUrls(urls);
       onUploadComplete(urls);
     } catch (err) {

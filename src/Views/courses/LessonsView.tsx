@@ -194,7 +194,7 @@ export const LessonsView = () => {
                             key={url}
                             src={url}
                             controls
-                            className="w-90 h-70 rounded-xl border border-gray-300 object-cover"
+                            className="w-90 h-70 rounded-xl border border-gray-300"
                           />
 
                         ))}
