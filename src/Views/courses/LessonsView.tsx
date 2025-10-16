@@ -183,12 +183,13 @@ export const LessonsView = () => {
                           },
                         }))
                       }
+
                       resetTrigger={resetTrigger}
                     />
 
-
                     {Array.isArray(lessons.videoUrl) && lessons.videoUrl.length > 0 ? (
                       <div className="flex flex-wrap gap-4 mt-4">
+
                         {lessons.videoUrl.map((url) => (
                           <video
                             key={url}

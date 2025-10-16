@@ -57,7 +57,6 @@ export async function getLessonById({ courseId, sectionId, lessonId }: Pick<Less
 export async function updateLesson({ courseId, sectionId, lessonId, formData }: Pick<LessonAPI, 'formData' | 'courseId' | 'sectionId' | 'lessonId'>) {
     try {
         const { data } = await api.put(`/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}`, formData)
-        console.log(data)
         return data
 
     } catch (error) {
