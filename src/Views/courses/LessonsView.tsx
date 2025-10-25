@@ -6,12 +6,14 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/r
 import { EllipsisVerticalIcon, DocumentTextIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
 
 export const LessonsView = () => {
 
+  const location = useLocation()
+  const courseName = location.state?.courseName;
 
   const navigate = useNavigate();
 
@@ -36,7 +38,6 @@ export const LessonsView = () => {
       toast.success(data);
     },
   });
-
 
 
   const [pendingUpdates, setPendingUpdates] = useState<Record<string, {
@@ -79,6 +80,9 @@ export const LessonsView = () => {
     return (
       <>
         <div className="max-w-4xl mx-auto px-4">
+          <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
+            {courseName}
+          </h6>
           <h1 className="text-2xl font-black text-slate-800">Mis lecciones</h1>
           <p className="text-lg font-light text-gray-500 mt-2">
             Maneja y administra las lecciones de la sección
@@ -96,6 +100,7 @@ export const LessonsView = () => {
             <Link
               className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
               to={`/courses/${courseId}/sections`}
+              state={{ courseName }}
             >
               Regresar a secciones
             </Link>

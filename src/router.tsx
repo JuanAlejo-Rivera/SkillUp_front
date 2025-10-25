@@ -20,7 +20,7 @@ export default function Router() {
                     <Route path="/courses/:courseId/sections" element={<SectionsView/>}/>
                     <Route path="/create-section" element={<CreateSectionView/>}/>
                     <Route path="/courses/:courseId/sections/:sectionId/edit" element={<EditSectionView/>}/>
-                    <Route path="/courses/:courseId/sections/:sectionId/edit/lessons" element={<LessonsView/>}/>
+                    <Route path="/courses/:courseId/sections/:sectionId/lessons" element={<LessonsView/>}/>
                     <Route path="/courses/:courseId/sections/:sectionId/lesson/:lessonId/edit" element={<EditLessonView/>}/>
                 </Route>
             </Routes>
