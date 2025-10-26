@@ -2,7 +2,7 @@ import { deleteSection, getSections } from "@/api/SectionAPI"
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Link, useLocation, useParams } from "react-router-dom"
+import { Link, Navigate, useLocation, useParams } from "react-router-dom"
 import { Fragment } from 'react'
 import { toast } from "react-toastify"
 
@@ -15,9 +15,10 @@ export const SectionsView = () => {
   const courseName = location.state?.courseName;
   const queryClient = useQueryClient()
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['sections'],
-    queryFn: () => getSections(courseId)
+    queryFn: () => getSections(courseId),
+    retry: false
   })
 
   const { mutate } = useMutation({
@@ -31,6 +32,7 @@ export const SectionsView = () => {
     }
   })
 
+  if( isError ) return <Navigate to={'/404'} />
   if (isLoading) return 'Cargando...'
 
   if (data) return (
@@ -47,7 +49,7 @@ export const SectionsView = () => {
         <nav className="my-5 flex flex-col md:flex-row gap-3">
           <Link
             className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
-            state={{ courseId }}
+            state={{ courseId, courseName }}
             to={'/create-section'}
           >
             Nueva sección

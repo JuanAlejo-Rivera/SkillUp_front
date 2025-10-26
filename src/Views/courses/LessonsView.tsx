@@ -6,7 +6,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/r
 import { EllipsisVerticalIcon, DocumentTextIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
 
@@ -15,15 +15,17 @@ export const LessonsView = () => {
   const location = useLocation()
   const courseName = location.state?.courseName;
 
+
   const navigate = useNavigate();
 
   const params = useParams();
   const courseId = params.courseId!;
   const sectionId = params.sectionId!;
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["lessons"],
     queryFn: () => getLessons({ courseId, sectionId }),
+    retry: false,
   });
 
   const queryClient = useQueryClient();
@@ -38,6 +40,7 @@ export const LessonsView = () => {
       toast.success(data);
     },
   });
+
 
 
   const [pendingUpdates, setPendingUpdates] = useState<Record<string, {
@@ -75,6 +78,7 @@ export const LessonsView = () => {
 
 
   if (isLoading) return "Cargando...";
+  if (isError) return <Navigate to={'/404'} />
 
   if (data)
     return (
@@ -83,6 +87,7 @@ export const LessonsView = () => {
           <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
             {courseName}
           </h6>
+
           <h1 className="text-2xl font-black text-slate-800">Mis lecciones</h1>
           <p className="text-lg font-light text-gray-500 mt-2">
             Maneja y administra las lecciones de la sección
@@ -92,7 +97,11 @@ export const LessonsView = () => {
             <button
               type="button"
               className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
-              onClick={() => navigate(location.pathname + `?addLesson=true`)}
+              onClick={() =>
+                navigate(location.pathname + `?addLesson=true`, {
+                  state: { courseName },
+                })
+              }
             >
               Agregar nueva lección
             </button>

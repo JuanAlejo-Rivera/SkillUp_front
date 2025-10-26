@@ -44,7 +44,7 @@ export default function ModalLessonAdd() {
             queryClient.invalidateQueries({ queryKey: ['lessons'] })
             toast.success(data)
             reset()
-            navigate(`/courses/${courseId}/sections/${sectionId}/edit/lessons`)
+            navigate(`/courses/${courseId}/sections/${sectionId}/lessons`, {state: location.state})
         }
     })
 
@@ -60,61 +60,61 @@ export default function ModalLessonAdd() {
 
     return (
         <Transition appear show={show} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, { replace: true })}>
-                <TransitionChild
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                >
-                    <div className="fixed inset-0 bg-black/60" />
-                </TransitionChild>
+            <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, { replace: true, state: location.state })}>
+                    <TransitionChild
+                        as={Fragment}
+                        enter="ease-out duration-300"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in duration-200"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                    >
+                        <div className="fixed inset-0 bg-black/60" />
+                    </TransitionChild>
 
-                <div className="fixed inset-0 overflow-y-auto">
-                    <div className="flex min-h-full items-center justify-center p-4 text-center">
-                        <TransitionChild
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0 scale-95"
-                            enterTo="opacity-100 scale-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100 scale-100"
-                            leaveTo="opacity-0 scale-95"
-                        >
-                            <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-10">
+                    <div className="fixed inset-0 overflow-y-auto">
+                        <div className="flex min-h-full items-center justify-center p-4 text-center">
+                            <TransitionChild
+                                as={Fragment}
+                                enter="ease-out duration-300"
+                                enterFrom="opacity-0 scale-95"
+                                enterTo="opacity-100 scale-100"
+                                leave="ease-in duration-200"
+                                leaveFrom="opacity-100 scale-100"
+                                leaveTo="opacity-0 scale-95"
+                            >
+                                <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-10">
 
-                                <DialogTitle as="h3" className="font-black text-3xl text-slate-700 mb-6">
-                                    Agregar nueva lección
-                                </DialogTitle>
+                                    <DialogTitle as="h3" className="font-black text-3xl text-slate-700 mb-6">
+                                        Agregar nueva lección
+                                    </DialogTitle>
 
-                                {/* Form */}
-                                <form onSubmit={handleSubmit(handleForm)} className="space-y-6">
+                                    {/* Form */}
+                                    <form onSubmit={handleSubmit(handleForm)} className="space-y-6">
 
-                                    <LessonForm
-                                        register={register}
-                                        errors={errors}
-                                        setValue={setValue}
-                                    />
-
-                                    <div className="flex justify-end">
-
-                                        <input
-                                            type="submit"
-                                            value='Crear lección'
-                                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
+                                        <LessonForm
+                                            register={register}
+                                            errors={errors}
+                                            setValue={setValue}
                                         />
 
-                                    </div>
-                                </form>
+                                        <div className="flex justify-end">
 
-                            </DialogPanel>
-                        </TransitionChild>
+                                            <input
+                                                type="submit"
+                                                value='Crear lección'
+                                                className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
+                                            />
+
+                                        </div>
+                                    </form>
+
+                                </DialogPanel>
+                            </TransitionChild>
+                        </div>
                     </div>
-                </div>
-            </Dialog>
+                </Dialog>
         </Transition>
     );
 }

@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 
 export const CreateSectionView = () => {
 
-    const { state: { courseId } } = useLocation()
+    const { state: { courseId, courseName } } = useLocation()
 
     const navigate = useNavigate();
     const initialValues: SectionFormData = {
@@ -27,7 +27,7 @@ export const CreateSectionView = () => {
         },
         onSuccess: (data) => {
             toast.success(data)
-            navigate(`/courses/${courseId}/sections`)
+            navigate(`/courses/${courseId}/sections`, { state: { courseName } })
         }
     })
 
@@ -43,16 +43,19 @@ export const CreateSectionView = () => {
     return (
         <>
             <div className="max-w-lg mx-auto ">
-
+                <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
+                    {courseName}
+                </h6>
 
                 <h1 className="text-2xl font-black">Añadir Nueva Sección</h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para crear una nueva sección.</p>
 
                 <nav className="my-5 flex flex-col md:flex-row gap-3">
                     <Link
-                        to={"/courses/:courseId/sections"}
+                        to={`/courses/${courseId}/sections`}
                         className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
-                    > 
+                        state={{ courseName }}
+                    >
                         Volver a secciones
                     </Link>
                 </nav>
