@@ -51,7 +51,6 @@ export default function EditSectionForm({ data, courseId, sectionId, courseName 
   return (
     <>
       <div className="max-w-lg mx-auto ">
-        <h1>Proabando ando</h1>
         <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
           {courseName}
         </h6>
