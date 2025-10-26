@@ -109,7 +109,7 @@ export const LessonsView = () => {
             <Link
               className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
               to={`/courses/${courseId}/sections`}
-              state={{ courseName }}
+              state={{ courseName: courseName }}
             >
               Regresar a secciones
             </Link>
@@ -157,7 +157,7 @@ export const LessonsView = () => {
                             <Link
                               to={`/courses/${courseId}/sections/${sectionId}/lesson/${lessons._id}/edit`}
                               className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50"
-                              state={{ courseName: courseName}}
+                              state ={{courseName: courseName}}
                             >
                               Editar Lección
                             </Link>
