@@ -20,7 +20,6 @@ export const EditLessonView = () => {
         retry: false
     })
 
-
     if (isLoading) return 'Cargando...'
     if (isError) return <Navigate to={'/404'} />
     if (data) return <EditLessonForm data={data} courseId={courseId} sectionId = {sectionId} lessonId = {lessonId} courseName={courseName}/>

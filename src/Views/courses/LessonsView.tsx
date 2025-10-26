@@ -157,7 +157,7 @@ export const LessonsView = () => {
                             <Link
                               to={`/courses/${courseId}/sections/${sectionId}/lesson/${lessons._id}/edit`}
                               className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50"
-                              state={{ courseName }}
+                              state={{ courseName: courseName}}
                             >
                               Editar Lección
                             </Link>

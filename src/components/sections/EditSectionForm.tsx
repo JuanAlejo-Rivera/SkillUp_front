@@ -10,7 +10,7 @@ type editSectionFormProps = {
   data: SectionFormData
   courseId: Course['_id']
   sectionId: Section['_id']
-  courseName: string
+  courseName: Course['courseName']
 }
 
 export default function EditSectionForm({ data, courseId, sectionId, courseName }: editSectionFormProps) {
@@ -51,7 +51,6 @@ export default function EditSectionForm({ data, courseId, sectionId, courseName 
   return (
     <>
       <div className="max-w-lg mx-auto ">
-
         <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
           {courseName}
         </h6>
@@ -63,6 +62,7 @@ export default function EditSectionForm({ data, courseId, sectionId, courseName 
           <Link
             to={`/courses/${courseId}/sections`}
             className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
+            state={{courseName: courseName}}
           >
             Volver a secciones
           </Link>

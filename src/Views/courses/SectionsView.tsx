@@ -32,7 +32,7 @@ export const SectionsView = () => {
     }
   })
 
-  if( isError ) return <Navigate to={'/404'} />
+  if (isError) return <Navigate to={'/404'} />
   if (isLoading) return 'Cargando...'
 
   if (data) return (
@@ -70,7 +70,7 @@ export const SectionsView = () => {
                   <div className="min-w-0 flex-auto space-y-2">
                     <Link to={`/courses/${courseId}/sections/${sections._id}/lessons`}
                       className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
-                      state={{courseName: courseName}}
+                      state={{ courseName: courseName }}
                     >{sections.title}</Link>
 
                     <p className="text-sm text-gray-400">
@@ -93,14 +93,16 @@ export const SectionsView = () => {
                       >
                         <MenuItem>
                           <Link to={`/courses/${courseId}/sections/${sections._id}/lessons`}
-                            className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                            className='block px-3 py-1 text-sm leading-6 text-gray-900'
+                            state={{ courseName: courseName }}
+                          >
                             Ver Lecciones
                           </Link>
                         </MenuItem>
                         <MenuItem>
                           <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
                             className='block px-3 py-1 text-sm leading-6 text-gray-900'
-                            state={{courseName: courseName}}
+                            state={{ courseName: courseName }}
                           >
                             Editar Sección
                           </Link>
