@@ -10,9 +10,10 @@ type editSectionFormProps = {
   data: SectionFormData
   courseId: Course['_id']
   sectionId: Section['_id']
+  courseName: string
 }
 
-export default function EditSectionForm({ data, courseId, sectionId }: editSectionFormProps) {
+export default function EditSectionForm({ data, courseId, sectionId, courseName }: editSectionFormProps) {
   const navigate = useNavigate()
 
   const initialValues: SectionFormData = {
@@ -32,7 +33,7 @@ export default function EditSectionForm({ data, courseId, sectionId }: editSecti
       queryClient.invalidateQueries({ queryKey: ['sections', sectionId] })
       queryClient.invalidateQueries({ queryKey: ['editSection', sectionId] })
       toast.success(data)
-      navigate(`/courses/${courseId}/sections`)
+      navigate(`/courses/${courseId}/sections`, { state: { courseName } })
     }
   })
 
@@ -51,6 +52,9 @@ export default function EditSectionForm({ data, courseId, sectionId }: editSecti
     <>
       <div className="max-w-lg mx-auto ">
 
+        <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
+          {courseName}
+        </h6>
 
         <h1 className="text-2xl font-black">Editar Sección</h1>
         <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para editar la sección.</p>

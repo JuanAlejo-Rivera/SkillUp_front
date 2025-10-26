@@ -99,7 +99,9 @@ export const SectionsView = () => {
                         </MenuItem>
                         <MenuItem>
                           <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
-                            className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                            className='block px-3 py-1 text-sm leading-6 text-gray-900'
+                            state={{courseName: courseName}}
+                          >
                             Editar Sección
                           </Link>
                         </MenuItem>

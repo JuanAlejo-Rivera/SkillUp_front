@@ -11,9 +11,10 @@ type editLessonFormProps = {
     courseId: Course['_id']
     sectionId: Section['_id']
     lessonId: Lesson['_id']
+    courseName: Course['courseName']
 }
 
-export default function EditLessonForm({ data, courseId, sectionId, lessonId }: editLessonFormProps) {
+export default function EditLessonForm({ data, courseId, sectionId, lessonId, courseName }: editLessonFormProps) {
     const navigate = useNavigate()
 
     const initialValues: LessonFormData = {
@@ -36,10 +37,10 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId }: 
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['sections', sectionId] })
             queryClient.invalidateQueries({ queryKey: ['editSection', sectionId] })
-            queryClient.invalidateQueries({ queryKey: ['lessons']})
+            queryClient.invalidateQueries({ queryKey: ['lessons'] })
             queryClient.invalidateQueries({ queryKey: ['editLesson', lessonId] })
             toast.success(data)
-            navigate(`/courses/${courseId}/sections/${sectionId}/edit/lessons`)
+            navigate(`/courses/${courseId}/sections/${sectionId}/lessons`, { state: { courseName } })
         }
     })
 
@@ -58,15 +59,18 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId }: 
     return (
         <>
             <div className="max-w-lg mx-auto ">
-
+                <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
+                    {courseName}
+                </h6>
 
                 <h1 className="text-2xl font-black">Editar Lección</h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para editar la Lección.</p>
 
                 <nav className="my-5 flex flex-col md:flex-row gap-3">
                     <Link
-                        to={`/courses/${courseId}/sections/${sectionId}/edit/lessons`}
+                        to={`/courses/${courseId}/sections/${sectionId}/lessons`}
                         className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
+                        state={{ courseName }}
                     >
                         Volver a lecciones
                     </Link>
