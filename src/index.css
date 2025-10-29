@@ -1,6 +1,149 @@
 @import "tailwindcss";
 
+/* Línea de separación profesional con gradiente animado */
 .separation_line_lessons {
-    @apply w-[90%] h-[2px] bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 mb-4
+    @apply w-full h-[3px] bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-6 mt-6 rounded-full;
+    background-size: 200% 100%;
+    animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Animaciones globales mejoradas */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-slow {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Efectos de glassmorphism */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Sombras profesionales */
+.shadow-professional {
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1),
+                0 2px 10px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-professional-lg {
+    box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.15),
+                0 4px 20px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradientes de botones mejorados */
+.btn-gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 
+           text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 
+           shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+}
+
+.btn-gradient-secondary {
+    @apply bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 
+           text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 
+           shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+}
+
+/* Mejora de scroll suave */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #2563eb, #7c3aed);
+}
+
+/* Animaciones de entrada para cards */
+.lesson-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.lesson-card:nth-child(1) { animation-delay: 0.1s; }
+.lesson-card:nth-child(2) { animation-delay: 0.2s; }
+.lesson-card:nth-child(3) { animation-delay: 0.3s; }
+.lesson-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Loading spinner mejorado */
+.spinner {
+    border: 4px solid rgba(59, 130, 246, 0.1);
+    border-left-color: #3b82f6;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Efectos de hover para imágenes */
+.image-hover-effect {
+    @apply transition-all duration-500 ease-out;
+}
+
+.image-hover-effect:hover {
+    transform: scale(1.05) rotate(1deg);
+}
+
+/* Badges y etiquetas mejoradas */
+.badge-modern {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold
+           bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 
+           border border-blue-200;
 }
 
