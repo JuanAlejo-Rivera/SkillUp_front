@@ -59,7 +59,7 @@ export const DashboardView = () => {
                                             className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
                                         >{course.courseName}</Link>
                                         <p className="text-sm text-gray-400">
-                                            Departamento: {course.department}
+                                            Departamento: {course.department?.departmentName}
                                         </p>
                                         <p className="text-sm text-gray-400">
                                             {course.description}

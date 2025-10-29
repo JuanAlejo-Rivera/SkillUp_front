@@ -1,11 +1,17 @@
 import { z } from "zod"
 
 /** Courses */
+export const departmentPopulatedSchema = z.object({
+    _id: z.string(),
+    departmentName: z.string(), 
+})
+
+
 export const courseSchema = z.object({
     _id: z.string(),
     courseName: z.string(),
     description: z.string(),
-    department: z.string()
+    department: departmentPopulatedSchema.nullable(),
 })
 
 export const dashboardCourseSchema = z.array(
