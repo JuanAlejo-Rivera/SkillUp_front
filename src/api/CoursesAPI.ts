@@ -21,12 +21,14 @@ export async function getCourses() {
         const response = dashboardCourseSchema.safeParse(data)
         if (response.success) {
             return response.data
+        } else {
+            throw new Error('Error al parsear los datos de cursos')
         }
-
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
         }
+        throw error
     }
 }
 
@@ -36,11 +38,15 @@ export async function getCourseById(id: Course['_id']) {
         const response = edictCourseSchema.safeParse(data)
         if (response.success) {
             return response.data
+        } else {
+            throw new Error('Error al parsear los datos del curso')
         }
     } catch (error) {
-
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+        throw error
     }
-
 }
 
 type CourseAPIType = {
