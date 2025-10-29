@@ -29,9 +29,14 @@ export async function deleteMultipleFiles(urls: string[]) {
     }
 }
 
-export async function deleteFileFromLesson(lessonId: string, url: string, fileType: 'video' | 'image' | 'file') {
+export async function deleteFileFromLesson(
+    sectionId: string, 
+    lessonId: string, 
+    url: string, 
+    fileType: 'video' | 'image' | 'file'
+) {
     try {
-        const { data } = await api.delete(`/files/lesson/${lessonId}/file`, {
+        const { data } = await api.delete(`/files/lesson/${sectionId}/${lessonId}/file`, {
             data: { url, fileType }
         });
         return data;

@@ -5,6 +5,7 @@ import { deleteFileFromLesson } from "@/api/FilesAPI";
 import { toast } from "react-toastify";
 
 type FileDisplayProps = {
+  sectionId: string;
   lessonId: string;
   videoUrls?: string[];
   imageUrls?: string[];
@@ -14,6 +15,7 @@ type FileDisplayProps = {
 };
 
 export default function FileDisplay({
+  sectionId,
   lessonId,
   videoUrls = [],
   imageUrls = [],
@@ -28,7 +30,7 @@ export default function FileDisplay({
 
     setDeletingUrl(url);
     try {
-      await deleteFileFromLesson(lessonId, url, fileType);
+      await deleteFileFromLesson(sectionId, lessonId, url, fileType);
       onFileDeleted(fileType, url);
       toast.success('🗑️ Archivo eliminado exitosamente');
     } catch (error) {

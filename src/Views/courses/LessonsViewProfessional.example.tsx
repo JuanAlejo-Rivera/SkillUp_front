@@ -77,7 +77,7 @@ export const LessonsViewProfessional = () => {
 
   const handleDeleteFile = async (lessonId: string, url: string, fileType: 'video' | 'image' | 'file') => {
     try {
-      await deleteFileFromLesson(lessonId, url, fileType);
+      await deleteFileFromLesson(sectionId, lessonId, url, fileType);
       queryClient.invalidateQueries({ queryKey: ['lessons'] });
     } catch (error) {
       console.error('Error deleting file:', error);
