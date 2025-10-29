@@ -1,9 +1,11 @@
 import { deleteLesson, getLessons, updateLesson } from "@/api/LessonsAPI";
 import ModalLessonAdd from "@/components/lessons/ModalLessonAdd";
 import UploadFile from "@/components/UploadCloudinary";
+import LessonMediaViewer from "@/components/LessonMediaViewer";
+import { deleteFileFromLesson } from "@/api/FilesAPI";
 import type { LessonFormData } from "@/types/index";
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
-import { EllipsisVerticalIcon, DocumentTextIcon } from "@heroicons/react/20/solid";
+import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -71,6 +73,17 @@ export const LessonsView = () => {
 
     setResetTrigger(true);
     setTimeout(() => setResetTrigger(false), 200); // se apaga el trigger
+  };
+
+  const handleDeleteFile = async (lessonId: string, url: string, fileType: 'video' | 'image' | 'file') => {
+    try {
+      await deleteFileFromLesson(lessonId, url, fileType);
+      queryClient.invalidateQueries({ queryKey: ['lessons'] });
+      toast.success('🗑️ Archivo eliminado exitosamente');
+    } catch (error) {
+      console.error('Error deleting file:', error);
+      toast.error('Error al eliminar archivo');
+    }
   };
 
 
@@ -182,156 +195,82 @@ export const LessonsView = () => {
 
                   {/* contenido de video */}
                   <div className="flex flex-col gap-4">
-                    {/* subir y mostrar archivos multimedia */}
-                    <UploadFile
-                      label="Video"
-                      accept="video/*"
-                      multiple
-                      onUploadComplete={(urls) =>
-                        setPendingUpdates((prev) => ({
-                          ...prev,
-                          [lessons._id]: {
-                            ...prev[lessons._id],
-                            videoUrl: Array.from(
-                              new Set([...(prev[lessons._id]?.videoUrl || []), ...urls])
-                            ),
-                          },
-                        }))
-                      }
+                    {/* subir archivos multimedia */}
+                    <div className="mb-6">
+                      <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        ✨ Subir Contenido Nuevo
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Subir Videos */}
+                        <UploadFile
+                          label="Videos"
+                          accept="video/*"
+                          multiple
+                          onUploadComplete={(urls) =>
+                            setPendingUpdates((prev) => ({
+                              ...prev,
+                              [lessons._id]: {
+                                ...prev[lessons._id],
+                                videoUrl: Array.from(
+                                  new Set([...(prev[lessons._id]?.videoUrl || []), ...urls])
+                                ),
+                              },
+                            }))
+                          }
+                          resetTrigger={resetTrigger}
+                        />
 
-                      resetTrigger={resetTrigger}
-                    />
+                        {/* Subir Imágenes */}
+                        <UploadFile
+                          label="Imágenes"
+                          accept="image/*"
+                          multiple
+                          onUploadComplete={(urls) =>
+                            setPendingUpdates((prev) => ({
+                              ...prev,
+                              [lessons._id]: {
+                                ...prev[lessons._id],
+                                imageUrl: [...(prev[lessons._id]?.imageUrl || []), ...urls],
+                              },
+                            }))
+                          }
+                          resetTrigger={resetTrigger}
+                        />
 
-                    {Array.isArray(lessons.videoUrl) && lessons.videoUrl.length > 0 ? (
-                      <div className="flex flex-wrap gap-4 mt-4">
-
-                        {lessons.videoUrl.map((url) => (
-                          <video
-                            key={url}
-                            src={url}
-                            controls
-                            className="w-90 h-70 rounded-xl border border-gray-300"
-                          />
-
-                        ))}
+                        {/* Subir Documentos */}
+                        <UploadFile
+                          label="Documentos"
+                          accept=".pdf,.doc,.docx,.xlsx,.pptx"
+                          multiple
+                          onUploadComplete={(urls) =>
+                            setPendingUpdates((prev) => ({
+                              ...prev,
+                              [lessons._id]: {
+                                ...prev[lessons._id],
+                                fileUrl: [...(prev[lessons._id]?.fileUrl || []), ...urls],
+                              },
+                            }))
+                          }
+                          resetTrigger={resetTrigger}
+                        />
                       </div>
-                    ) : (
-                      <p className="text-xl font-bold text-slate-800">No hay videos disponibles en esta lección. </p>
-                    )}
+                    </div>
 
                     <div className="separation_line_lessons" />
-                    {/* Subir y mostrar imagenes */}
-                    <UploadFile
-                      label="Imagen"
-                      accept="image/*"
-                      multiple
-                      onUploadComplete={(urls) =>
-                        setPendingUpdates((prev) => ({
-                          ...prev,
-                          [lessons._id]: {
-                            ...prev[lessons._id],
-                            imageUrl: [...(prev[lessons._id]?.imageUrl || []), ...urls],
-                          },
-                        }))
-                      }
-                      resetTrigger={resetTrigger}
-                    />
 
-
-                    {Array.isArray(lessons.imageUrl) && lessons.imageUrl.length > 0 ? (
-                      <div className="flex flex-wrap gap-4 mt-4">
-                        {lessons.imageUrl.map((url) => (
-
-                          <a
-                            key={`${lessons._id}-${url}`}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <img
-                              key={url}
-                              src={url}
-                              alt="Imagen subida"
-                              className="w-40 h-40 object-cover rounded-lg border hover:scale-105 transition-transform"
-                            />
-                          </a>
-                        ))}
-
-                      </div>
-                    ) : (
-                      <p className="text-xl font-bold text-slate-800">No hay imágenes disponibles en esta lección. </p>
-                    )}
-
-                    <div className="separation_line_lessons" />
-                    {/* Subir y mostrar archivos */}
-                    <UploadFile
-                      label="Archivos"
-                      accept=".pdf,.doc,.docx,.xlsx,.pptx"
-                      multiple
-                      onUploadComplete={(urls) =>
-                        setPendingUpdates((prev) => ({
-                          ...prev,
-                          [lessons._id]: {
-                            ...prev[lessons._id],
-                            fileUrl: [...(prev[lessons._id]?.fileUrl || []), ...urls],
-                          },
-                        }))
-                      }
-                      resetTrigger={resetTrigger}
-                    />
-
-                    {Array.isArray(lessons.fileUrl) && lessons.fileUrl.length > 0 ? (
-                      <div className="flex flex-wrap gap-3">
-                        {lessons.fileUrl.map((fileUrl: string, index: number) => {
-                          const fileName = decodeURIComponent(fileUrl.split("/").pop() || "");
-                          const isPDF = fileUrl.toLowerCase().endsWith(".pdf");
-                          const isWord = fileUrl.toLowerCase().match(/\.(doc|docx)$/i);
-
-                          // si es pdf o word, cambia la url para descarga
-                          const downloadUrl =
-                            isPDF || isWord
-                              ? fileUrl.replace("/upload/", "/upload/fl_attachment/")
-                              : fileUrl;
-
-                          return (
-                            <a
-                              key={index}
-                              href={downloadUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex flex-col items-center justify-center w-24 h-24 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
-                            >
-                              {isPDF ? (
-                                <div className="relative w-12 h-10">
-                                  <DocumentTextIcon className="w-12 h-12 text-red-500" />
-                                  <span className="absolute ml-2 top-2 left-1 text-white font-medium text-xs">
-                                    PDF
-                                  </span>
-                                </div>
-                              ) : isWord ? (
-                                <div className="relative w-12 h-10">
-                                  <DocumentTextIcon className="w-12 h-12 text-blue-600" />
-                                  <span className="absolute ml-2 top-2 left-2.5 text-white font-medium text-xs">
-                                    W
-                                  </span>
-                                </div>
-                              ) : (
-                                <div className="relative w-12 h-10">
-                                  <DocumentTextIcon className="w-12 h-12 text-gray-500" />
-                                </div>
-                              )}
-
-                              <span className="text-xs text-blue-600 mt-1">Ver</span>
-                              <span className="text-[10px] text-gray-500 truncate w-20 text-center">
-                                {fileName}
-                              </span>
-                            </a>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <p className="text-xl font-bold text-slate-800">No hay archivos disponibles en esta lección. </p>
-                    )}
+                    {/* Visualizador de Archivos Existentes con opción de eliminar */}
+                    <div className="mb-6">
+                      <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        📁 Archivos de la Lección
+                      </h3>
+                      <LessonMediaViewer
+                        videoUrls={lessons.videoUrl}
+                        imageUrls={lessons.imageUrl}
+                        fileUrls={lessons.fileUrl}
+                        onDeleteFile={(url, type) => handleDeleteFile(lessons._id, url, type)}
+                        canDelete={true}
+                      />
+                    </div>
 
                   </div>
                   <div className="flex justify-end mt-10">

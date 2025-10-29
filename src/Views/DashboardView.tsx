@@ -11,9 +11,10 @@ import { toast } from "react-toastify"
 export const DashboardView = () => {
 
 
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, isError, error } = useQuery({
         queryKey: ['courses'],
-        queryFn: getCourses
+        queryFn: getCourses,
+        retry: 2
     })
 
     const queryClient = useQueryClient()
@@ -31,7 +32,27 @@ export const DashboardView = () => {
 
 
 
-    if (isLoading) return 'Cargando...'
+    if (isLoading) return (
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="text-center">
+                <div className="inline-block w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-gray-600 font-medium">Cargando cursos...</p>
+            </div>
+        </div>
+    )
+
+    if (isError) return (
+        <div className="max-w-3xl mx-auto mt-20">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+                <h2 className="text-2xl font-bold text-red-700 mb-2">Error al cargar cursos</h2>
+                <p className="text-red-600">{error?.message || 'No se pudo conectar con el servidor'}</p>
+                <p className="text-sm text-gray-600 mt-4">
+                    Asegúrate de que el backend esté corriendo en el puerto correcto
+                </p>
+            </div>
+        </div>
+    )
+
     if (data) return (
         <>
             <div className="max-w-3xl mx-auto">
