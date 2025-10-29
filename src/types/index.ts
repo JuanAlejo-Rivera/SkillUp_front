@@ -29,7 +29,6 @@ export const edictCourseSchema = courseSchema.pick({
     department: true
 })
 
-
 export type Course = z.infer<typeof courseSchema>
 export type CourseFormData = Pick<Course, "courseName" | "description" | "department">
 
