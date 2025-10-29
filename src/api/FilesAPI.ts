@@ -36,12 +36,16 @@ export async function deleteFileFromLesson(
     fileType: 'video' | 'image' | 'file'
 ) {
     try {
+        console.log('🗑️ Deleting file from lesson:', { sectionId, lessonId, url, fileType });
         const { data } = await api.delete(`/files/lesson/${sectionId}/${lessonId}/file`, {
             data: { url, fileType }
         });
+        console.log('✅ File deleted successfully:', data);
         return data;
     } catch (error) {
+        console.error('❌ Error in deleteFileFromLesson:', error);
         if (isAxiosError(error) && error.response) {
+            console.error('Response error:', error.response.data);
             throw new Error(error.response.data.error);
         }
         throw new Error('Error al eliminar archivo de la lección');

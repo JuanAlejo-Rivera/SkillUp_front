@@ -9,17 +9,17 @@ import {
 } from "@heroicons/react/24/solid";
 
 type LessonMediaViewerProps = {
-  videoUrls?: string[];
-  imageUrls?: string[];
-  fileUrls?: string[];
+  videoUrl?: string[];
+  imageUrl?: string[];
+  fileUrl?: string[];
   onDeleteFile?: (url: string, type: 'video' | 'image' | 'file') => void;
   canDelete?: boolean;
 };
 
 export default function LessonMediaViewer({
-  videoUrls = [],
-  imageUrls = [],
-  fileUrls = [],
+  videoUrl = [],
+  imageUrl = [],
+  fileUrl = [],
   onDeleteFile,
   canDelete = true
 }: LessonMediaViewerProps) {
@@ -183,13 +183,13 @@ export default function LessonMediaViewer({
     );
   };
 
-  const totalFiles = videoUrls.length + imageUrls.length + fileUrls.length;
+  const totalFiles = videoUrl.length + imageUrl.length + fileUrl.length;
 
   return (
     <>
       <div className="space-y-8">
         {/* Videos */}
-        {videoUrls.length > 0 && (
+        {videoUrl.length > 0 && (
           <div className="space-y-4 animate-fadeIn">
             <div className="flex items-center gap-3">
               <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-xl shadow-lg">
@@ -197,11 +197,11 @@ export default function LessonMediaViewer({
               </div>
               <div>
                 <h4 className="text-xl font-bold text-gray-800">Videos</h4>
-                <p className="text-sm text-gray-500">{videoUrls.length} archivo{videoUrls.length !== 1 ? 's' : ''}</p>
+                <p className="text-sm text-gray-500">{videoUrl.length} archivo{videoUrl.length !== 1 ? 's' : ''}</p>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {videoUrls.map((url, index) => (
+              {videoUrl.map((url, index) => (
                 <MediaCard key={url} url={url} type="video" index={index} />
               ))}
             </div>
@@ -209,7 +209,7 @@ export default function LessonMediaViewer({
         )}
 
         {/* Imágenes */}
-        {imageUrls.length > 0 && (
+        {imageUrl.length > 0 && (
           <div className="space-y-4 animate-fadeIn" style={{ animationDelay: '0.1s' }}>
             <div className="flex items-center gap-3">
               <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-3 rounded-xl shadow-lg">
@@ -217,11 +217,11 @@ export default function LessonMediaViewer({
               </div>
               <div>
                 <h4 className="text-xl font-bold text-gray-800">Imágenes</h4>
-                <p className="text-sm text-gray-500">{imageUrls.length} archivo{imageUrls.length !== 1 ? 's' : ''}</p>
+                <p className="text-sm text-gray-500">{imageUrl.length} archivo{imageUrl.length !== 1 ? 's' : ''}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {imageUrls.map((url, index) => (
+              {imageUrl.map((url, index) => (
                 <MediaCard key={url} url={url} type="image" index={index} />
               ))}
             </div>
@@ -229,7 +229,7 @@ export default function LessonMediaViewer({
         )}
 
         {/* Documentos */}
-        {fileUrls.length > 0 && (
+        {fileUrl.length > 0 && (
           <div className="space-y-4 animate-fadeIn" style={{ animationDelay: '0.2s' }}>
             <div className="flex items-center gap-3">
               <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-3 rounded-xl shadow-lg">
@@ -237,11 +237,11 @@ export default function LessonMediaViewer({
               </div>
               <div>
                 <h4 className="text-xl font-bold text-gray-800">Documentos</h4>
-                <p className="text-sm text-gray-500">{fileUrls.length} archivo{fileUrls.length !== 1 ? 's' : ''}</p>
+                <p className="text-sm text-gray-500">{fileUrl.length} archivo{fileUrl.length !== 1 ? 's' : ''}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {fileUrls.map((url, index) => (
+              {fileUrl.map((url, index) => (
                 <MediaCard key={url} url={url} type="file" index={index} />
               ))}
             </div>

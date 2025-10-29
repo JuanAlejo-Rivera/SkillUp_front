@@ -264,9 +264,9 @@ export const LessonsView = () => {
                         📁 Archivos de la Lección
                       </h3>
                       <LessonMediaViewer
-                        videoUrls={lessons.videoUrl}
-                        imageUrls={lessons.imageUrl}
-                        fileUrls={lessons.fileUrl}
+                        videoUrl={lessons.videoUrl}
+                        imageUrl={lessons.imageUrl}
+                        fileUrl={lessons.fileUrl}
                         onDeleteFile={(url, type) => handleDeleteFile(lessons._id, url, type)}
                         canDelete={true}
                       />
