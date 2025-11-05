@@ -1,15 +1,24 @@
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
 import type { CourseFormData } from "types";
-
+import { useQuery } from "@tanstack/react-query";
+import { getDepartments } from "@/api/DeparmentsAPI";
 
 type CourseFormProps = {
     register: UseFormRegister<CourseFormData>
     errors: FieldErrors<CourseFormData>
 }
 
+
 export default function CourseForm({ errors, register }: CourseFormProps) {
-    return (
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['departments'],
+        queryFn: getDepartments
+    })
+
+    if (isLoading) return 'Cargando...'
+    if (data) return (
         <>
             <div className="mb-5 space-y-3">
                 <label htmlFor="courseName" className="text-sm uppercase font-bold">
@@ -30,6 +39,7 @@ export default function CourseForm({ errors, register }: CourseFormProps) {
                 )}
             </div>
 
+
             <div className="mb-5 space-y-3">
                 <label htmlFor="department" className="text-sm uppercase font-bold">
                     Departamento
@@ -39,16 +49,22 @@ export default function CourseForm({ errors, register }: CourseFormProps) {
                     className="w-full p-3 border border-sky-700 rounded-xl"
                     {...register("department", { required: "El departamento es obligatorio" })}
                 >
+
                     <option value="">-- Selecciona un departamento --</option>
-                    <option value="informatica">Informática</option>
-                    <option value="matematicas">Matemáticas</option>
-                    <option value="fisica">Física</option>
+
+                    {data?.map((department) => (
+                        <option key={department._id} value={department._id}>
+                            {department.departmentName}
+                        </option>
+                    ))}
+
                 </select>
 
                 {errors.department && (
                     <ErrorMessage>{errors.department.message}</ErrorMessage>
                 )}
-            </div>
+            </div >
+
 
             <div className="mb-5 space-y-3">
                 <label htmlFor="description" className="text-sm uppercase font-bold">

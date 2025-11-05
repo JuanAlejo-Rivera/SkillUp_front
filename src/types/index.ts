@@ -3,9 +3,20 @@ import { z } from "zod"
 /** Courses */
 export const departmentPopulatedSchema = z.object({
     _id: z.string(),
-    departmentName: z.string(), 
+    departmentName: z.string(),
 })
 
+export const courseFormSchema = z.object({
+    courseName: z.string(),
+    description: z.string(),
+    department: z.union([
+        z.string(),
+        z.object({
+            _id: z.string(),
+            departmentName: z.string(),
+        }),
+    ]).nullable(),
+})
 
 export const courseSchema = z.object({
     _id: z.string(),
@@ -26,11 +37,17 @@ export const dashboardCourseSchema = z.array(
 export const edictCourseSchema = courseSchema.pick({
     courseName: true,
     description: true,
-    department: true
-})
+    department: true,
+}).extend({
+    department: z.union([
+        z.string(), // cuando solo viene el ID
+        departmentPopulatedSchema.nullable() // cuando viene poblado
+    ])
+});
+
 
 export type Course = z.infer<typeof courseSchema>
-export type CourseFormData = Pick<Course, "courseName" | "description" | "department">
+export type CourseFormData = z.infer<typeof courseFormSchema>
 
 
 /** Sections */
@@ -62,12 +79,12 @@ export type SectionFormData = Pick<Section, "title" | "description">
 /** Lessons */
 
 export const LessonSchema = z.object({
-  _id: z.string(),
-  title: z.string(),
-  description: z.string(),
-  videoUrl: z.array(z.string()), 
-  fileUrl: z.array(z.string()),   
-  imageUrl: z.array(z.string()),  
+    _id: z.string(),
+    title: z.string(),
+    description: z.string(),
+    videoUrl: z.array(z.string()),
+    fileUrl: z.array(z.string()),
+    imageUrl: z.array(z.string()),
 });
 
 
@@ -87,6 +104,7 @@ export const LessonViewSchema = z.array(
 export type Lesson = z.infer<typeof LessonSchema>
 export type LessonFormData = Pick<Lesson, "_id" | "title" | "description" | "videoUrl" | "fileUrl" | "imageUrl">
 
+/** Departments */
 
 export const departmentSchema = z.object({
     _id: z.string(),

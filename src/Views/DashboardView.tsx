@@ -30,7 +30,6 @@ export const DashboardView = () => {
     })
 
 
-
     if (isLoading) return 'Cargando...'
     if (data) return (
         <>
@@ -46,7 +45,6 @@ export const DashboardView = () => {
                         Nuevo curso
                     </Link>
                 </nav>
-
                 {data.length ? (
                     <ul role="list" className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg">
                         {data.map((course) => (

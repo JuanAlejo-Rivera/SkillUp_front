@@ -1,5 +1,5 @@
 import api from "@/lib/axios"
-import type { DepartmentFormData } from "../types"
+import { dashboardDepartmentSchema, type DepartmentFormData } from "../types"
 import { isAxiosError } from "axios"
 
 
@@ -8,6 +8,20 @@ export async function createDepartment(formData: DepartmentFormData) {
     try {
         const { data } = await api.post('/departments', formData)
         return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function getDepartments() {
+    try {
+        const { data } = await api.get('/departments')
+        const response = dashboardDepartmentSchema.safeParse(data)
+        if (response.success) {
+            return response.data
+        }
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)

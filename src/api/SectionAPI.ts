@@ -60,8 +60,6 @@ type updateSecionAPIType = {
 
 
 export async function updateSection({ courseId, sectionId, formData }: updateSecionAPIType) {
-    console.log('course: ' + courseId)
-    console.log('section:' + sectionId)
     try {
         const { data } = await api.put(`/courses/${courseId}/sections/${sectionId}`, formData)
         return data

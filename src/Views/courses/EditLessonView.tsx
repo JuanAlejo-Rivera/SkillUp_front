@@ -13,7 +13,7 @@ export const EditLessonView = () => {
     const courseId = params.courseId!
     const lessonId = params.lessonId!
 
-    console.log(courseName)
+    // console.log(courseName)
     const { data, isLoading, isError } = useQuery({
         queryKey: ['editLesson', lessonId],
         queryFn: () => getLessonById({sectionId, courseId, lessonId}),
