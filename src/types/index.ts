@@ -86,3 +86,18 @@ export const LessonViewSchema = z.array(
 
 export type Lesson = z.infer<typeof LessonSchema>
 export type LessonFormData = Pick<Lesson, "_id" | "title" | "description" | "videoUrl" | "fileUrl" | "imageUrl">
+
+
+export const departmentSchema = z.object({
+    _id: z.string(),
+    departmentName: z.string(),
+})
+
+export const dashboardDepartmentSchema = z.array(
+    departmentSchema.pick({
+        _id: true,
+        departmentName: true,
+    })
+)
+export type Department = z.infer<typeof departmentSchema>
+export type DepartmentFormData = Pick<Department, "departmentName">

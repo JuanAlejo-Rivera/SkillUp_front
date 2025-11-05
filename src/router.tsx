@@ -9,6 +9,7 @@ import { LessonsView } from "./Views/courses/LessonsView"
 import { EditSectionView } from "./Views/courses/EditSectionView"
 import { EditLessonView } from "./Views/courses/EditLessonView"
 import { NoteFound } from "./Views/404/notFound"
+import { CreateDepartmentView } from "./Views/departments/CreateDepartmentView"
 
 export default function Router() {
     return (
@@ -26,7 +27,13 @@ export default function Router() {
                 </Route>
 
                 <Route element={<AppLayout />}>
-                    <Route path="*" element={<NoteFound/>} />
+                    <Route path="/create-deparment" element={< CreateDepartmentView />} />
+
+
+                </Route>
+
+                <Route element={<AppLayout />}>
+                    <Route path="*" element={<NoteFound />} />
                 </Route>
             </Routes>
         </BrowserRouter>

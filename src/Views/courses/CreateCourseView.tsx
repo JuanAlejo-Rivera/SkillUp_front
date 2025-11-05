@@ -50,7 +50,7 @@ export const CreateCourseView = () => {
                     </Link>
 
                     <Link
-                        to={"/crear-departamento"}
+                        to={"/create-deparment"}
                         className="bg-sky-700 hover:bg-sky-800 py-3 px-3 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
                     >
                         Crear nuevo departamento
