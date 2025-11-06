@@ -29,6 +29,7 @@ export async function getDepartments() {
     }
 }
 
+// Delete department by id
 export async function deleteDeparment(departmentId: Department['_id']) {
     try {
         const { data } = await api.delete(`/departments/${departmentId}`)
