@@ -1,14 +1,17 @@
 import { deleteCorse, getCourses } from "@/api/CoursesAPI"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { Fragment } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { toast } from "react-toastify"
+import ModalDeparmentAdd from "@/components/department/ModalDepartments"
 
 
 export const DashboardView = () => {
+
+    const navigate = useNavigate();
 
 
     const { data, isLoading } = useQuery({
@@ -37,13 +40,23 @@ export const DashboardView = () => {
                 <h1 className="text-2xl font-black">Mis cursos</h1>
                 <p className="text-xl font-light text-gray-500 mt-5">Maneja y administra tus cursos</p>
 
-                <nav className="my-5 ">
+                <nav className="my-5 flex gap-3">
                     <Link
                         to={"/courses-create"}
                         className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
                     >
                         Nuevo curso
                     </Link>
+
+                    <button
+                        type="button"
+                        className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
+                        onClick={() =>
+                            navigate(location.pathname + `?addDepartment=true`)
+                        }
+                    >
+                        Gestión de departamentos
+                    </button>
                 </nav>
                 {data.length ? (
                     <ul role="list" className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg">
@@ -111,6 +124,7 @@ export const DashboardView = () => {
                 ) : (
                     <p className="text-center text-gray-600 uppercase p-5 border border-gray-300 rounded-lg">No hay cursos disponibles</p>
                 )}
+                <ModalDeparmentAdd/>
             </div>
         </>
     )

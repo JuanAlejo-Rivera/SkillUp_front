@@ -53,12 +53,12 @@ export default function EditCourseForm({ data, courseId }: editCourseFormProps) 
             <div className="max-w-lg mx-auto ">
 
 
-                <h1 className="text-2xl font-black">editar Curso</h1>
+                <h1 className="text-2xl font-black">Editar Curso</h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para editar el curso.</p>
 
                 <nav className="my-5 flex flex-col md:flex-row gap-3">
                     <Link
-                        to={"/crear-departamento"}
+                        to={"/create-deparment"}
                         className="bg-sky-700 hover:bg-sky-800 py-3 px-3 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
                     >
                         Crear nuevo departamento
