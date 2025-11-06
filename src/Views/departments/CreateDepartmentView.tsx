@@ -23,12 +23,18 @@ export const CreateDepartmentView = () => {
         },
         onSuccess: (data) => {
             toast.success(data)
-            navigate("/courses-create")
+            navigate(-1)
         }
     })
 
 
-    const handleForm = (data: DepartmentFormData) => mutate(data)
+    const handleForm = (data: DepartmentFormData) => {
+        const formattedData = {
+            ...data,
+            departmentName: data.departmentName.toUpperCase()
+        };
+        mutate(formattedData);
+    };
 
     return (
         <>
