@@ -66,15 +66,6 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId, co
                 <h1 className="text-2xl font-black">Editar Lección</h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para editar la Lección.</p>
 
-                <nav className="my-5 flex flex-col md:flex-row gap-3">
-                    <Link
-                        to={`/courses/${courseId}/sections/${sectionId}/lessons`}
-                        className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
-                        state={{ courseName }}
-                    >
-                        Volver a lecciones
-                    </Link>
-                </nav>
 
                 <form
                     className="mt-10 bg-slate-200 shadow-lg p-10 rounded-lg"
@@ -88,12 +79,18 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId, co
                         setValue={setValue}
                     />
 
-                    <div className="flex justify-end mt-10">
-
+                    <div className="flex justify-between">
+                        <Link
+                            to={`/courses/${courseId}/sections/${sectionId}/lessons`}
+                            className="w-full mt-3 sm:w-auto px-5 py-2 rounded-md bg-gray-600 hover:bg-gray-500 text-white font-medium transition"
+                            state={{ courseName }}
+                        >
+                            Cancelar
+                        </Link>
                         <input
                             type="submit"
                             value='Guardar Cambios'
-                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
+                            className="w-full mt-3 sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
                         />
 
                     </div>

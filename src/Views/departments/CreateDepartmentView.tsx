@@ -3,7 +3,7 @@ import DeparmentForm from "@/components/department/departmentForm"
 import type { DepartmentFormData } from "@/types/index"
 import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
 export const CreateDepartmentView = () => {
@@ -16,7 +16,7 @@ export const CreateDepartmentView = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-    const {mutate} = useMutation({
+    const { mutate } = useMutation({
         mutationFn: createDepartment,
         onError: (error) => {
             toast.error(error.message)
@@ -53,15 +53,22 @@ export const CreateDepartmentView = () => {
                         errors={errors}
                     />
 
-                    <div className="flex justify-end">
+                    <div className="flex justify-between">
+                        <Link
+                            to={"/courses-create"}
+                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-gray-600 hover:bg-gray-500 text-white font-medium transition"
+                        >
+                            Cancelar
+                        </Link>
 
                         <input
                             type="submit"
-                            value='Crear Departamento'
+                            value="Crear Departamento"
                             className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
                         />
-
                     </div>
+
+
                 </form>
 
 

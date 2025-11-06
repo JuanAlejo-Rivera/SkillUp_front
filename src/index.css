@@ -4,3 +4,6 @@
     @apply w-[90%] h-[2px] bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 mb-4
 }
 
+.position_back_button {
+    @apply absolute top-40 left-auto sm:top-40 sm:left-auto md:top-40 md:left-auto lg:top-30 lg:left-auto xl:top-30 xl:left-auto 2xl:top-30 2xl:left-auto
+}

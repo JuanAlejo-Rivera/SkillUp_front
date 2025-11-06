@@ -9,6 +9,8 @@ import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
+import BackButton from "@/components/arrowBack/backButton";
+
 
 export const LessonsView = () => {
 
@@ -74,22 +76,19 @@ export const LessonsView = () => {
   };
 
 
-
-
-
   if (isLoading) return "Cargando...";
   if (isError) return <Navigate to={'/404'} />
 
   if (data)
     return (
       <>
-        <div className="max-w-4xl mx-auto px-4">
-          <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
+        <div className="max-w-3xl mx-auto">
+          <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5 mt-10">
             {courseName}
           </h6>
 
           <h1 className="text-2xl font-black text-slate-800">Mis lecciones</h1>
-          <p className="text-lg font-light text-gray-500 mt-2">
+          <p className="text-xl font-light text-gray-500 mt-2">
             Maneja y administra las lecciones de la sección
           </p>
 
@@ -106,13 +105,13 @@ export const LessonsView = () => {
               Agregar nueva lección
             </button>
 
-            <Link
-              className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
+            <BackButton
               to={`/courses/${courseId}/sections`}
+              title="Volver a secciones"
+              position="position_back_button"
               state={{ courseName: courseName }}
-            >
-              Regresar a secciones
-            </Link>
+            />
+
           </nav>
 
           {data.length ? (
@@ -157,7 +156,7 @@ export const LessonsView = () => {
                             <Link
                               to={`/courses/${courseId}/sections/${sectionId}/lesson/${lessons._id}/edit`}
                               className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50"
-                              state ={{courseName: courseName}}
+                              state={{ courseName: courseName }}
                             >
                               Editar Lección
                             </Link>

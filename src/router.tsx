@@ -27,7 +27,7 @@ export default function Router() {
                 </Route>
 
                 <Route element={<AppLayout />}>
-                    <Route path="/create-deparment" element={< CreateDepartmentView />} />
+                    <Route path="/create-deparment" element={<CreateDepartmentView />} />
 
 
                 </Route>

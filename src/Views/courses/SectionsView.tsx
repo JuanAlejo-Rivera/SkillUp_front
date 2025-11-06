@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link, Navigate, useLocation, useParams } from "react-router-dom"
 import { Fragment } from 'react'
 import { toast } from "react-toastify"
+import BackButton from "@/components/arrowBack/backButton"
 
 export const SectionsView = () => {
 
@@ -39,12 +40,12 @@ export const SectionsView = () => {
     <>
       <div className="max-w-3xl mx-auto">
 
-        <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5">
+        <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5 mt-10">
           {courseName}
         </h6>
 
-        <h1 className="text-xl font-black">Mis secciones</h1>
-        <p className="text-2xl font-light text-gray-500 mt-5">Maneja y administra tus secciones</p>
+        <h1 className="text-2xl font-black text-slate-800">Mis secciones</h1>
+        <p className="text-xl font-light text-gray-500 mt-2">Maneja y administra tus secciones</p>
 
         <nav className="my-5 flex flex-col md:flex-row gap-3">
           <Link
@@ -54,12 +55,14 @@ export const SectionsView = () => {
           >
             Nueva sección
           </Link>
-          <Link
-            className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
-            to={'/'}
-          >
-            Regresar a cursos
-          </Link>
+
+          <BackButton
+            to={`/`}
+            title="Volver a cursos"
+            position="position_back_button"
+            state={{ courseName: courseName }}
+          />
+
         </nav>
 
         {data.length ? (
