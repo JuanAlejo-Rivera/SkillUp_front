@@ -38,4 +38,5 @@ export async function deleteDeparment(departmentId: Department['_id']) {
             throw new Error(error.response.data.error)
         }
     }
+    
 }
