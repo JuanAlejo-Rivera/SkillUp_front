@@ -37,7 +37,6 @@ export const CreateCourseView = () => {
         <>
             <div className="max-w-lg mx-auto ">
 
-
                 <h1 className="text-2xl font-black">Añadir Nuevo Curso</h1>
                 <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para crear un nuevo curso.</p>
 

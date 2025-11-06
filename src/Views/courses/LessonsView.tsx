@@ -127,12 +127,11 @@ export const LessonsView = () => {
                   {/* --- Encabezado --- */}
                   <div className="flex justify-between items-start mb-4">
                     <div>
-                      <Link
-                        to={`/projects/${lessons._id}`}
-                        className="text-gray-800 hover:text-sky-700 cursor-pointer hover:underline text-2xl font-bold"
+                      <div
+                        className="text-gray-800  text-2xl font-bold"
                       >
                         {lessons.title}
-                      </Link>
+                      </div>
                       <p className="text-sm text-gray-500 mt-8 mb-2">{lessons.description}</p>
                     </div>
 

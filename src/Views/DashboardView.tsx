@@ -34,8 +34,8 @@ export const DashboardView = () => {
     if (data) return (
         <>
             <div className="max-w-3xl mx-auto">
-                <h1 className="text-5-xl font-black">Mis cursos</h1>
-                <p className="text-2xl font-light text-gray-500 mt-5">Maneja y administra tus cursos</p>
+                <h1 className="text-2xl font-black">Mis cursos</h1>
+                <p className="text-xl font-light text-gray-500 mt-5">Maneja y administra tus cursos</p>
 
                 <nav className="my-5 ">
                     <Link
