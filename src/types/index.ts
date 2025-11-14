@@ -1,5 +1,20 @@
 import { z } from "zod"
 
+
+/** Auth & user */
+const authSchema = z.object({
+    name: z.string(),
+    email: z.email(),
+    current_password: z.string(),
+    password: z.string(),
+    password_confirmation: z.string(),
+    token: z.string
+})
+
+type Auth = z.infer<typeof authSchema>
+export type UserLoginForm = Pick<Auth, "email" | "password">
+export type UserRegistrationForm = Pick<Auth, "name" | "email" | "password" | "password_confirmation">
+
 /** Courses */
 export const departmentPopulatedSchema = z.object({
     _id: z.string(),

@@ -10,6 +10,10 @@ import { EditSectionView } from "./Views/courses/EditSectionView"
 import { EditLessonView } from "./Views/courses/EditLessonView"
 import { NoteFound } from "./Views/404/notFound"
 import { CreateDepartmentView } from "./Views/departments/CreateDepartmentView"
+import LoginView from "./Views/auth/LoginView"
+import { AuthLayout } from "./Layouts/AuthLayout"
+import RegisterView from "./Views/auth/RegisterView"
+import ConfirmAccountView from "./Views/auth/confirmAccountView"
 
 export default function Router() {
     return (
@@ -28,8 +32,12 @@ export default function Router() {
 
                 <Route element={<AppLayout />}>
                     <Route path="/create-deparment" element={<CreateDepartmentView />} />
+                </Route>
 
-
+                <Route element={<AuthLayout />}>
+                    <Route path="/auth/login" element={<LoginView/>} />
+                    <Route path="/auth/register" element={<RegisterView/>} />
+                    <Route path="/auth/confirm-account" element={<ConfirmAccountView/>} />
                 </Route>
 
                 <Route element={<AppLayout />}>
