@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import type { comfirmToken, UserRegistrationForm } from "../types";
+import type { ComfirmToken, UserRegistrationForm } from "../types";
 import { isAxiosError } from "axios";
 
 export async function createAccount(formData: UserRegistrationForm) {
@@ -16,7 +16,7 @@ export async function createAccount(formData: UserRegistrationForm) {
 }
 
 
-export async function confirmAccount(formData: comfirmToken) {
+export async function confirmAccount(formData: ComfirmToken) {
     try {
         const url = '/auth/confirm-account'
         const { data } = await api.post<string>(url, formData)
