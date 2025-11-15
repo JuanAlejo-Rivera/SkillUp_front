@@ -8,12 +8,13 @@ const authSchema = z.object({
     current_password: z.string(),
     password: z.string(),
     password_confirmation: z.string(),
-    token: z.string
+    token: z.string()
 })
 
 type Auth = z.infer<typeof authSchema>
 export type UserLoginForm = Pick<Auth, "email" | "password">
 export type UserRegistrationForm = Pick<Auth, "name" | "email" | "password" | "password_confirmation">
+export type ComfirmToken = Pick<Auth, "token">
 
 /** Courses */
 export const departmentPopulatedSchema = z.object({

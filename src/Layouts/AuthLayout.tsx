@@ -10,7 +10,6 @@ export const AuthLayout = () => {
                     <div className="flex justify-center items-center">
                         <Logo />
                     </div>
-
                     <div className="mt-10">
                         <Outlet />
                     </div>
