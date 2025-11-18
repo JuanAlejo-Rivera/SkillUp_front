@@ -55,10 +55,16 @@ export default function ConfirmAccountView() {
 
       <nav className="mt-10 flex flex-col space-y-4">
         <Link
-          to='/auth/new-code'
+          to='/auth/request-code'
           className="text-center text-gray-300 font-normal"
         >
           Solicitar un nuevo Código
+        </Link>
+        <Link
+          to='/auth/login'
+          className="text-center text-sky-700 font-bold text-lg transition-transform duration-300 transform hover:scale-110"
+        >
+          ¿Ya estas verificado? Iniciar Sesión
         </Link>
       </nav>
 
