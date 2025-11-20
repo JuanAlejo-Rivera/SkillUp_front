@@ -16,8 +16,14 @@ export async function createCourse(formData: CourseFormData) {
 
 
 export async function getCourses() {
+    const token = localStorage.getItem('AUTH_TOKEN')
+
     try {
-        const { data } = await api.get('/courses')
+        const { data } = await api.get('/courses', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
         const response = dashboardCourseSchema.safeParse(data)
         if (response.success) {
             return response.data
