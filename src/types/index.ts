@@ -20,6 +20,17 @@ export type ForgotPasswordForm = Pick<Auth, "email">
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
 export type ConfirmToken = Pick<Auth, 'token'>
 
+/** Users */
+//de esta manera usarmos solo los campos que necesitamos de authSchema
+export const userSchema = authSchema.pick({
+    name: true,
+    email: true,
+}).extend({//agregamos atrributos adicionales
+    _id: z.string(),
+})
+export type User = z.infer<typeof userSchema>
+export type UserProfileForm = Pick<User, 'name' | 'email'> //lo que se espera de un formulario para editar el perfil del usuario
+
 
 /** Courses */
 export const departmentPopulatedSchema = z.object({

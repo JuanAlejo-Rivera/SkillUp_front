@@ -1,5 +1,5 @@
 import api from "@/lib/axios";
-import type { ComfirmToken, ConfirmToken, ForgotPasswordForm, NewPasswordForm, RequestConfirmationCodeForm, UserLoginForm, UserRegistrationForm } from "../types";
+import { userSchema, type ComfirmToken, type ConfirmToken, type ForgotPasswordForm, type NewPasswordForm, type RequestConfirmationCodeForm, type UserLoginForm, type UserRegistrationForm } from "../types";
 import { isAxiosError } from "axios";
 
 export async function createAccount(formData: UserRegistrationForm) {
@@ -97,4 +97,19 @@ export async function updatePasswordWithToken({ formData, token }: { formData: N
         }
         throw new Error('Error desconocido al iniciar sesión');
     }
+}
+
+export async function getUser() {
+    try {
+        const { data } = await api.get('/auth/user');
+        const response = userSchema.safeParse(data); // Validamos la respuesta con el esquema
+        if (response) {
+            return response.data;
+        }
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+    }
+
 }

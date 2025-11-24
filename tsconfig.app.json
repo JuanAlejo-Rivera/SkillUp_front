@@ -14,7 +14,8 @@
       "@/Layouts/*": ["Layouts/*"],
       "@/types/*": ["types/*"],
       "@/api/*": ["api/*"],
-      "@/lib/*": ["lib/*"]
+      "@/lib/*": ["lib/*"],
+      "@/hooks/*": ["hooks/*"]
     },
 
     /* Bundler mode */
