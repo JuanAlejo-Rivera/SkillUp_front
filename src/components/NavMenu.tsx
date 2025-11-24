@@ -1,9 +1,21 @@
 import { Fragment } from 'react'
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
 import { Bars3Icon } from '@heroicons/react/20/solid'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function NavMenu() {
+
+  const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+  const logout = () => {
+    localStorage.removeItem('AUTH_TOKEN');
+    // queryClient.invalidateQueries({queryKey: ['user']}); // invalidamos el cache de la consulta del usuario
+    queryClient.clear(); // limpiamos el cache de todas las consultas
+    navigate('/auth/login');
+  }
+
 
   return (
     <Popover className="relative">
@@ -34,7 +46,7 @@ export default function NavMenu() {
             <button
               className='block p-2 hover:text-sky-800'
               type='button'
-              onClick={() => { }}
+              onClick={logout}
             >
               Cerrar Sesión
             </button>
