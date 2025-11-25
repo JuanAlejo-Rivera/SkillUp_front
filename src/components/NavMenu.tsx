@@ -46,7 +46,7 @@ export default function NavMenu({name}: NavMenuProps) {
             <Link
               to='/'
               className='block p-2 hover:text-sky-800'
-            >Mis Proyectos</Link>
+            >Mis Cursos</Link>
             <button
               className='block p-2 hover:text-sky-800'
               type='button'

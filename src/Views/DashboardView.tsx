@@ -9,6 +9,7 @@ import { toast } from "react-toastify"
 import ModalDeparmentAdd from "@/components/department/ModalDepartments"
 import { useAuth } from "@/hooks/UserAuth"
 import { isManager } from "../utils/policies"
+import { formatDate } from "../utils/utils"
 
 
 export const DashboardView = () => {
@@ -36,7 +37,7 @@ export const DashboardView = () => {
     })
 
     // console.log(user)
-    // console.log(data)
+    console.log(data)
 
     if (isLoading && authLoading) return 'Cargando...'
     if (data && user) return (
@@ -90,6 +91,9 @@ export const DashboardView = () => {
                                         <p>
                                             Creado por: <span className="font-bold text-gray-600">{course.manager.name}</span>
                                         </p>
+                                        <p className='text-sm text-slate-400'>Fecha de creación: {formatDate(course.createdAt)}</p>
+                                        <p className='text-sm text-slate-400'>Última actualización: {formatDate(course.updatedAt)}</p>
+
                                     </div>
                                 </div>
                                 <div className="flex shrink-0 items-center gap-x-6">
