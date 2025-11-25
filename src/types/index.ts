@@ -83,6 +83,7 @@ export const edictCourseSchema = courseSchema.pick({
     courseName: true,
     description: true,
     department: true,
+    manager: true,
 }).extend({
     department: z.union([
         z.string(), // cuando solo viene el ID

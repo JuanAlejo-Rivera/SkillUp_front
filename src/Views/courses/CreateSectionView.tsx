@@ -1,17 +1,27 @@
 import { createSection } from "@/api/SectionAPI"
+import { getCourseById } from "@/api/CoursesAPI"
 import SectionForm from "@/components/sections/sectionsForm"
 import type { SectionFormData } from "@/types/index"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 import { useForm } from "react-hook-form"
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { useAuth } from "@/hooks/UserAuth"
+import { isManager } from "../../utils/policies"
 
 export const CreateSectionView = () => {
 
+    const { data: user, isLoading: authLoading } = useAuth()
     const { state: { courseId, courseName } } = useLocation()
 
     const navigate = useNavigate();
+
+    const { data: course, isLoading: courseLoading } = useQuery({
+        queryKey: ['course', courseId],
+        queryFn: () => getCourseById(courseId),
+        retry: false
+    })
     const initialValues: SectionFormData = {
         title: "",
         description: "",
@@ -38,6 +48,13 @@ export const CreateSectionView = () => {
             courseId
         }
         mutate(data)
+    }
+
+    if (authLoading && courseLoading) return 'Cargando...'
+    
+    // Verificar si el usuario es el manager del curso
+    if (course && user && !isManager(course.manager, user._id)) {
+        return <Navigate to={'/'} />
     }
 
     return (

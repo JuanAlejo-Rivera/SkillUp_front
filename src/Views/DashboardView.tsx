@@ -8,6 +8,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { toast } from "react-toastify"
 import ModalDeparmentAdd from "@/components/department/ModalDepartments"
 import { useAuth } from "@/hooks/UserAuth"
+import { isManager } from "../utils/policies"
 
 
 export const DashboardView = () => {
@@ -70,7 +71,7 @@ export const DashboardView = () => {
                                     <div className="min-w-0 flex-auto space-y-2">
                                         <div className="min-w-0 flex-auto space-y-2">
 
-                                            {course.manager._id === user._id ?
+                                            {isManager(course.manager._id, user._id) ?
                                                 <p className='font-bold text-xs uppercase bg-indigo-50 text-indigo-500 border-2 border-indigo-500 rounded-lg inline-block py-1 px-5'>Creador</p> :
                                                 null
                                             }
@@ -112,7 +113,7 @@ export const DashboardView = () => {
                                                         Ver Secciones
                                                     </Link>
                                                 </MenuItem>
-                                                {course.manager._id === user._id && (
+                                                {isManager(course.manager._id, user._id) && (
                                                     <>
                                                         <MenuItem>
                                                             <Link to={`/courses/${course._id}/edit`}

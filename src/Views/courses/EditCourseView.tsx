@@ -2,9 +2,12 @@ import { getCourseById } from "@/api/CoursesAPI"
 import EditCourseForm from "@/components/courses/EditCourseForm"
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, useParams } from "react-router-dom"
+import { useAuth } from "@/hooks/UserAuth"
+import { isManager } from "../../utils/policies"
 
 export default function EditCourseView() {
 
+    const { data: user, isLoading: authLoading } = useAuth()
     const params = useParams()
     const courseId = params.courseId!
 
@@ -14,7 +17,13 @@ export default function EditCourseView() {
         retry: false
     })
 
-    if (isLoading) return 'Cargando...'
+    if (isLoading && authLoading) return 'Cargando...'
     if (isError) return <Navigate to={'/404'} />
+    
+    // Verificar si el usuario es el manager del curso
+    if (data && user && !isManager(data.manager, user._id)) {
+        return <Navigate to={'/'} />
+    }
+    
     if (data) return <EditCourseForm data={data} courseId={courseId} />
 }

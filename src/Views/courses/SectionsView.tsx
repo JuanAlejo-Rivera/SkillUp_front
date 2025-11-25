@@ -1,4 +1,5 @@
 import { deleteSection, getSections } from "@/api/SectionAPI"
+import { getCourseById } from "@/api/CoursesAPI"
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -7,10 +8,11 @@ import { Fragment } from 'react'
 import { toast } from "react-toastify"
 import BackButton from "@/components/arrowBack/backButton"
 import { useAuth } from "@/hooks/UserAuth"
+import { isManager } from "../../utils/policies"
 
 export const SectionsView = () => {
 
-    const { data: user, isLoading: authLoading } = useAuth()
+  const { data: user, isLoading: authLoading } = useAuth()
 
   const params = useParams()
   const courseId = params.courseId!
@@ -25,6 +27,12 @@ export const SectionsView = () => {
     retry: false
   })
 
+  const { data: course, isLoading: courseLoading } = useQuery({
+    queryKey: ['course', courseId],
+    queryFn: () => getCourseById(courseId),
+    retry: false
+  })
+
   const { mutate } = useMutation({
     mutationFn: deleteSection,
     onError: (error) => {
@@ -36,11 +44,12 @@ export const SectionsView = () => {
     }
   })
 
+  // console.log(course?.manager)
 
   if (isError) return <Navigate to={'/404'} />
-  if (isLoading && authLoading) return 'Cargando...'
+  if (isLoading && authLoading && courseLoading) return 'Cargando...'
 
-  if (data && user) return (
+  if (data && user && course) return (
     <>
       <div className="max-w-3xl mx-auto">
 
@@ -53,13 +62,15 @@ export const SectionsView = () => {
 
 
         <nav className="my-5 flex flex-col md:flex-row gap-3">
-          <Link
-            className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
-            state={{ courseId, courseName }}
-            to={'/create-section'}
-          >
-            Nueva sección
-          </Link>
+          {isManager(course.manager, user._id) && (
+            <Link
+              className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
+              state={{ courseId, courseName }}
+              to={'/create-section'}
+            >
+              Nueva sección
+            </Link>
+          )}
 
           <BackButton
             to={`/`}
@@ -107,23 +118,27 @@ export const SectionsView = () => {
                             Ver Lecciones
                           </Link>
                         </MenuItem>
-                        <MenuItem>
-                          <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
-                            className='block px-3 py-1 text-sm leading-6 text-gray-900'
-                            state={{ courseName: courseName }}
-                          >
-                            Editar Sección
-                          </Link>
-                        </MenuItem>
-                        <MenuItem>
-                          <button
-                            type='button'
-                            className='block px-3 py-1 text-sm leading-6 text-red-500'
-                            onClick={() => mutate({ courseId, sectionId: sections._id })}
-                          >
-                            Eliminar Sección
-                          </button>
-                        </MenuItem>
+                        {isManager(course.manager, user._id) && (
+                          <>
+                            <MenuItem>
+                              <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
+                                className='block px-3 py-1 text-sm leading-6 text-gray-900'
+                                state={{ courseName: courseName }}
+                              >
+                                Editar Sección
+                              </Link>
+                            </MenuItem>
+                            <MenuItem>
+                              <button
+                                type='button'
+                                className='block px-3 py-1 text-sm leading-6 text-red-500'
+                                onClick={() => mutate({ courseId, sectionId: sections._id })}
+                              >
+                                Eliminar Sección
+                              </button>
+                            </MenuItem>
+                          </>
+                        )}
                       </MenuItems>
                     </Transition>
                   </Menu>

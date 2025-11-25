@@ -1,10 +1,14 @@
 import { getLessonById } from "@/api/LessonsAPI"
+import { getCourseById } from "@/api/CoursesAPI"
 import EditLessonForm from "@/components/lessons/EditLessonForm"
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, useLocation, useParams } from "react-router-dom"
+import { useAuth } from "@/hooks/UserAuth"
+import { isManager } from "../../utils/policies"
 
 export const EditLessonView = () => {
 
+    const { data: user, isLoading: authLoading } = useAuth()
     const location = useLocation()
     const courseName = location.state?.courseName;
     
@@ -13,17 +17,27 @@ export const EditLessonView = () => {
     const courseId = params.courseId!
     const lessonId = params.lessonId!
 
-    // console.log(courseName)
     const { data, isLoading, isError } = useQuery({
         queryKey: ['editLesson', lessonId],
         queryFn: () => getLessonById({sectionId, courseId, lessonId}),
         retry: false
     })
 
-    if (isLoading) return 'Cargando...'
+    const { data: course, isLoading: courseLoading } = useQuery({
+        queryKey: ['course', courseId],
+        queryFn: () => getCourseById(courseId),
+        retry: false
+    })
+
+    if (isLoading && authLoading && courseLoading) return 'Cargando...'
     if (isError) return <Navigate to={'/404'} />
+    
+    // Verificar si el usuario es el manager del curso
+    if (course && user && !isManager(course.manager, user._id)) {
+        return <Navigate to={'/'} />
+    }
+    
     if (data) return <EditLessonForm data={data} courseId={courseId} sectionId = {sectionId} lessonId = {lessonId} courseName={courseName}/>
-    // if (data) return <EditSectionForm/>
 
 }
 

@@ -1,4 +1,5 @@
 import { deleteLesson, getLessons, updateLesson } from "@/api/LessonsAPI";
+import { getCourseById } from "@/api/CoursesAPI";
 import ModalLessonAdd from "@/components/lessons/ModalLessonAdd";
 import UploadFile from "@/components/UploadCloudinary";
 import type { LessonFormData } from "@/types/index";
@@ -10,9 +11,13 @@ import { Link, Navigate, useLocation, useNavigate, useParams } from "react-route
 import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
 import BackButton from "@/components/arrowBack/backButton";
+import { useAuth } from "@/hooks/UserAuth";
+import { isManager } from "../../utils/policies";
 
 
 export const LessonsView = () => {
+
+  const { data: user, isLoading: authLoading } = useAuth()
 
   const location = useLocation()
   const courseName = location.state?.courseName;
@@ -28,6 +33,12 @@ export const LessonsView = () => {
     queryKey: ["lessons"],
     queryFn: () => getLessons({ courseId, sectionId }),
     retry: false,
+  });
+
+  const { data: course, isLoading: courseLoading } = useQuery({
+    queryKey: ['course', courseId],
+    queryFn: () => getCourseById(courseId),
+    retry: false
   });
 
   const queryClient = useQueryClient();
@@ -75,11 +86,10 @@ export const LessonsView = () => {
     setTimeout(() => setResetTrigger(false), 200); // se apaga el trigger
   };
 
-
-  if (isLoading) return "Cargando...";
+  if (isLoading && authLoading && courseLoading) return "Cargando...";
   if (isError) return <Navigate to={'/404'} />
 
-  if (data)
+  if (data && user && course)
     return (
       <>
         <div className="max-w-3xl mx-auto">
@@ -93,17 +103,19 @@ export const LessonsView = () => {
           </p>
 
           <nav className="my-6 flex flex-col md:flex-row gap-3">
-            <button
-              type="button"
-              className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
-              onClick={() =>
-                navigate(location.pathname + `?addLesson=true`, {
-                  state: { courseName },
-                })
-              }
-            >
-              Agregar nueva lección
-            </button>
+            {isManager(course.manager, user._id) && (
+              <button
+                type="button"
+                className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
+                onClick={() =>
+                  navigate(location.pathname + `?addLesson=true`, {
+                    state: { courseName },
+                  })
+                }
+              >
+                Agregar nueva lección
+              </button>
+            )}
 
             <BackButton
               to={`/courses/${courseId}/sections`}
@@ -151,26 +163,30 @@ export const LessonsView = () => {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                          <MenuItem>
-                            <Link
-                              to={`/courses/${courseId}/sections/${sectionId}/lesson/${lessons._id}/edit`}
-                              className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50"
-                              state={{ courseName: courseName }}
-                            >
-                              Editar Lección
-                            </Link>
-                          </MenuItem>
-                          <MenuItem>
-                            <button
-                              type="button"
-                              className="block w-full text-left px-3 py-1 text-sm leading-6 text-red-500 hover:bg-red-50"
-                              onClick={() =>
-                                mutate({ courseId, sectionId, lessonId: lessons._id })
-                              }
-                            >
-                              Eliminar Lección
-                            </button>
-                          </MenuItem>
+                          {isManager(course.manager, user._id) && (
+                            <>
+                              <MenuItem>
+                                <Link
+                                  to={`/courses/${courseId}/sections/${sectionId}/lesson/${lessons._id}/edit`}
+                                  className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50"
+                                  state={{ courseName: courseName }}
+                                >
+                                  Editar Lección
+                                </Link>
+                              </MenuItem>
+                              <MenuItem>
+                                <button
+                                  type="button"
+                                  className="block w-full text-left px-3 py-1 text-sm leading-6 text-red-500 hover:bg-red-50"
+                                  onClick={() =>
+                                    mutate({ courseId, sectionId, lessonId: lessons._id })
+                                  }
+                                >
+                                  Eliminar Lección
+                                </button>
+                              </MenuItem>
+                            </>
+                          )}
                         </MenuItems>
                       </Transition>
                     </Menu>
@@ -181,24 +197,26 @@ export const LessonsView = () => {
                   {/* contenido de video */}
                   <div className="flex flex-col gap-4">
                     {/* subir y mostrar archivos multimedia */}
-                    <UploadFile
-                      label="Video"
-                      accept="video/*"
-                      multiple
-                      onUploadComplete={(urls) =>
-                        setPendingUpdates((prev) => ({
-                          ...prev,
-                          [lessons._id]: {
-                            ...prev[lessons._id],
-                            videoUrl: Array.from(
-                              new Set([...(prev[lessons._id]?.videoUrl || []), ...urls])
-                            ),
-                          },
-                        }))
-                      }
+                    {isManager(course.manager, user._id) && (
+                      <UploadFile
+                        label="Video"
+                        accept="video/*"
+                        multiple
+                        onUploadComplete={(urls) =>
+                          setPendingUpdates((prev) => ({
+                            ...prev,
+                            [lessons._id]: {
+                              ...prev[lessons._id],
+                              videoUrl: Array.from(
+                                new Set([...(prev[lessons._id]?.videoUrl || []), ...urls])
+                              ),
+                            },
+                          }))
+                        }
 
-                      resetTrigger={resetTrigger}
-                    />
+                        resetTrigger={resetTrigger}
+                      />
+                    )}
 
                     {Array.isArray(lessons.videoUrl) && lessons.videoUrl.length > 0 ? (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
@@ -219,21 +237,23 @@ export const LessonsView = () => {
 
                     <div className="separation_line_lessons" />
                     {/* Subir y mostrar imagenes */}
-                    <UploadFile
-                      label="Imagen"
-                      accept="image/*"
-                      multiple
-                      onUploadComplete={(urls) =>
-                        setPendingUpdates((prev) => ({
-                          ...prev,
-                          [lessons._id]: {
-                            ...prev[lessons._id],
-                            imageUrl: [...(prev[lessons._id]?.imageUrl || []), ...urls],
-                          },
-                        }))
-                      }
-                      resetTrigger={resetTrigger}
-                    />
+                    {isManager(course.manager, user._id) && (
+                      <UploadFile
+                        label="Imagen"
+                        accept="image/*"
+                        multiple
+                        onUploadComplete={(urls) =>
+                          setPendingUpdates((prev) => ({
+                            ...prev,
+                            [lessons._id]: {
+                              ...prev[lessons._id],
+                              imageUrl: [...(prev[lessons._id]?.imageUrl || []), ...urls],
+                            },
+                          }))
+                        }
+                        resetTrigger={resetTrigger}
+                      />
+                    )}
 
 
                     {Array.isArray(lessons.imageUrl) && lessons.imageUrl.length > 0 ? (
@@ -262,21 +282,23 @@ export const LessonsView = () => {
 
                     <div className="separation_line_lessons" />
                     {/* Subir y mostrar archivos */}
-                    <UploadFile
-                      label="Archivos"
-                      accept=".pdf,.doc,.docx,.xlsx,.pptx"
-                      multiple
-                      onUploadComplete={(urls) =>
-                        setPendingUpdates((prev) => ({
-                          ...prev,
-                          [lessons._id]: {
-                            ...prev[lessons._id],
-                            fileUrl: [...(prev[lessons._id]?.fileUrl || []), ...urls],
-                          },
-                        }))
-                      }
-                      resetTrigger={resetTrigger}
-                    />
+                    {isManager(course.manager, user._id) && (
+                      <UploadFile
+                        label="Archivos"
+                        accept=".pdf,.doc,.docx,.xlsx,.pptx"
+                        multiple
+                        onUploadComplete={(urls) =>
+                          setPendingUpdates((prev) => ({
+                            ...prev,
+                            [lessons._id]: {
+                              ...prev[lessons._id],
+                              fileUrl: [...(prev[lessons._id]?.fileUrl || []), ...urls],
+                            },
+                          }))
+                        }
+                        resetTrigger={resetTrigger}
+                      />
+                    )}
 
                     {Array.isArray(lessons.fileUrl) && lessons.fileUrl.length > 0 ? (
                       <div className="flex flex-wrap gap-3">
@@ -332,26 +354,25 @@ export const LessonsView = () => {
                     )}
 
                   </div>
-                  <div className="flex justify-end mt-10">
-
-                    <input
-                      type="submit"
-                      value={updateLessonMutation.isPending ? "Guardando..." : "Guardar Cambios"}
-                      disabled={updateLessonMutation.isPending}
-                      onClick={() =>
-                        handleUpdateForm(lessons._id, {
-                          ...lessons, // datos actuales de la lección
-                          ...(pendingUpdates[lessons._id] || {}), // los archivos subidos o cambios pendientes
-                        })
-                      }
-                      className={`w-full sm:w-auto px-5 py-2 rounded-md text-white font-medium transition ${updateLessonMutation.isPending
-                        ? "bg-sky-400 cursor-not-allowed"
-                        : "bg-sky-700 hover:bg-sky-800"
-                        }`}
-                    />
-
-
-                  </div>
+                  {isManager(course.manager, user._id) && (
+                    <div className="flex justify-end mt-10">
+                      <input
+                        type="submit"
+                        value={updateLessonMutation.isPending ? "Guardando..." : "Guardar Cambios"}
+                        disabled={updateLessonMutation.isPending}
+                        onClick={() =>
+                          handleUpdateForm(lessons._id, {
+                            ...lessons, // datos actuales de la lección
+                            ...(pendingUpdates[lessons._id] || {}), // los archivos subidos o cambios pendientes
+                          })
+                        }
+                        className={`w-full sm:w-auto px-5 py-2 rounded-md text-white font-medium transition ${updateLessonMutation.isPending
+                          ? "bg-sky-400 cursor-not-allowed"
+                          : "bg-sky-700 hover:bg-sky-800"
+                          }`}
+                      />
+                    </div>
+                  )}
                 </li>
 
               ))}
