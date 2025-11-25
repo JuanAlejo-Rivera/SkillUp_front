@@ -66,7 +66,7 @@ export const courseSchema = z.object({
         z.string(),
         managerSchema
     ]),
-
+    lastEditedBy: managerSchema.optional(),
 })
 
 // Schema específico para el dashboard donde manager siempre viene poblado
@@ -77,6 +77,7 @@ export const dashboardCourseSchema = z.array(
         description: z.string(),
         department: departmentPopulatedSchema.nullable(),
         manager: managerSchema,
+        lastEditedBy: managerSchema.optional(),
         updatedAt: z.string(),
         createdAt: z.string(),
     })

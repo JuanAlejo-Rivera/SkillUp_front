@@ -91,6 +91,11 @@ export const DashboardView = () => {
                                         <p>
                                             Creado por: <span className="font-bold text-gray-600">{course.manager.name}</span>
                                         </p>
+                                        {course.lastEditedBy && course.lastEditedBy._id !== course.manager._id && (
+                                            <p className='text-sm text-slate-400'>
+                                                Última edición por: <span className="font-semibold text-gray-600">{course.lastEditedBy.name}</span>
+                                            </p>
+                                        )}
                                         <p className='text-sm text-slate-400'>Fecha de creación: {formatDate(course.createdAt)}</p>
                                         <p className='text-sm text-slate-400'>Última actualización: {formatDate(course.updatedAt)}</p>
 
