@@ -37,7 +37,7 @@ export const DashboardView = () => {
     })
 
     // console.log(user)
-    console.log(data)
+    // console.log(data)
 
     if (isLoading && authLoading) return 'Cargando...'
     if (data && user) return (

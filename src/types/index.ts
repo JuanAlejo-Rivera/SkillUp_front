@@ -82,21 +82,20 @@ export const dashboardCourseSchema = z.array(
     })
 )
 
-export const edictCourseSchema = courseSchema.pick({
-    courseName: true,
-    description: true,
-    department: true,
-    manager: true,
-}).extend({
-    department: z.union([
-        z.string(), // cuando solo viene el ID
-        departmentPopulatedSchema.nullable() // cuando viene poblado
-    ])
+export const edictCourseSchema = z.object({
+    courseName: z.string(),
+    description: z.string(),
+    department: departmentPopulatedSchema.nullable(),
+    manager: z.union([
+        z.string(),
+        managerSchema
+    ]),
 });
 
 
 export type Course = z.infer<typeof courseSchema>
 export type CourseFormData = z.infer<typeof courseFormSchema>
+export type EditCourseData = z.infer<typeof edictCourseSchema>
 
 
 /** Sections */

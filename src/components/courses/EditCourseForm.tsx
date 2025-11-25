@@ -1,13 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
 import CourseForm from "./courseForm"
 import { useForm } from "react-hook-form"
-import type { Course, CourseFormData } from "@/types/index"
+import type { Course, CourseFormData, EditCourseData } from "@/types/index"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateCourse } from "@/api/CoursesAPI"
 import { toast } from "react-toastify"
 
 type editCourseFormProps = {
-    data: CourseFormData
+    data: EditCourseData
     courseId: Course['_id']
 }
 
@@ -18,7 +18,7 @@ export default function EditCourseForm({ data, courseId }: editCourseFormProps) 
     const initialValues: CourseFormData = {
         courseName: data.courseName,
         description: data.description,
-        department: data.department
+        department: data.department?._id || null,
     }
 
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
