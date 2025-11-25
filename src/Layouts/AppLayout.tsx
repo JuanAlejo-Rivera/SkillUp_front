@@ -6,13 +6,12 @@ import { useAuth } from '@/hooks/UserAuth'
 
 export const AppLayout = () => {
     const { data, isError, isLoading } = useAuth();
-
     if (isLoading) return 'Cargando...';
     if (isError) {
         return <Navigate to={'/auth/login'} />
     }
 
-    return (
+    if(data) return (
         <>
             <header
                 className='bg-gray-800 py-5'
@@ -23,10 +22,10 @@ export const AppLayout = () => {
                             <Logo />
                         </Link>
                     </div>
-                    <NavMenu />
+                    <NavMenu
+                        name={data.name}
+                    />
                 </div>
-
-
             </header>
 
             <section className="max-w-screen-2xl mx-auto mmt-10 p-5">

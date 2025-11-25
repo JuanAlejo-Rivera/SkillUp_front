@@ -50,19 +50,32 @@ export const courseFormSchema = z.object({
     ]).nullable(),
 })
 
+// Schema para el manager poblado
+export const managerSchema = z.object({
+    _id: z.string(),
+    name: z.string(),
+    email: z.string(),
+})
+
 export const courseSchema = z.object({
     _id: z.string(),
     courseName: z.string(),
     description: z.string(),
     department: departmentPopulatedSchema.nullable(),
+    manager: z.union([
+        z.string(),
+        managerSchema
+    ])
 })
 
+// Schema específico para el dashboard donde manager siempre viene poblado
 export const dashboardCourseSchema = z.array(
-    courseSchema.pick({
-        _id: true,
-        courseName: true,
-        description: true,
-        department: true
+    z.object({
+        _id: z.string(),
+        courseName: z.string(),
+        description: z.string(),
+        department: departmentPopulatedSchema.nullable(),
+        manager: managerSchema,
     })
 )
 

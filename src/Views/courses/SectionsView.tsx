@@ -6,8 +6,11 @@ import { Link, Navigate, useLocation, useParams } from "react-router-dom"
 import { Fragment } from 'react'
 import { toast } from "react-toastify"
 import BackButton from "@/components/arrowBack/backButton"
+import { useAuth } from "@/hooks/UserAuth"
 
 export const SectionsView = () => {
+
+    const { data: user, isLoading: authLoading } = useAuth()
 
   const params = useParams()
   const courseId = params.courseId!
@@ -33,10 +36,11 @@ export const SectionsView = () => {
     }
   })
 
-  if (isError) return <Navigate to={'/404'} />
-  if (isLoading) return 'Cargando...'
 
-  if (data) return (
+  if (isError) return <Navigate to={'/404'} />
+  if (isLoading && authLoading) return 'Cargando...'
+
+  if (data && user) return (
     <>
       <div className="max-w-3xl mx-auto">
 
@@ -46,6 +50,7 @@ export const SectionsView = () => {
 
         <h1 className="text-2xl font-black text-slate-800">Mis secciones</h1>
         <p className="text-xl font-light text-gray-500 mt-2">Maneja y administra tus secciones</p>
+
 
         <nav className="my-5 flex flex-col md:flex-row gap-3">
           <Link

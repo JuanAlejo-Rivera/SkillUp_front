@@ -7,12 +7,14 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/r
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { toast } from "react-toastify"
 import ModalDeparmentAdd from "@/components/department/ModalDepartments"
+import { useAuth } from "@/hooks/UserAuth"
 
 
 export const DashboardView = () => {
 
     const navigate = useNavigate();
 
+    const { data: user, isLoading: authLoading } = useAuth()
 
     const { data, isLoading } = useQuery({
         queryKey: ['courses'],
@@ -32,9 +34,11 @@ export const DashboardView = () => {
         }
     })
 
+    // console.log(user)
+    // console.log(data)
 
-    if (isLoading) return 'Cargando...'
-    if (data) return (
+    if (isLoading && authLoading) return 'Cargando...'
+    if (data && user) return (
         <>
             <div className="max-w-3xl mx-auto">
                 <h1 className="text-2xl font-black">Mis cursos</h1>
@@ -64,6 +68,13 @@ export const DashboardView = () => {
                             <li key={course._id} className="flex justify-between gap-x-6 px-5 py-10">
                                 <div className="flex min-w-0 gap-x-4">
                                     <div className="min-w-0 flex-auto space-y-2">
+                                        <div className="min-w-0 flex-auto space-y-2">
+
+                                            {course.manager._id === user._id ?
+                                                <p className='font-bold text-xs uppercase bg-indigo-50 text-indigo-500 border-2 border-indigo-500 rounded-lg inline-block py-1 px-5'>Creador</p> :
+                                                null
+                                            }
+                                        </div>
                                         <Link
                                             to={`/courses/${course._id}/sections`}
                                             state={{ courseName: course.courseName }}
@@ -74,6 +85,9 @@ export const DashboardView = () => {
                                         </p>
                                         <p className="text-sm text-gray-400">
                                             {course.description}
+                                        </p>
+                                        <p>
+                                            Creado por: <span className="font-bold text-gray-600">{course.manager.name}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -98,21 +112,27 @@ export const DashboardView = () => {
                                                         Ver Secciones
                                                     </Link>
                                                 </MenuItem>
-                                                <MenuItem>
-                                                    <Link to={`/courses/${course._id}/edit`}
-                                                        className='block px-3 py-1 text-sm leading-6 text-gray-900'>
-                                                        Editar Curso
-                                                    </Link>
-                                                </MenuItem>
-                                                <MenuItem>
-                                                    <button
-                                                        type='button'
-                                                        className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                                        onClick={() => mutate(course._id)}
-                                                    >
-                                                        Eliminar Curso
-                                                    </button>
-                                                </MenuItem>
+                                                {course.manager._id === user._id && (
+                                                    <>
+                                                        <MenuItem>
+                                                            <Link to={`/courses/${course._id}/edit`}
+                                                                className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                                                                Editar Curso
+                                                            </Link>
+                                                        </MenuItem>
+                                                        <MenuItem>
+                                                            <button
+                                                                type='button'
+                                                                className='block px-3 py-1 text-sm leading-6 text-red-500'
+                                                                onClick={() => mutate(course._id)}
+                                                            >
+                                                                Eliminar Curso
+                                                            </button>
+                                                        </MenuItem>
+                                                    </>
+
+                                                )}
+
                                             </MenuItems>
                                         </Transition>
                                     </Menu>
@@ -124,7 +144,7 @@ export const DashboardView = () => {
                 ) : (
                     <p className="text-center text-gray-600 uppercase p-5 border border-gray-300 rounded-lg">No hay cursos disponibles</p>
                 )}
-                <ModalDeparmentAdd/>
+                <ModalDeparmentAdd />
             </div>
         </>
     )
