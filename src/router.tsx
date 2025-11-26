@@ -19,6 +19,7 @@ import ForgotPasswordView from "./Views/auth/ForgotPasswordView"
 import { NewPasswordView } from "./Views/auth/NewPasswordView"
 import { ProfileLayout } from "./Layouts/ProfileLayout"
 import { ProfileView } from "./Views/profile/ProfileView"
+import ChangePasswordView from "./Views/profile/ChangePasswordView"
 
 export default function Router() {
     return (
@@ -35,6 +36,7 @@ export default function Router() {
                     <Route path="/courses/:courseId/sections/:sectionId/lesson/:lessonId/edit" element={<EditLessonView />} />
                     <Route element={<ProfileLayout />}>
                         <Route path="/profile" element={<ProfileView />} />
+                        <Route path='/profile/password' element={<ChangePasswordView />} />
                     </Route>
                 </Route>
 

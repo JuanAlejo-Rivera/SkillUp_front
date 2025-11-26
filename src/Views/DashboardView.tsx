@@ -1,15 +1,15 @@
-import { deleteCorse, getCourses } from "@/api/CoursesAPI"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link, useNavigate } from "react-router-dom"
 
 import { Fragment } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
-import { toast } from "react-toastify"
 import ModalDeparmentAdd from "@/components/department/ModalDepartments"
 import { useAuth } from "@/hooks/UserAuth"
 import { isManager } from "../utils/policies"
 import { formatDate } from "../utils/utils"
+import DeleteCourseModal from "@/components/courses/DeleteCourses"
+import { getCourses } from "@/api/CoursesAPI"
+import { useQuery } from "@tanstack/react-query"
 
 
 export const DashboardView = () => {
@@ -21,19 +21,6 @@ export const DashboardView = () => {
     const { data, isLoading } = useQuery({
         queryKey: ['courses'],
         queryFn: getCourses
-    })
-
-    const queryClient = useQueryClient()
-
-    const { mutate } = useMutation({
-        mutationFn: deleteCorse,
-        onError: (error) => {
-            toast.error(error.message)
-        },
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['courses'] })
-            toast.success(data)
-        }
     })
 
     // console.log(user)
@@ -134,9 +121,9 @@ export const DashboardView = () => {
                                                             <button
                                                                 type='button'
                                                                 className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                                                onClick={() => mutate(course._id)}
+                                                                onClick={() => navigate(location.pathname + `?deleteProject=${course._id}`)}
                                                             >
-                                                                Eliminar Curso
+                                                                Eliminar Proyecto
                                                             </button>
                                                         </MenuItem>
                                                     </>
@@ -155,6 +142,7 @@ export const DashboardView = () => {
                     <p className="text-center text-gray-600 uppercase p-5 border border-gray-300 rounded-lg">No hay cursos disponibles</p>
                 )}
                 <ModalDeparmentAdd />
+                <DeleteCourseModal />
             </div>
         </>
     )
