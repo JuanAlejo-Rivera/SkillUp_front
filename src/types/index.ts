@@ -29,6 +29,7 @@ export const userSchema = authSchema.pick({
     email: true,
 }).extend({//agregamos atrributos adicionales
     _id: z.string(),
+    role: z.enum(["admin", "teacher", "user"]),
 })
 export type User = z.infer<typeof userSchema>
 export type UserProfileForm = Pick<User, 'name' | 'email'> //lo que se espera de un formulario para editar el perfil del usuario

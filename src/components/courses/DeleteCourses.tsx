@@ -8,6 +8,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { checkPassword } from '@/api/AuthApi';
 import { deleteCorse } from '@/api/CoursesAPI';
+import { useAuth } from '@/hooks/UserAuth';
+import { isAdmin } from '../../utils/policies';
 
 export default function DeleteCourseModal() {
     const initialValues: checkPasswordForm = {
@@ -15,6 +17,7 @@ export default function DeleteCourseModal() {
     }
     const location = useLocation()
     const navigate = useNavigate()
+    const { data: user } = useAuth()
 
     const queryParams = new URLSearchParams(location.search);
     const deleteProjectId = queryParams.get('deleteProject')!;
@@ -44,7 +47,10 @@ export default function DeleteCourseModal() {
 
 
     const handleForm = async (formData: checkPasswordForm) => {
-        await checkUserPasswordMutation.mutateAsync(formData) // esta mutacion se encarga de verificar el password del usuario
+        // Si es admin, no necesita verificar contraseña
+        if (user && !isAdmin(user)) {
+            await checkUserPasswordMutation.mutateAsync(formData) // esta mutacion se encarga de verificar el password del usuario
+        }
         await deleteProjectMutation.mutateAsync(deleteProjectId) // esta mutacion se encarga de eliminar el proyecto
         navigate(location.pathname, { replace: true })
     }
@@ -83,9 +89,13 @@ export default function DeleteCourseModal() {
                                     className="font-black text-4xl  my-5"
                                 >Eliminar Proyecto </DialogTitle>
 
-                                <p className="text-xl font-bold">Confirma la eliminación del proyecto {''}
-                                    <span className="text-gradient">colocando tu password</span>
-                                </p>
+                                {user && isAdmin(user) ? (
+                                    <p className="text-xl font-bold">Confirma la eliminación del curso como <span className="text-gradient">administrador</span></p>
+                                ) : (
+                                    <p className="text-xl font-bold">Confirma la eliminación del proyecto {''}
+                                        <span className="text-gradient">colocando tu password</span>
+                                    </p>
+                                )}
 
                                 <form
                                     className="mt-10 space-y-5"
@@ -93,24 +103,26 @@ export default function DeleteCourseModal() {
                                     noValidate
                                 >
 
-                                    <div className="flex flex-col gap-3">
-                                        <label
-                                            className="font-normal text-2xl"
-                                            htmlFor="password"
-                                        >Password</label>
-                                        <input
-                                            id="password"
-                                            type="password"
-                                            placeholder="Password Inicio de Sesión"
-                                            className="w-full p-3  border-gray-300 border"
-                                            {...register("password", {
-                                                required: "El password es obligatorio",
-                                            })}
-                                        />
-                                        {errors.password && (
-                                            <ErrorMessage>{errors.password.message}</ErrorMessage>
-                                        )}
-                                    </div>
+                                    {user && !isAdmin(user) && (
+                                        <div className="flex flex-col gap-3">
+                                            <label
+                                                className="font-normal text-2xl"
+                                                htmlFor="password"
+                                            >Password</label>
+                                            <input
+                                                id="password"
+                                                type="password"
+                                                placeholder="Password Inicio de Sesión"
+                                                className="w-full p-3  border-gray-300 border"
+                                                {...register("password", {
+                                                    required: "El password es obligatorio",
+                                                })}
+                                            />
+                                            {errors.password && (
+                                                <ErrorMessage>{errors.password.message}</ErrorMessage>
+                                            )}
+                                        </div>
+                                    )}
 
                                     <input
                                         type="submit"

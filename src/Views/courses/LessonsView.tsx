@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
 import BackButton from "@/components/arrowBack/backButton";
 import { useAuth } from "@/hooks/UserAuth";
-import { isManager } from "../../utils/policies";
+import { canModify } from "../../utils/policies";
 
 
 export const LessonsView = () => {
@@ -103,7 +103,7 @@ export const LessonsView = () => {
           </p>
 
           <nav className="my-6 flex flex-col md:flex-row gap-3">
-            {isManager(course.manager, user._id) && (
+            {canModify(user, course.manager) && (
               <button
                 type="button"
                 className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
@@ -163,7 +163,7 @@ export const LessonsView = () => {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                          {isManager(course.manager, user._id) && (
+                          {canModify(user, course.manager) && (
                             <>
                               <MenuItem>
                                 <Link
@@ -197,7 +197,7 @@ export const LessonsView = () => {
                   {/* contenido de video */}
                   <div className="flex flex-col gap-4">
                     {/* subir y mostrar archivos multimedia */}
-                    {isManager(course.manager, user._id) && (
+                    {canModify(user, course.manager) && (
                       <UploadFile
                         label="Video"
                         accept="video/*"
@@ -237,7 +237,7 @@ export const LessonsView = () => {
 
                     <div className="separation_line_lessons" />
                     {/* Subir y mostrar imagenes */}
-                    {isManager(course.manager, user._id) && (
+                    {canModify(user, course.manager) && (
                       <UploadFile
                         label="Imagen"
                         accept="image/*"
@@ -282,7 +282,7 @@ export const LessonsView = () => {
 
                     <div className="separation_line_lessons" />
                     {/* Subir y mostrar archivos */}
-                    {isManager(course.manager, user._id) && (
+                    {canModify(user, course.manager) && (
                       <UploadFile
                         label="Archivos"
                         accept=".pdf,.doc,.docx,.xlsx,.pptx"
@@ -354,7 +354,7 @@ export const LessonsView = () => {
                     )}
 
                   </div>
-                  {isManager(course.manager, user._id) && (
+                  {canModify(user, course.manager) && (
                     <div className="flex justify-end mt-10">
                       <input
                         type="submit"

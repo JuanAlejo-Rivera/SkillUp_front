@@ -12,6 +12,7 @@ export async function createAccount(formData: UserRegistrationForm) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
+        throw error;
     }
 }
 
@@ -26,6 +27,7 @@ export async function confirmAccount(formData: ComfirmToken) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
+        throw error;
     }
 }
 
@@ -39,6 +41,7 @@ export async function requestConfirmationCode(formData: RequestConfirmationCodeF
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
+        throw error;
     }
 }
 
@@ -54,6 +57,7 @@ export async function authenticateUser(formData: UserLoginForm) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
+        throw error;
     }
 }
 
@@ -67,6 +71,7 @@ export async function forgotPassword(formData: ForgotPasswordForm) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
+        throw error;
     }
 }
 
@@ -103,15 +108,17 @@ export async function getUser() {
     try {
         const { data } = await api.get('/auth/user');
         const response = userSchema.safeParse(data); // Validamos la respuesta con el esquema
-        if (response) {
+        if (response.success) {
             return response.data;
+        } else {
+            throw new Error('Error al validar los datos del usuario');
         }
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
+        throw error;
     }
-
 }
 
 export async function checkPassword(formatData: checkPasswordForm) {
@@ -124,5 +131,6 @@ export async function checkPassword(formatData: checkPasswordForm) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
+        throw error;
     }
 }

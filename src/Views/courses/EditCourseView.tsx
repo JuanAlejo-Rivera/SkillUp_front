@@ -3,7 +3,7 @@ import EditCourseForm from "@/components/courses/EditCourseForm"
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, useParams } from "react-router-dom"
 import { useAuth } from "@/hooks/UserAuth"
-import { isManager } from "../../utils/policies"
+import { canModify } from "../../utils/policies"
 
 export default function EditCourseView() {
 
@@ -20,8 +20,8 @@ export default function EditCourseView() {
     if (isLoading && authLoading) return 'Cargando...'
     if (isError) return <Navigate to={'/404'} />
     
-    // Verificar si el usuario es el manager del curso
-    if (data && user && !isManager(data.manager, user._id)) {
+    // Verificar si el usuario tiene permisos para editar (admin o manager)
+    if (data && user && !canModify(user, data.manager)) {
         return <Navigate to={'/'} />
     }
     

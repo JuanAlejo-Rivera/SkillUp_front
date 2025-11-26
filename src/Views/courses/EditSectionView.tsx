@@ -4,7 +4,7 @@ import EditSectionForm from "@/components/sections/EditSectionForm"
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, useLocation, useParams } from "react-router-dom"
 import { useAuth } from "@/hooks/UserAuth"
-import { isManager } from "../../utils/policies"
+import { canModify } from "../../utils/policies"
 
 export const EditSectionView = () => {
 
@@ -32,8 +32,8 @@ export const EditSectionView = () => {
     if (isLoading && authLoading && courseLoading) return 'Cargando...'
     if (isError) return <Navigate to={'/404'} />
     
-    // Verificar si el usuario es el manager del curso
-    if (course && user && !isManager(course.manager, user._id)) {
+    // Verificar si el usuario tiene permisos para editar (admin o manager)
+    if (course && user && !canModify(user, course.manager)) {
         return <Navigate to={'/'} />
     }
     

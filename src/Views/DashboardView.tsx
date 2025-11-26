@@ -5,7 +5,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/r
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import ModalDeparmentAdd from "@/components/department/ModalDepartments"
 import { useAuth } from "@/hooks/UserAuth"
-import { isManager } from "../utils/policies"
+import { isManager, canModify, canCreateCourses, isAdmin, isTeacher } from "../utils/policies"
 import { formatDate } from "../utils/utils"
 import DeleteCourseModal from "@/components/courses/DeleteCourses"
 import { getCourses } from "@/api/CoursesAPI"
@@ -34,22 +34,26 @@ export const DashboardView = () => {
                 <p className="text-xl font-light text-gray-500 mt-5">Maneja y administra tus cursos</p>
 
                 <nav className="my-5 flex gap-3">
-                    <Link
-                        to={"/courses-create"}
-                        className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
-                    >
-                        Nuevo curso
-                    </Link>
+                    {canCreateCourses(user) && (
+                        <Link
+                            to="/courses-create"
+                            className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
+                        >
+                            Nuevo curso
+                        </Link>
+                    )}
 
-                    <button
-                        type="button"
-                        className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
-                        onClick={() =>
-                            navigate(location.pathname + `?addDepartment=true`)
-                        }
-                    >
-                        Gestión de departamentos
-                    </button>
+                    {isAdmin(user) || isTeacher(user) && (
+                        <button
+                            type="button"
+                            className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
+                            onClick={() =>
+                                navigate(location.pathname + `?addDepartment=true`)
+                            }
+                        >
+                            Gestión de departamentos
+                        </button>
+                    )}
                 </nav>
                 {data.length ? (
                     <ul role="list" className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg">
@@ -109,7 +113,7 @@ export const DashboardView = () => {
                                                         Ver Secciones
                                                     </Link>
                                                 </MenuItem>
-                                                {isManager(course.manager._id, user._id) && (
+                                                {canModify(user, course.manager._id) && (
                                                     <>
                                                         <MenuItem>
                                                             <Link to={`/courses/${course._id}/edit`}
@@ -123,7 +127,7 @@ export const DashboardView = () => {
                                                                 className='block px-3 py-1 text-sm leading-6 text-red-500'
                                                                 onClick={() => navigate(location.pathname + `?deleteProject=${course._id}`)}
                                                             >
-                                                                Eliminar Proyecto
+                                                                Eliminar Curso
                                                             </button>
                                                         </MenuItem>
                                                     </>

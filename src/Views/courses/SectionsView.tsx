@@ -8,7 +8,7 @@ import { Fragment } from 'react'
 import { toast } from "react-toastify"
 import BackButton from "@/components/arrowBack/backButton"
 import { useAuth } from "@/hooks/UserAuth"
-import { isManager } from "../../utils/policies"
+import { canModify } from "../../utils/policies"
 
 export const SectionsView = () => {
 
@@ -62,7 +62,7 @@ export const SectionsView = () => {
 
 
         <nav className="my-5 flex flex-col md:flex-row gap-3">
-          {isManager(course.manager, user._id) && (
+          {canModify(user, course.manager) && (
             <Link
               className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
               state={{ courseId, courseName }}
@@ -118,7 +118,7 @@ export const SectionsView = () => {
                             Ver Lecciones
                           </Link>
                         </MenuItem>
-                        {isManager(course.manager, user._id) && (
+                        {canModify(user, course.manager) && (
                           <>
                             <MenuItem>
                               <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
