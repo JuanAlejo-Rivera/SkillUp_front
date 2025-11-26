@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
 .separation_line_lessons {
     @apply w-[90%] h-[2px] bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 mb-4
@@ -7,3 +8,17 @@
 .position_back_button {
     @apply absolute top-40 left-auto sm:top-40 sm:left-auto md:top-40 md:left-auto lg:top-30 lg:left-auto xl:top-30 xl:left-auto 2xl:top-30 2xl:left-auto
 }
+
+
+.btn-primary {
+    @apply bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400 hover:opacity-90 transition w-full p-3
+}
+
+.btn-secondary {
+    @apply bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400 hover:opacity-90 transition
+}
+
+.text-gradient{
+    @apply bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400 bg-clip-text text-transparent
+}
+
