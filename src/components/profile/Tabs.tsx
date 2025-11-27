@@ -24,7 +24,7 @@ export default function Tabs() {
                 <select
                     id="tabs"
                     name="tabs"
-                    className="block w-full rounded-md border-gray-300 focus:border-purple-800 focus:ring-purple-800"
+                    className="block w-full rounded-xl border-2 border-blue-700 bg-slate-800 text-white focus:border-blue-500 focus:ring-blue-500 py-2 px-4"
                     onChange={ (e: React.ChangeEvent<HTMLSelectElement>) => navigate(e.target.value) }
                     value={currentTab}
                 >
@@ -39,7 +39,7 @@ export default function Tabs() {
             </div>
 
             <div className="hidden sm:block">
-                <div className="border-b border-gray-200">
+                <div className="border-b-2 border-blue-700">
                     <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                         {tabs.map((tab) => (
                             <Link
@@ -47,14 +47,14 @@ export default function Tabs() {
                                 to={tab.href}
                                 className={classNames(
                                     location.pathname === tab.href
-                                        ? 'border-purple-800 text-gradient'
-                                        : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                                    'group inline-flex items-center border-b-2 py-4 px-1 text-sm font-medium'
+                                        ? 'border-blue-500 text-blue-300'
+                                        : 'border-transparent text-gray-400 hover:border-blue-700 hover:text-white',
+                                    'group inline-flex items-center border-b-2 py-4 px-1 text-sm font-bold'
                                 )}
                             >
                                 <tab.icon
                                     className={classNames(
-                                        location.pathname === tab.href ? 'text-purple-800' : 'text-gray-400 group-hover:text-gray-500',
+                                        location.pathname === tab.href ? 'text-blue-400' : 'text-gray-500 group-hover:text-gray-300',
                                         '-ml-0.5 mr-2 h-5 w-5'
                                     )}
                                     aria-hidden="true"

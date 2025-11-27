@@ -31,15 +31,15 @@ export default function ProfileForm({ data }: ProfileFormProps) {
 
     return (
         <>
-            <div className="mx-auto max-w-3xl g">
-                <h1 className="text-5xl font-black ">Mi Perfil</h1>
-                <p className="text-2xl font-light text-gray-500 mt-5">Aquí puedes actualizar tu información</p>
+            <div className="mx-auto max-w-3xl">
+                <h1 className="text-4xl font-black text-white mb-3">Mi Perfil</h1>
+                <p className="text-lg font-light text-gray-300 mb-8">Aquí puedes actualizar tu información</p>
 
-                <form
-                    onSubmit={handleSubmit(handleEditProfile)}
-                    className=" mt-14 space-y-5  bg-white shadow-lg p-10 rounded-l"
-                    noValidate
-                >
+                    <form
+                        onSubmit={handleSubmit(handleEditProfile)}
+                        className="bg-gradient-to-br from-white to-gray-50 shadow-2xl p-10 rounded-3xl border-2 border-gray-200 space-y-5"
+                        noValidate
+                    >
                     <div className="mb-5 space-y-3">
                         <label
                             className="text-sm uppercase font-bold"
@@ -82,11 +82,12 @@ export default function ProfileForm({ data }: ProfileFormProps) {
                             <ErrorMessage>{errors.email.message}</ErrorMessage>
                         )}
                     </div>
-                    <input
+                    <button
                         type="submit"
-                        value='Guardar Cambios'
-                        className="bg-sky-700 hover:bg-sky-800 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors"
-                    />
+                        className="w-full px-8 py-3 rounded-xl bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                    >
+                        Guardar Cambios
+                    </button>
                 </form>
             </div>
         </>

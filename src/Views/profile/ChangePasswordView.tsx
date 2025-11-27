@@ -29,15 +29,14 @@ export default function ChangePasswordView() {
     return (
         <>
             <div className="mx-auto max-w-3xl">
+                <h1 className="text-4xl font-black text-white mb-3">Cambiar Contraseña</h1>
+                <p className="text-lg font-light text-gray-300 mb-8">Utiliza este formulario para cambiar tu contraseña</p>
 
-                <h1 className="text-5xl font-black ">Cambiar Password</h1>
-                <p className="text-2xl font-light text-gray-500 mt-5">Utiliza este formulario para cambiar tu password</p>
-
-                <form
-                    onSubmit={handleSubmit(handleChangePassword)}
-                    className=" mt-14 space-y-5 bg-white shadow-lg p-10 rounded-lg"
-                    noValidate
-                >
+                    <form
+                        onSubmit={handleSubmit(handleChangePassword)}
+                        className="bg-gradient-to-br from-white to-gray-50 shadow-2xl p-10 rounded-3xl border-2 border-gray-200 space-y-5"
+                        noValidate
+                    >
                     <div className="mb-5 space-y-3">
                         <label
                             className="text-sm uppercase font-bold"
@@ -100,11 +99,12 @@ export default function ChangePasswordView() {
                         )}
                     </div>
 
-                    <input
+                    <button
                         type="submit"
-                        value='Cambiar Contraseña'
-                        className="bg-sky-700 hover:bg-sky-800 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors"
-                    />
+                        className="w-full px-8 py-3 rounded-xl bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                    >
+                        Cambiar Contraseña
+                    </button>
                 </form>
             </div>
         </>
