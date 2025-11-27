@@ -23,7 +23,7 @@ export default function NavMenu({name}: NavMenuProps) {
 
   return (
     <Popover className="relative">
-      <PopoverButton className="inline-flex items-center p-2 rounded-full border border-sky-600 text-white hover:bg-sky-800 hover:scale-110 transition">
+      <PopoverButton className="inline-flex items-center p-3 rounded-full bg-gradient-to-r from-blue-900 to-blue-800 border-2 border-blue-700 text-white hover:from-blue-800 hover:to-blue-700 hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl">
         <Bars3Icon className="w-7 h-7" />
       </PopoverButton>
 
@@ -36,19 +36,19 @@ export default function NavMenu({name}: NavMenuProps) {
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 translate-y-1"
       >
-        <PopoverPanel className="absolute left-1/2 z-10 mt-5 flex w-screen lg:max-w-min -translate-x-1/2 lg:-translate-x-48">
-          <div className="w-full lg:w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5">
-            <p className='text-center'>Hola: {name}</p>
+        <PopoverPanel className="absolute right-0 z-50 mt-5">
+          <div className="w-64 shrink rounded-2xl bg-gradient-to-br from-white to-gray-50 p-6 text-sm font-semibold leading-6 text-gray-900 shadow-2xl ring-2 ring-gray-200">
+            <p className='text-center text-lg font-bold text-slate-900 mb-4 pb-4 border-b-2 border-gray-200'>Hola: {name}</p>
             <Link
               to='/profile'
-              className='block p-2 hover:text-sky-800'
+              className='block px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-900 transition-all duration-200 font-medium'
             >Mi Perfil</Link>
             <Link
               to='/'
-              className='block p-2 hover:text-sky-800'
+              className='block px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-900 transition-all duration-200 font-medium'
             >Mis Cursos</Link>
             <button
-              className='block p-2 hover:text-sky-800'
+              className='block w-full text-left px-4 py-3 rounded-xl hover:bg-red-50 hover:text-red-700 transition-all duration-200 font-medium mt-2 border-t-2 border-gray-200 pt-4'
               type='button'
               onClick={logout}
             >

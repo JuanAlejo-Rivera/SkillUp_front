@@ -20,16 +20,16 @@ export default function BackButton({
     <button
       onClick={() => navigate(to, { state })} // 👈 pasamos el state aquí
       title={title}
-      className={`${position} flex items-center justify-center w-12 h-12 
-      rounded-full bg-gradient-to-b from-sky-600 to-sky-700 shadow-lg 
-      shadow-sky-200/40 border border-sky-400/30 
-      hover:from-sky-700 hover:to-sky-800 hover:shadow-sky-300/60 
+      className={`${position} flex items-center justify-center w-10 h-10 
+      rounded-lg bg-white/90 backdrop-blur-sm shadow-md 
+      border border-gray-300 
+      hover:bg-white hover:shadow-lg 
       hover:scale-105 active:scale-95 transition-all duration-200 
       ease-out group`}
     >
       <ArrowLeftIcon
-        className="h-6 w-6 text-white drop-shadow-sm 
-        group-hover:-translate-x-1 transition-transform duration-200 ease-out"
+        className="h-5 w-5 text-slate-700 
+        group-hover:-translate-x-0.5 transition-transform duration-200 ease-out"
       />
     </button>
   );

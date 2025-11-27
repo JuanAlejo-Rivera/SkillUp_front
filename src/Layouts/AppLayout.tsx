@@ -28,12 +28,10 @@ export const AppLayout = () => {
                 </div>
             </header>
 
-            <section className="max-w-screen-2xl mx-auto mmt-10 p-5">
-                <Outlet />
-            </section>
+            <Outlet />
 
-            <footer>
-                <p className='py-5 text-center'>Todos los derechos reservados {new Date().getFullYear()}</p>
+            <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-t border-slate-700">
+                <p className='py-5 text-center text-gray-400'>Todos los derechos reservados {new Date().getFullYear()}</p>
             </footer>
 
             <ToastContainer

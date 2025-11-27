@@ -51,20 +51,33 @@ export const SectionsView = () => {
 
   if (data && user && course) return (
     <>
-      <div className="max-w-3xl mx-auto">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <h6 className="text-2xl font-semibold italic text-sky-600 drop-shadow-sm mb-5 mt-10">
-          {courseName}
-        </h6>
+          <div className="mb-4">
+            <BackButton
+              to={`/`}
+              title="Volver a cursos"
+              position=""
+              state={{ courseName: courseName }}
+            />
+          </div>
 
-        <h1 className="text-2xl font-black text-slate-800">Mis secciones</h1>
-        <p className="text-xl font-light text-gray-500 mt-2">Maneja y administra tus secciones</p>
+          <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 rounded-2xl p-6 mb-8 shadow-xl border-2 border-blue-600">
+            <h6 className="text-3xl font-black text-white drop-shadow-lg mb-2">
+              📚 {courseName}
+            </h6>
+            <p className="text-blue-200 text-sm">Curso activo</p>
+          </div>
+
+          <h1 className="text-4xl font-black text-white mb-3">Mis secciones</h1>
+          <p className="text-lg font-light text-gray-300 mb-8">Maneja y administra tus secciones</p>
 
 
-        <nav className="my-5 flex flex-col md:flex-row gap-3">
+          <nav className="my-8 flex flex-wrap gap-4">
           {canModify(user, course.manager) && (
             <Link
-              className="bg-sky-700 hover:bg-sky-800 py-3 px-10 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors"
+              className="btn-primary-action"
               state={{ courseId, courseName }}
               to={'/create-section'}
             >
@@ -72,84 +85,78 @@ export const SectionsView = () => {
             </Link>
           )}
 
-          <BackButton
-            to={`/`}
-            title="Volver a cursos"
-            position="position_back_button"
-            state={{ courseName: courseName }}
-          />
-
         </nav>
 
         {data.length ? (
-          <ul role="list" className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
             {data.map((sections) => (
-              <li key={sections._id} className="flex justify-between gap-x-6 px-5 py-10">
-                <div className="flex min-w-0 gap-x-4">
-                  <div className="min-w-0 flex-auto space-y-2">
-                    <Link to={`/courses/${courseId}/sections/${sections._id}/lessons`}
-                      className="text-gray-600 cursor-pointer hover:underline text-3xl font-bold"
-                      state={{ courseName: courseName }}
-                    >{sections.title}</Link>
-
-                    <p className="text-sm text-gray-400">
-                      {sections.description}
-                    </p>
+              <div key={sections._id} className="bg-gradient-to-br from-slate-800 via-blue-900 to-slate-900 rounded-2xl shadow-xl border-2 border-blue-700/50 hover:shadow-2xl hover:border-blue-500 transition-all duration-300 p-6 flex flex-col justify-between h-full">
+                <div className="flex-1">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex-1">
+                      <Link to={`/courses/${courseId}/sections/${sections._id}/lessons`}
+                        className="text-white cursor-pointer hover:text-blue-300 text-2xl font-bold block transition-colors mb-3"
+                        state={{ courseName: courseName }}
+                      >{sections.title}</Link>
+                    </div>
+                    <Menu as="div" className="relative flex-none z-50">
+                      <MenuButton className="p-2 rounded-full hover:bg-blue-700 transition-colors">
+                        <span className="sr-only">opciones</span>
+                        <EllipsisVerticalIcon className="h-7 w-7 text-white hover:text-blue-200" aria-hidden="true" />
+                      </MenuButton>
+                      <Transition as={Fragment} enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95">
+                        <MenuItems className="dropdown-menu">
+                          <MenuItem>
+                            <Link to={`/courses/${courseId}/sections/${sections._id}/lessons`}
+                              className='dropdown-item'
+                              state={{ courseName: courseName }}
+                            >
+                              Ver Lecciones
+                            </Link>
+                          </MenuItem>
+                          {canModify(user, course.manager) && (
+                            <>
+                              <MenuItem>
+                                <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
+                                  className='dropdown-item'
+                                  state={{ courseName: courseName }}
+                                >
+                                  Editar Sección
+                                </Link>
+                              </MenuItem>
+                              <MenuItem>
+                                <button
+                                  type='button'
+                                  className='dropdown-item-danger w-full text-left'
+                                  onClick={() => mutate({ courseId, sectionId: sections._id })}
+                                >
+                                  Eliminar Sección
+                                </button>
+                              </MenuItem>
+                            </>
+                          )}
+                        </MenuItems>
+                      </Transition>
+                    </Menu>
                   </div>
+
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    {sections.description}
+                  </p>
                 </div>
-                <div className="flex shrink-0 items-center gap-x-6">
-                  <Menu as="div" className="relative flex-none">
-                    <MenuButton className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
-                      <span className="sr-only">opciones</span>
-                      <EllipsisVerticalIcon className="h-9 w-9" aria-hidden="true" />
-                    </MenuButton>
-                    <Transition as={Fragment} enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95">
-                      <MenuItems
-                        className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
-                      >
-                        <MenuItem>
-                          <Link to={`/courses/${courseId}/sections/${sections._id}/lessons`}
-                            className='block px-3 py-1 text-sm leading-6 text-gray-900'
-                            state={{ courseName: courseName }}
-                          >
-                            Ver Lecciones
-                          </Link>
-                        </MenuItem>
-                        {canModify(user, course.manager) && (
-                          <>
-                            <MenuItem>
-                              <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
-                                className='block px-3 py-1 text-sm leading-6 text-gray-900'
-                                state={{ courseName: courseName }}
-                              >
-                                Editar Sección
-                              </Link>
-                            </MenuItem>
-                            <MenuItem>
-                              <button
-                                type='button'
-                                className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                onClick={() => mutate({ courseId, sectionId: sections._id })}
-                              >
-                                Eliminar Sección
-                              </button>
-                            </MenuItem>
-                          </>
-                        )}
-                      </MenuItems>
-                    </Transition>
-                  </Menu>
-                </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
 
         ) : (
-          <p className="text-center text-gray-600 uppercase p-5 border border-gray-300 rounded-lg">No hay secciones disponibles</p>
+          <div className="text-center bg-gradient-to-br from-gray-50 to-slate-100 p-12 border-2 border-dashed border-gray-300 rounded-2xl">
+            <p className="text-gray-600 text-lg font-semibold">No hay secciones disponibles</p>
+          </div>
         )}
+        </div>
       </div>
     </>
   )

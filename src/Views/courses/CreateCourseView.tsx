@@ -35,22 +35,22 @@ export const CreateCourseView = () => {
 
     return (
         <>
-            <div className="max-w-lg mx-auto ">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-                <h1 className="text-2xl font-black">Añadir Nuevo Curso</h1>
-                <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para crear un nuevo curso.</p>
+                <h1 className="text-4xl font-black text-slate-900 mb-3">Añadir Nuevo Curso</h1>
+                <p className="text-lg font-light text-gray-600 mb-8">Completa los detalles a continuación para crear un nuevo curso.</p>
 
-                <nav className="my-5 flex flex-col md:flex-row gap-3">
+                <nav className="my-8 flex flex-col md:flex-row gap-4">
                     <Link
                         to={"/create-deparment"}
-                        className="bg-sky-700 hover:bg-sky-800 py-3 px-3 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
+                        className="btn-secondary-action w-full md:w-auto text-center"
                     >
                         Crear nuevo departamento
                     </Link>
                 </nav>
 
                 <form
-                    className="mt-10 bg-slate-200 shadow-lg p-10 rounded-lg"
+                    className="bg-gradient-to-br from-white to-gray-50 shadow-2xl p-10 rounded-3xl border-2 border-gray-200"
                     onSubmit={handleSubmit(handleForm)}
                     noValidate
                 >
@@ -60,19 +60,20 @@ export const CreateCourseView = () => {
                         errors={errors}
                     />
 
-                    <div className="flex justify-between">
+                    <div className="flex gap-4 pt-6 border-t-2 border-gray-200 mt-8">
                         <Link
                             to={"/"}
-                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-gray-600 hover:bg-gray-500 text-white font-medium transition"
+                            className="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold text-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                         >
                             Cancelar
                         </Link>
 
-                        <input
+                        <button
                             type="submit"
-                            value='Crear Curso'
-                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
-                        />
+                            className="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                        >
+                            Crear Curso
+                        </button>
 
                     </div>
                 </form>

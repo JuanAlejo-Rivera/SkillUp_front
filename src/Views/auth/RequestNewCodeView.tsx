@@ -28,27 +28,27 @@ export default function RequestNewCode() {
 
     return (
         <>
-            <h1 className="text-5xl font-black text-white">Solicitar Código de Confirmación</h1>
-            <p className="text-2xl font-light text-white mt-5">
+            <h1 className="text-5xl font-black text-white mb-4">Solicitar Código de Confirmación</h1>
+            <p className="text-xl font-light text-gray-200 mb-10">
                 Coloca tu e-mail para recibir {''}
-                <span className=" text-sky-700 font-bold"> un nuevo código</span>
+                <span className="text-gradient font-bold">un nuevo código</span>
             </p>
 
             <form
                 onSubmit={handleSubmit(handleRequestCode)}
-                className="space-y-8 p-10 rounded-lg bg-white mt-10"
+                className="space-y-6 p-10 bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl border-2 border-gray-200"
                 noValidate
             >
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-3">
                     <label
-                        className="font-normal text-2xl"
+                        className="font-semibold text-xl text-slate-900"
                         htmlFor="email"
                     >Email</label>
                     <input
                         id="email"
                         type="email"
                         placeholder="Email de Registro"
-                        className="w-full p-3 rounded-lg border-gray-300 border"
+                        className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
                         {...register("email", {
                             required: "El Email de registro es obligatorio",
                             pattern: {
@@ -62,23 +62,24 @@ export default function RequestNewCode() {
                     )}
                 </div>
 
-                <input
+                <button
                     type="submit"
-                    value='Enviar Código'
-                    className="bg-sky-700 hover:bg-sky-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
-                />
+                    className="bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 w-full p-4 text-white font-black text-xl cursor-pointer rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                >
+                    Enviar Código
+                </button>
             </form>
 
-            <nav className="mt-10 flex flex-col space-y-4">
+            <nav className="mt-8 flex flex-col space-y-3">
                 <Link
                     to='/auth/login'
-                    className="text-center text-gray-300 font-normal"
+                    className="text-center text-gray-200 hover:text-white font-medium transition-colors"
                 >
                     ¿Ya tienes cuenta? Iniciar Sesión
                 </Link>
                 <Link
                     to='/auth/forgot-password'
-                    className="text-center text-gray-300 font-normal"
+                    className="text-center text-gray-200 hover:text-white font-medium transition-colors"
                 >
                     ¿Olvidaste tu contraseña? Reestablecer
                 </Link>

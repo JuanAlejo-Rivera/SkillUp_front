@@ -60,7 +60,7 @@ export default function ModalLessonAdd() {
 
     return (
         <Transition appear show={show} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, { replace: true, state: location.state })}>
+            <Dialog as="div" className="relative z-50" onClose={() => navigate(location.pathname, { replace: true, state: location.state })}>
                 <TransitionChild
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -70,7 +70,7 @@ export default function ModalLessonAdd() {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-black/60" />
+                    <div className="modal-overlay" />
                 </TransitionChild>
 
                 <div className="fixed inset-0 overflow-y-auto">
@@ -84,9 +84,9 @@ export default function ModalLessonAdd() {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-10">
+                            <DialogPanel className="modal-content w-full max-w-4xl transform overflow-hidden text-left align-middle shadow-2xl transition-all p-10">
 
-                                <DialogTitle as="h3" className="font-black text-3xl text-slate-700 mb-6">
+                                <DialogTitle as="h3" className="font-black text-4xl text-slate-900 mb-8">
                                     Agregar nueva lección
                                 </DialogTitle>
 
@@ -99,19 +99,20 @@ export default function ModalLessonAdd() {
                                         setValue={setValue}
                                     />
 
-                                    <div className="flex justify-between">
+                                    <div className="flex gap-4 pt-6 border-t-2 border-gray-200">
                                         <Link
                                             to={`/courses/${courseId}/sections/${sectionId}/lessons`}
-                                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-gray-600 hover:bg-gray-500 text-white font-medium transition"
+                                            className="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold text-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                                         >
                                             Cancelar
                                         </Link>
 
-                                        <input
+                                        <button
                                             type="submit"
-                                            value='Crear lección'
-                                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
-                                        />
+                                            className="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                                        >
+                                            Crear lección
+                                        </button>
 
                                     </div>
                                 </form>

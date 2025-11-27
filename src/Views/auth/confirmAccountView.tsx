@@ -28,41 +28,41 @@ export default function ConfirmAccountView() {
 
   return (
     <>
-      <h1 className="text-5xl font-black text-white">Confirma tu Cuenta</h1>
-      <p className="text-2xl font-light text-white mt-5">
+      <h1 className="text-5xl font-black text-white mb-4">Confirma tu Cuenta</h1>
+      <p className="text-xl font-light text-gray-200 mb-10">
         Ingresa el código que recibiste {''}
-        <span className=" text-sky-700 font-bold"> por e-mail</span>
+        <span className="text-gradient font-bold">por e-mail</span>
       </p>
       <form
-        className="space-y-8 p-10 bg-white mt-10 rounded-xl"
+        className="space-y-6 p-10 bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl border-2 border-gray-200"
       >
         <label
-          className="font-normal text-2xl text-center block"
+          className="font-semibold text-xl text-slate-900 text-center block"
         >Código de 6 dígitos</label>
 
-        <div className="flex justify-center gap-5 ">
+        <div className="flex justify-center gap-3">
           <PinInput value={token} onChange={handleChange} onComplete={handleComplete}>
-            <PinInputField className="w-10 h-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="w-10 h-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="w-10 h-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="w-10 h-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="w-10 h-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
-            <PinInputField className="w-10 h-10 p-3 rounded-lg border-gray-300 border placeholder-white" />
+            <PinInputField className="w-12 h-12 p-3 rounded-xl border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-center text-xl font-bold text-slate-900" />
+            <PinInputField className="w-12 h-12 p-3 rounded-xl border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-center text-xl font-bold text-slate-900" />
+            <PinInputField className="w-12 h-12 p-3 rounded-xl border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-center text-xl font-bold text-slate-900" />
+            <PinInputField className="w-12 h-12 p-3 rounded-xl border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-center text-xl font-bold text-slate-900" />
+            <PinInputField className="w-12 h-12 p-3 rounded-xl border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-center text-xl font-bold text-slate-900" />
+            <PinInputField className="w-12 h-12 p-3 rounded-xl border-2 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-center text-xl font-bold text-slate-900" />
           </PinInput>
         </div>
 
       </form>
 
-      <nav className="mt-10 flex flex-col space-y-4">
+      <nav className="mt-8 flex flex-col space-y-3">
         <Link
           to='/auth/request-code'
-          className="text-center text-gray-300 font-normal"
+          className="text-center text-gray-200 hover:text-white font-medium transition-colors"
         >
           Solicitar un nuevo Código
         </Link>
         <Link
           to='/auth/login'
-          className="text-center text-sky-700 font-bold text-lg transition-transform duration-300 transform hover:scale-110"
+          className="text-center text-gray-200 hover:text-white font-bold text-lg transition-all duration-300 hover:scale-105"
         >
           ¿Ya estas verificado? Iniciar Sesión
         </Link>

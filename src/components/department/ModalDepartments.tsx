@@ -15,7 +15,7 @@ export default function ModalDeparmentAdd() {
     const show = tracker ? true : false;
     return (
         <Transition appear show={show} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, { replace: true, state: location.state })}>
+            <Dialog as="div" className="relative z-50" onClose={() => navigate(location.pathname, { replace: true, state: location.state })}>
                 <TransitionChild
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -25,7 +25,7 @@ export default function ModalDeparmentAdd() {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-black/60" />
+                    <div className="modal-overlay" />
                 </TransitionChild>
 
                 <div className="fixed inset-0 overflow-y-auto">
@@ -40,21 +40,21 @@ export default function ModalDeparmentAdd() {
                             leaveTo="opacity-0 scale-95"
                         >
                             <DialogPanel
-                                className="relative w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-6 sm:p-10"
+                                className="modal-content relative w-full max-w-4xl transform overflow-hidden text-left align-middle shadow-2xl transition-all p-6 sm:p-10"
                             >
                                 <button
                                     type="button"
                                     onClick={() => navigate(location.pathname, { replace: true, state: location.state })}
                                     title="Cerrar"
-                                    className="absolute top-4 right-4 p-2 rounded-full hover:bg-red-600 transition"
+                                    className="absolute top-4 right-4 p-2 rounded-full bg-red-100 hover:bg-red-600 transition-all duration-300 group"
                                 >
-                                    <XMarkIcon className="h-7 w-7 text-slate-900 hover:text-white" />
+                                    <XMarkIcon className="h-7 w-7 text-red-600 group-hover:text-white transition-colors" />
                                 </button>
 
 
                                 <DialogTitle
                                     as="h3"
-                                    className="font-black text-4xl  my-5"
+                                    className="font-black text-4xl text-slate-900 my-5"
                                 >
                                     Administra tus departamentos
                                 </DialogTitle>
@@ -62,10 +62,10 @@ export default function ModalDeparmentAdd() {
 
                                 <DepartmentList />
 
-                                <div className="flex justify-end mt-10">
+                                <div className="flex justify-end mt-10 pt-6 border-t-2 border-gray-200">
                                     <Link
                                         to={"/create-deparment"}
-                                        className="bg-sky-700 hover:bg-sky-800 py-3 px-3 rounded-lg text-white text-xl font-bold cursor-pointer transition-colors w-full md:w-auto text-center"
+                                        className="btn-primary-action w-full md:w-auto text-center"
                                     >
                                         Crear nuevo departamento
                                     </Link>

@@ -58,7 +58,7 @@ export default function DeleteCourseModal() {
 
     return (
         <Transition appear show={show} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={() => navigate(location.pathname, { replace: true })}>
+            <Dialog as="div" className="relative z-50" onClose={() => navigate(location.pathname, { replace: true })}>
                 <TransitionChild
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -68,7 +68,7 @@ export default function DeleteCourseModal() {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-black/60" />
+                    <div className="modal-overlay" />
                 </TransitionChild>
 
                 <div className="fixed inset-0 overflow-y-auto">
@@ -82,23 +82,23 @@ export default function DeleteCourseModal() {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
+                            <DialogPanel className="modal-content w-full max-w-2xl transform overflow-hidden text-left align-middle shadow-2xl transition-all p-10">
 
                                 <DialogTitle
                                     as="h3"
-                                    className="font-black text-4xl  my-5"
-                                >Eliminar Proyecto </DialogTitle>
+                                    className="font-black text-4xl text-red-700 mb-6"
+                                >Eliminar Curso</DialogTitle>
 
                                 {user && isAdmin(user) ? (
-                                    <p className="text-xl font-bold">Confirma la eliminación del curso como <span className="text-gradient">administrador</span></p>
+                                    <p className="text-lg font-semibold text-gray-700 mb-8">Confirma la eliminación del curso como <span className="text-gradient">administrador</span></p>
                                 ) : (
-                                    <p className="text-xl font-bold">Confirma la eliminación del proyecto {''}
+                                    <p className="text-lg font-semibold text-gray-700 mb-8">Confirma la eliminación del curso {''}
                                         <span className="text-gradient">colocando tu password</span>
                                     </p>
                                 )}
 
                                 <form
-                                    className="mt-10 space-y-5"
+                                    className="space-y-6"
                                     onSubmit={handleSubmit(handleForm)}
                                     noValidate
                                 >
@@ -106,14 +106,14 @@ export default function DeleteCourseModal() {
                                     {user && !isAdmin(user) && (
                                         <div className="flex flex-col gap-3">
                                             <label
-                                                className="font-normal text-2xl"
+                                                className="font-semibold text-lg text-gray-800"
                                                 htmlFor="password"
                                             >Password</label>
                                             <input
                                                 id="password"
                                                 type="password"
                                                 placeholder="Password Inicio de Sesión"
-                                                className="w-full p-3  border-gray-300 border"
+                                                className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-500 focus:ring-2 focus:ring-red-200 transition-all"
                                                 {...register("password", {
                                                     required: "El password es obligatorio",
                                                 })}
@@ -124,11 +124,12 @@ export default function DeleteCourseModal() {
                                         </div>
                                     )}
 
-                                    <input
+                                    <button
                                         type="submit"
-                                        className="btn-primary w-full p-3  text-white font-black  text-xl cursor-pointer"
-                                        value='Eliminar Curso'
-                                    />
+                                        className="w-full p-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-black text-xl rounded-xl cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                                    >
+                                        Eliminar Curso
+                                    </button>
                                 </form>
                             </DialogPanel>
                         </TransitionChild>
