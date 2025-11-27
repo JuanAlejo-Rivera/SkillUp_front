@@ -50,11 +50,11 @@ export default function EditCourseForm({ data, courseId }: editCourseFormProps) 
 
     return (
         <>
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
-
-                <h1 className="text-4xl font-black text-slate-900 mb-3">Editar Curso</h1>
-                <p className="text-lg font-light text-gray-600 mb-8">Completa los detalles a continuación para editar el curso.</p>
+                    <h1 className="text-4xl font-black text-white mb-3">Editar Curso</h1>
+                    <p className="text-lg font-light text-gray-300 mb-8">Completa los detalles a continuación para editar el curso.</p>
 
                 <nav className="my-8 flex flex-col md:flex-row gap-4">
                     <Link
@@ -94,7 +94,7 @@ export default function EditCourseForm({ data, courseId }: editCourseFormProps) 
                     </div>
                 </form>
 
-
+                </div>
             </div>
         </>
     )

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { useAuth } from "@/hooks/UserAuth"
-import { isManager } from "../../utils/policies"
+import { canModify } from "../../utils/policies"
 
 export const CreateSectionView = () => {
 
@@ -52,20 +52,21 @@ export const CreateSectionView = () => {
 
     if (authLoading && courseLoading) return 'Cargando...'
     
-    // Verificar si el usuario es el manager del curso
-    if (course && user && !isManager(course.manager, user._id)) {
+    // Verificar si el usuario puede modificar el curso (admin o manager)
+    if (course && user && !canModify(user, course.manager)) {
         return <Navigate to={'/'} />
     }
 
     return (
         <>
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <h6 className="text-2xl font-semibold italic bg-gradient-to-r from-blue-700 to-blue-600 bg-clip-text text-transparent drop-shadow-sm mb-5">
-                    {courseName}
-                </h6>
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h6 className="text-2xl font-semibold italic text-blue-300 drop-shadow-sm mb-5">
+                        {courseName}
+                    </h6>
 
-                <h1 className="text-4xl font-black text-slate-900 mb-3">Añadir Nueva Sección</h1>
-                <p className="text-lg font-light text-gray-600 mb-8">Completa los detalles a continuación para crear una nueva sección.</p>
+                    <h1 className="text-4xl font-black text-white mb-3">Añadir Nueva Sección</h1>
+                    <p className="text-lg font-light text-gray-300 mb-8">Completa los detalles a continuación para crear una nueva sección.</p>
 
                 <form
                     className="bg-gradient-to-br from-white to-gray-50 shadow-2xl p-10 rounded-3xl border-2 border-gray-200"
@@ -97,7 +98,7 @@ export const CreateSectionView = () => {
                     </div>
                 </form>
 
-
+                </div>
             </div>
         </>
     )

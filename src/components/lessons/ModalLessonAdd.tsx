@@ -84,9 +84,9 @@ export default function ModalLessonAdd() {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <DialogPanel className="modal-content w-full max-w-4xl transform overflow-hidden text-left align-middle shadow-2xl transition-all p-10">
+                            <DialogPanel className="bg-gradient-to-br from-slate-100 to-gray-200 rounded-3xl w-full max-w-4xl transform overflow-hidden text-left align-middle shadow-2xl transition-all p-10 border-2 border-gray-300">
 
-                                <DialogTitle as="h3" className="font-black text-4xl text-slate-900 mb-8">
+                                <DialogTitle as="h3" className="font-black text-4xl text-slate-800 mb-8">
                                     Agregar nueva lección
                                 </DialogTitle>
 

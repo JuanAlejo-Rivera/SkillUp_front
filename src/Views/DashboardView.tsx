@@ -88,7 +88,7 @@ export const DashboardView = () => {
                                                             Ver Secciones
                                                         </Link>
                                                     </MenuItem>
-                                                    {canModify(user, course.manager._id) && (
+                                                    {canModify(user, course.manager) && (
                                                         <>
                                                             <MenuItem>
                                                                 <Link to={`/courses/${course._id}/edit`}

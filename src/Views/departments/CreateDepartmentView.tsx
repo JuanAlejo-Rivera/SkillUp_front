@@ -38,44 +38,43 @@ export const CreateDepartmentView = () => {
 
     return (
         <>
-            <div className="max-w-lg mx-auto ">
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
+                    <h1 className="text-4xl font-black text-white mb-3">Añadir Nuevo Departamento</h1>
+                    <p className="text-lg font-light text-gray-300 mb-8">Completa los detalles a continuación para crear un nuevo departamento.</p>
 
-                <h1 className="text-2xl font-black">Añadir Nuevo Departamento</h1>
-                <p className="text-2xl font-light text-gray-500 mt-5">Completa los detalles a continuación para crear un nuevo departamento.</p>
+                    <form
+                        className="bg-gradient-to-br from-white to-gray-50 shadow-2xl p-10 rounded-3xl border-2 border-gray-200"
+                        onSubmit={handleSubmit(handleForm)}
+                        noValidate
+                    >
 
-                <nav className="my-5 flex flex-col md:flex-row gap-3">
-
-                </nav>
-
-                <form
-                    className="mt-10 bg-slate-200 shadow-lg p-10 rounded-lg"
-                    onSubmit={handleSubmit(handleForm)}
-                    noValidate
-                >
-
-                    <DeparmentForm
-                        register={register}
-                        errors={errors}
-                    />
-
-                    <div className="flex justify-between">
-                        <Link
-                            to={"/courses-create"}
-                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-gray-600 hover:bg-gray-500 text-white font-medium transition"
-                        >
-                            Cancelar
-                        </Link>
-
-                        <input
-                            type="submit"
-                            value="Crear Departamento"
-                            className="w-full sm:w-auto px-5 py-2 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-medium transition"
+                        <DeparmentForm
+                            register={register}
+                            errors={errors}
                         />
-                    </div>
+
+                        <div className="flex gap-4 pt-6 border-t-2 border-gray-200 mt-8">
+                            <Link
+                                to={"/courses-create"}
+                                className="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-bold text-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                            >
+                                Cancelar
+                            </Link>
+
+                            <button
+                                type="submit"
+                                className="flex-1 sm:flex-none px-8 py-3 rounded-xl bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                            >
+                                Crear Departamento
+                            </button>
+                        </div>
 
 
-                </form>
+                    </form>
+
+                </div>
 
 
             </div>

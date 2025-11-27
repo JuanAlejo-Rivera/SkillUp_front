@@ -58,13 +58,14 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId, co
 
     return (
         <>
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <h6 className="text-2xl font-semibold italic bg-gradient-to-r from-blue-700 to-blue-600 bg-clip-text text-transparent drop-shadow-sm mb-5">
-                    {courseName}
-                </h6>
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h6 className="text-2xl font-semibold italic text-blue-300 drop-shadow-sm mb-5">
+                        {courseName}
+                    </h6>
 
-                <h1 className="text-4xl font-black text-slate-900 mb-3">Editar Lección</h1>
-                <p className="text-lg font-light text-gray-600 mb-8">Completa los detalles a continuación para editar la Lección.</p>
+                    <h1 className="text-4xl font-black text-white mb-3">Editar Lección</h1>
+                    <p className="text-lg font-light text-gray-300 mb-8">Completa los detalles a continuación para editar la Lección.</p>
 
 
                 <form
@@ -97,7 +98,7 @@ export default function EditLessonForm({ data, courseId, sectionId, lessonId, co
                     </div>
                 </form>
 
-
+                </div>
             </div>
         </>
     )
