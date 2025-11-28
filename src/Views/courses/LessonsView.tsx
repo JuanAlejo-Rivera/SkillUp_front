@@ -13,6 +13,7 @@ import { Fragment } from "react/jsx-runtime";
 import BackButton from "@/components/arrowBack/backButton";
 import { useAuth } from "@/hooks/UserAuth";
 import { canModify, isAdmin, isTeacher } from "../../utils/policies";
+import ReactSpinner from "@/components/ReactSpinner/ReactSpinner";
 
 
 export const LessonsView = () => {
@@ -86,7 +87,7 @@ export const LessonsView = () => {
     setTimeout(() => setResetTrigger(false), 200); // se apaga el trigger
   };
 
-  if (isLoading && authLoading && courseLoading) return "Cargando...";
+  if (isLoading && authLoading && courseLoading) return <ReactSpinner />;
   if (isError) return <Navigate to={'/404'} />
 
   if (data && user && course)
@@ -228,7 +229,7 @@ export const LessonsView = () => {
                               key={url}
                               src={url}
                               controls
-                              className="w-full h-auto rounded-2xl border-2 border-gray-300 shadow-lg"
+                              className="w-200 h-90 rounded-2xl border-2 border-gray-300 shadow-lg"
                             />
                           ))}
                         </div>

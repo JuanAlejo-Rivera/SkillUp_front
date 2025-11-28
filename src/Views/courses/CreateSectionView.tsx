@@ -9,6 +9,7 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { useAuth } from "@/hooks/UserAuth"
 import { canModify } from "../../utils/policies"
+import ReactSpinner from "@/components/ReactSpinner/ReactSpinner";
 
 export const CreateSectionView = () => {
 
@@ -50,7 +51,7 @@ export const CreateSectionView = () => {
         mutate(data)
     }
 
-    if (authLoading && courseLoading) return 'Cargando...'
+    if (authLoading && courseLoading) return <ReactSpinner />
     
     // Verificar si el usuario puede modificar el curso (admin o manager)
     if (course && user && !canModify(user, course.manager)) {

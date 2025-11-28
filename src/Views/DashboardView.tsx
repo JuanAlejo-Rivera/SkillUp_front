@@ -10,6 +10,7 @@ import { formatDate } from "../utils/utils"
 import DeleteCourseModal from "@/components/courses/DeleteCourses"
 import { getCourses } from "@/api/CoursesAPI"
 import { useQuery } from "@tanstack/react-query"
+import ReactSpinner from "@/components/ReactSpinner/ReactSpinner"
 
 
 export const DashboardView = () => {
@@ -26,7 +27,7 @@ export const DashboardView = () => {
     // console.log(user)
     // console.log(data)
 
-    if (isLoading && authLoading) return 'Cargando...'
+    if (isLoading && authLoading) return <ReactSpinner />
     if (data && user) return (
         <>
             <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8">

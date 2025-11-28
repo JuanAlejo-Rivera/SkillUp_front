@@ -9,6 +9,7 @@ import { toast } from "react-toastify"
 import BackButton from "@/components/arrowBack/backButton"
 import { useAuth } from "@/hooks/UserAuth"
 import { canModify, isAdmin, isTeacher } from "../../utils/policies"
+import ReactSpinner from "@/components/ReactSpinner/ReactSpinner";
 
 export const SectionsView = () => {
 
@@ -47,7 +48,7 @@ export const SectionsView = () => {
   // console.log(course?.manager)
 
   if (isError) return <Navigate to={'/404'} />
-  if (isLoading && authLoading && courseLoading) return 'Cargando...'
+  if (isLoading && authLoading && courseLoading) return <ReactSpinner />
 
   if (data && user && course) return (
     <>

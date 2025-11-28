@@ -3,6 +3,7 @@ import ErrorMessage from "../ErrorMessage";
 import type { CourseFormData } from "types";
 import { useQuery } from "@tanstack/react-query";
 import { getDepartments } from "@/api/DeparmentsAPI";
+import ReactSpinner from "@/components/ReactSpinner/ReactSpinner";
 
 type CourseFormProps = {
     register: UseFormRegister<CourseFormData>
@@ -17,7 +18,7 @@ export default function CourseForm({ errors, register }: CourseFormProps) {
         queryFn: getDepartments
     })
 
-    if (isLoading) return 'Cargando...'
+    if (isLoading) return <ReactSpinner />
     if (data) return (
         <>
             <div className="mb-5 space-y-3">

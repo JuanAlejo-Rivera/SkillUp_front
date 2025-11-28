@@ -3,10 +3,11 @@ import Logo from '@/components/Logo'
 import NavMenu from '@/components/NavMenu'
 import { ToastContainer } from 'react-toastify'
 import { useAuth } from '@/hooks/UserAuth'
+import ReactSpinner from "@/components/ReactSpinner/ReactSpinner";
 
 export const AppLayout = () => {
     const { data, isError, isLoading } = useAuth();
-    if (isLoading) return 'Cargando...';
+    if (isLoading) return <ReactSpinner />;
     if (isError) {
         return <Navigate to={'/auth/login'} />
     }

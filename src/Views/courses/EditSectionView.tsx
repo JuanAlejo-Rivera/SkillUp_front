@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 import { Navigate, useLocation, useParams } from "react-router-dom"
 import { useAuth } from "@/hooks/UserAuth"
 import { canModify } from "../../utils/policies"
+import ReactSpinner from "@/components/ReactSpinner/ReactSpinner";
 
 export const EditSectionView = () => {
 
@@ -29,7 +30,7 @@ export const EditSectionView = () => {
         retry: false
     })
 
-    if (isLoading && authLoading && courseLoading) return 'Cargando...'
+    if (isLoading && authLoading && courseLoading) return <ReactSpinner />
     if (isError) return <Navigate to={'/404'} />
     
     // Verificar si el usuario tiene permisos para editar (admin o manager)
