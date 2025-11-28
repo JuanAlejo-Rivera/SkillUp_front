@@ -147,6 +147,13 @@ export const SectionsView = () => {
                     <p className="text-sm text-gray-300 leading-relaxed">
                       {sections.description}
                     </p>
+                    <Link
+                      to={`/courses/${courseId}/sections/${sections._id}/lessons`}
+                      state={{ courseName: course.courseName }}
+                      className="inline-block mt-3 px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                    >
+                      Ver Lecciones
+                    </Link>
                   </div>
                 </div>
               ))}
