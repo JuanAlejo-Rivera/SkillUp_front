@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom"
 
-import { Fragment } from 'react'
+import { Fragment, useState, useMemo } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import ModalDeparmentAdd from "@/components/department/ModalDepartments"
 import { useAuth } from "@/hooks/UserAuth"
 import { isManager, canModify, canCreateCourses, isAdmin, isTeacher } from "../utils/policies"
@@ -17,6 +18,7 @@ import ManageRolesModal from "@/components/profile/ManageRolesModal"
 export const DashboardView = () => {
 
     const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('')
 
     const { data: user, isLoading: authLoading } = useAuth()
 
@@ -24,6 +26,18 @@ export const DashboardView = () => {
         queryKey: ['courses'],
         queryFn: getCourses
     })
+
+    // Filtrar cursos basado en el término de búsqueda
+    const filteredCourses = useMemo(() => {
+        if (!data) return []
+        if (!searchTerm.trim()) return data
+
+        const lowerSearchTerm = searchTerm.toLowerCase()
+        return data.filter(course => 
+            course.courseName.toLowerCase().includes(lowerSearchTerm) ||
+            course.department?.departmentName.toLowerCase().includes(lowerSearchTerm)
+        )
+    }, [data, searchTerm])
 
     // console.log(user)
     // console.log(data)
@@ -38,6 +52,27 @@ export const DashboardView = () => {
                 {(isAdmin(user) || isTeacher(user)) && (
                     <p className="text-lg font-light text-gray-300 mb-8">Maneja y administra tus cursos</p>
                 )}
+
+                {/* Barra de búsqueda */}
+                <div className="mb-6">
+                    <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="Buscar por nombre de curso o departamento..."
+                            className="w-full pl-12 pr-4 py-3 bg-slate-800 border-2 border-blue-700/50 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 transition-all"
+                        />
+                    </div>
+                    {searchTerm && (
+                        <p className="mt-2 text-sm text-gray-300">
+                            Mostrando {filteredCourses.length} de {data?.length} curso(s)
+                        </p>
+                    )}
+                </div>
 
                 <nav className="my-8 flex flex-wrap gap-4">
                     {canCreateCourses(user) && (
@@ -73,9 +108,9 @@ export const DashboardView = () => {
                         </button>
                     )}
                 </nav>
-                {data.length ? (
+                {filteredCourses.length ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-                        {data.map((course) => (
+                        {filteredCourses.map((course) => (
                             <div key={course._id} className="bg-gradient-to-br from-slate-800 via-blue-900 to-slate-900 rounded-2xl shadow-xl border-2 border-blue-700/50 hover:shadow-2xl hover:border-blue-500 transition-all duration-300 overflow-hidden p-6 flex flex-col justify-between h-full">
                                 <div className="flex-1">
                                     <div className="flex justify-between items-start mb-4">
@@ -168,7 +203,9 @@ export const DashboardView = () => {
 
                 ) : (
                     <div className="text-center bg-gradient-to-br from-gray-50 to-slate-100 p-12 border-2 border-dashed border-gray-300 rounded-2xl">
-                        <p className="text-gray-600 text-lg font-semibold">No hay cursos disponibles</p>
+                        <p className="text-gray-600 text-lg font-semibold">
+                            {searchTerm ? 'No se encontraron cursos que coincidan con tu búsqueda' : 'No hay cursos disponibles'}
+                        </p>
                     </div>
                 )}
                 <ModalDeparmentAdd />
