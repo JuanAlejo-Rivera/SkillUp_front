@@ -89,11 +89,13 @@ export default function RegisterView() {
                 <div className="flex flex-col gap-3">
                     <label
                         className="font-semibold text-xl text-slate-900"
-                    >Password</label>
+                    >
+                        Contraseña
+                    </label>
 
                     <input
                         type="password"
-                        placeholder="Password de Registro"
+                        placeholder="Contraseña de Registro"
                         className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
                         {...register("password", {
                             required: "El Password es obligatorio",
@@ -111,12 +113,12 @@ export default function RegisterView() {
                 <div className="flex flex-col gap-3">
                     <label
                         className="font-semibold text-xl text-slate-900"
-                    >Repetir Password</label>
+                    >Repetir Contraseña</label>
 
                     <input
                         id="password_confirmation"
                         type="password"
-                        placeholder="Repite Password de Registro"
+                        placeholder="Repite Contraseña de Registro"
                         className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
                         {...register("password_confirmation", {
                             required: "Repetir Password es obligatorio",

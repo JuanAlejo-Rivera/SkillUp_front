@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { authenticateUser } from "@/api/AuthApi";
 import { useMutation } from "@tanstack/react-query";
+import TooltipNote from "@/components/PopUpNote";
 
 export default function LoginView() {
 
@@ -34,8 +35,10 @@ export default function LoginView() {
       <p className="text-xl font-light text-gray-200 mb-10">
         Comienza a mejorar tus habilidades {''}
         <span className="text-gradient font-bold">
-          iniciando sesión en este formulario</span>
+          iniciando sesión aquí</span>
       </p>
+
+      <TooltipNote />
 
       <form
         onSubmit={handleSubmit(handleLogin)}
@@ -68,11 +71,11 @@ export default function LoginView() {
         <div className="flex flex-col gap-3">
           <label
             className="font-semibold text-xl text-slate-900"
-          >Password</label>
+          >Contraseña</label>
 
           <input
             type="password"
-            placeholder="Password de Registro"
+            placeholder="Contraseña de Registro"
             className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
             {...register("password", {
               required: "El Password es obligatorio",
