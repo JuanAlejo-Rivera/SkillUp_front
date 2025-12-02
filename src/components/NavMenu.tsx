@@ -7,9 +7,10 @@ import type { User } from '../types';
 
 type NavMenuProps = {
   name: User['name'];
+  role: User['role'];
 }
 
-export default function NavMenu({name}: NavMenuProps) {
+export default function NavMenu({ name, role }: NavMenuProps) {
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -39,6 +40,13 @@ export default function NavMenu({name}: NavMenuProps) {
         <PopoverPanel className="absolute right-0 z-50 mt-5">
           <div className="w-64 shrink rounded-2xl bg-gradient-to-br from-white to-gray-50 p-6 text-sm font-semibold leading-6 text-gray-900 shadow-2xl ring-2 ring-gray-200">
             <p className='text-center text-lg font-bold text-slate-900 mb-4 pb-4 border-b-2 border-gray-200'>Hola: {name}</p>
+            <p className='text-center text-lg font-bold text-slate-900 mb-4 pb-4 border-b-2 border-gray-200'>
+              <span className='text-blue-700'>
+                {role === 'admin' && 'Administrador'}
+                {role === 'teacher' && 'Profesor'}
+                {role !== 'admin' && role !== 'teacher' && 'Estudiante'}
+              </span>
+            </p>
             <Link
               to='/profile'
               className='block px-4 py-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-900 transition-all duration-200 font-medium'
