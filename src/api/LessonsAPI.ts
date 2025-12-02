@@ -77,3 +77,20 @@ export async function deleteLesson({ courseId, sectionId, lessonId }: Pick<Lesso
     }
 
 }
+
+type UpdateLessonsOrderType = {
+    courseId: Course['_id']
+    sectionId: Course['_id']
+    lessons: { id: string; order: number }[]
+}
+
+export async function updateLessonsOrder({ courseId, sectionId, lessons }: UpdateLessonsOrderType) {
+    try {
+        const { data } = await api.patch(`/courses/${courseId}/sections/${sectionId}/lessons/order`, { lessons })
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}

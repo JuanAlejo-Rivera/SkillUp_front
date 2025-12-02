@@ -82,3 +82,19 @@ export async function deleteSection({ courseId, sectionId }: GetSectionAPIType) 
     }
 
 }
+
+type UpdateSectionsOrderType = {
+    courseId: Course['_id']
+    sections: { id: string; order: number }[]
+}
+
+export async function updateSectionsOrder({ courseId, sections }: UpdateSectionsOrderType) {
+    try {
+        const { data } = await api.patch(`/courses/${courseId}/sections/order`, { sections })
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}

@@ -108,6 +108,7 @@ export const sectionShema = z.object({
     _id: z.string(),
     title: z.string(),
     description: z.string(),
+    order: z.number().optional(),
 })
 
 
@@ -137,6 +138,7 @@ export const LessonSchema = z.object({
     videoUrl: z.array(z.string()),
     fileUrl: z.array(z.string()),
     imageUrl: z.array(z.string()),
+    order: z.number().optional(),
 });
 
 

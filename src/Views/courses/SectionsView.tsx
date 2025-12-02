@@ -1,15 +1,30 @@
-import { deleteSection, getSections } from "@/api/SectionAPI"
+import { deleteSection, getSections, updateSectionsOrder } from "@/api/SectionAPI"
 import { getCourseById } from "@/api/CoursesAPI"
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react"
-import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link, Navigate, useLocation, useParams } from "react-router-dom"
-import { Fragment } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from "react-toastify"
 import BackButton from "@/components/arrowBack/backButton"
 import { useAuth } from "@/hooks/UserAuth"
 import { canModify, isAdmin, isTeacher } from "../../utils/policies"
-import ReactSpinner from "@/components/ReactSpinner/ReactSpinner";
+import ReactSpinner from "@/components/ReactSpinner/ReactSpinner"
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import type { Section } from "@/types/index";
+import SortableSectionItem from "@/components/sections/SortableSectionItem";
 
 export const SectionsView = () => {
 
@@ -22,11 +37,20 @@ export const SectionsView = () => {
   const courseName = location.state?.courseName;
   const queryClient = useQueryClient()
 
+  const [sections, setSections] = useState<Section[]>([])
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['sections'],
     queryFn: () => getSections(courseId),
     retry: false
   })
+
+  // Sincronizar el estado local con los datos del query
+  useEffect(() => {
+    if (data) {
+      setSections(data)
+    }
+  }, [data])
 
   const { data: course, isLoading: courseLoading } = useQuery({
     queryKey: ['course', courseId],
@@ -44,6 +68,48 @@ export const SectionsView = () => {
       toast.success(data)
     }
   })
+
+  const updateOrderMutation = useMutation({
+    mutationFn: updateSectionsOrder,
+    onError: (error) => {
+      toast.error(error.message)
+      // Revertir el cambio en caso de error
+      queryClient.invalidateQueries({ queryKey: ['sections'] })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sections'] })
+    }
+  })
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (over && active.id !== over.id) {
+      setSections((items) => {
+        const oldIndex = items.findIndex((item) => item._id === active.id)
+        const newIndex = items.findIndex((item) => item._id === over.id)
+
+        const newItems = arrayMove(items, oldIndex, newIndex)
+
+        // Actualizar el orden en el backend
+        const sectionsOrder = newItems.map((item, index) => ({
+          id: item._id,
+          order: index
+        }))
+
+        updateOrderMutation.mutate({ courseId, sections: sectionsOrder })
+
+        return newItems
+      })
+    }
+  }
 
   // console.log(course?.manager)
 
@@ -89,76 +155,31 @@ export const SectionsView = () => {
 
           </nav>
 
-          {data.length ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-              {data.map((sections) => (
-                <div key={sections._id} className="bg-gradient-to-br from-slate-800 via-blue-900 to-slate-900 rounded-2xl shadow-xl border-2 border-blue-700/50 hover:shadow-2xl hover:border-blue-500 transition-all duration-300 p-6 flex flex-col justify-between h-full">
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex-1">
-                        <Link to={`/courses/${courseId}/sections/${sections._id}/lessons`}
-                          className="text-white cursor-pointer hover:text-blue-300 text-2xl font-bold block transition-colors mb-3"
-                          state={{ courseName: courseName }}
-                        >{sections.title}</Link>
-                      </div>
-                      <Menu as="div" className="relative flex-none z-50">
-                        <MenuButton className="p-2 rounded-full hover:bg-blue-700 transition-colors">
-                          <span className="sr-only">opciones</span>
-                          <EllipsisVerticalIcon className="h-7 w-7 text-white hover:text-blue-200" aria-hidden="true" />
-                        </MenuButton>
-                        <Transition as={Fragment} enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95" enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75" leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95">
-                          <MenuItems className="dropdown-menu">
-                            <MenuItem>
-                              <Link to={`/courses/${courseId}/sections/${sections._id}/lessons`}
-                                className='dropdown-item'
-                                state={{ courseName: courseName }}
-                              >
-                                Ver Lecciones
-                              </Link>
-                            </MenuItem>
-                            {canModify(user, course.manager) && (
-                              <>
-                                <MenuItem>
-                                  <Link to={`/courses/${courseId}/sections/${sections._id}/edit`}
-                                    className='dropdown-item'
-                                    state={{ courseName: courseName }}
-                                  >
-                                    Editar Sección
-                                  </Link>
-                                </MenuItem>
-                                <MenuItem>
-                                  <button
-                                    type='button'
-                                    className='dropdown-item-danger w-full text-left'
-                                    onClick={() => mutate({ courseId, sectionId: sections._id })}
-                                  >
-                                    Eliminar Sección
-                                  </button>
-                                </MenuItem>
-                              </>
-                            )}
-                          </MenuItems>
-                        </Transition>
-                      </Menu>
-                    </div>
-
-                    <p className="text-sm text-gray-300 leading-relaxed">
-                      {sections.description}
-                    </p>
-                    <Link
-                      to={`/courses/${courseId}/sections/${sections._id}/lessons`}
-                      state={{ courseName: course.courseName }}
-                      className="inline-block mt-3 px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-                    >
-                      Ver Lecciones
-                    </Link>
-                  </div>
+          {sections.length ? (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={sections.map((s) => s._id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+                  {sections.map((section) => (
+                    <SortableSectionItem
+                      key={section._id}
+                      section={section}
+                      courseId={courseId}
+                      courseName={courseName}
+                      user={user}
+                      course={course}
+                      onDelete={(sectionId) => mutate({ courseId, sectionId })}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
+              </SortableContext>
+            </DndContext>
 
           ) : (
             <div className="text-center bg-gradient-to-br from-gray-50 to-slate-100 p-12 border-2 border-dashed border-gray-300 rounded-2xl">
