@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Fragment } from 'react';
@@ -13,7 +13,6 @@ type SortableSectionItemProps = {
     courseName: string;
     user: User;
     course: Partial<Course> & { manager: Course['manager'] };
-    onDelete: (sectionId: string) => void;
 };
 
 export default function SortableSectionItem({
@@ -22,8 +21,10 @@ export default function SortableSectionItem({
     courseName,
     user,
     course,
-    onDelete,
 }: SortableSectionItemProps) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    
     const {
         attributes,
         listeners,
@@ -111,7 +112,7 @@ export default function SortableSectionItem({
                                             <button
                                                 type="button"
                                                 className="dropdown-item-danger w-full text-left"
-                                                onClick={() => onDelete(section._id)}
+                                                onClick={() => navigate(location.pathname + `?deleteSection=${section._id}`)}
                                             >
                                                 Eliminar Sección
                                             </button>

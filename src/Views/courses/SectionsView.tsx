@@ -1,4 +1,4 @@
-import { deleteSection, getSections, updateSectionsOrder } from "@/api/SectionAPI"
+import { getSections, updateSectionsOrder } from "@/api/SectionAPI"
 import { getCourseById } from "@/api/CoursesAPI"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link, Navigate, useLocation, useParams } from "react-router-dom"
@@ -8,6 +8,7 @@ import BackButton from "@/components/arrowBack/backButton"
 import { useAuth } from "@/hooks/UserAuth"
 import { canModify, isAdmin, isTeacher } from "../../utils/policies"
 import ReactSpinner from "@/components/ReactSpinner/ReactSpinner"
+import DeleteSectionModal from "@/components/sections/DeleteSection"
 import {
   DndContext,
   closestCenter,
@@ -56,17 +57,6 @@ export const SectionsView = () => {
     queryKey: ['course', courseId],
     queryFn: () => getCourseById(courseId),
     retry: false
-  })
-
-  const { mutate } = useMutation({
-    mutationFn: deleteSection,
-    onError: (error) => {
-      toast.error(error.message)
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['sections'] })
-      toast.success(data)
-    }
   })
 
   const updateOrderMutation = useMutation({
@@ -174,7 +164,6 @@ export const SectionsView = () => {
                       courseName={courseName}
                       user={user}
                       course={course}
-                      onDelete={(sectionId) => mutate({ courseId, sectionId })}
                     />
                   ))}
                 </div>
@@ -186,6 +175,7 @@ export const SectionsView = () => {
               <p className="text-gray-600 text-lg font-semibold">No hay secciones disponibles</p>
             </div>
           )}
+          <DeleteSectionModal />
         </div>
       </div>
     </>

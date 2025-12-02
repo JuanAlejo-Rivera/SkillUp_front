@@ -1,24 +1,26 @@
 import { Fragment } from 'react';
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../ErrorMessage";
 import type { checkPasswordForm } from '@/types/index';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { checkPassword } from '@/api/AuthApi';
-import { deleteCorse } from '@/api/CoursesAPI';
+import { deleteSection } from '@/api/SectionAPI';
 
-export default function DeleteCourseModal() {
+export default function DeleteSectionModal() {
     const initialValues: checkPasswordForm = {
         password: ''
     }
     const location = useLocation()
     const navigate = useNavigate()
+    const params = useParams()
+    const courseId = params.courseId!
 
     const queryParams = new URLSearchParams(location.search);
-    const deleteProjectId = queryParams.get('deleteProject')!;
-    const show = deleteProjectId ? true : false
+    const deleteSectionId = queryParams.get('deleteSection')!;
+    const show = deleteSectionId ? true : false
 
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
@@ -27,29 +29,25 @@ export default function DeleteCourseModal() {
     const checkUserPasswordMutation = useMutation({
         mutationFn: checkPassword,
         onError: (error) => toast.error(error.message)
-
     })
 
-    const deleteProjectMutation = useMutation({
-        mutationFn: deleteCorse,
+    const deleteSectionMutation = useMutation({
+        mutationFn: deleteSection,
         onError: (error) => {
             toast.error(error.message)
         },
         onSuccess: (data) => {
             toast.success(data)
-            queryClient.invalidateQueries({ queryKey: ['courses'] })//forzamos el refetch para datos frescos
+            queryClient.invalidateQueries({ queryKey: ['sections'] })
         }
     })
 
-
-
     const handleForm = async (formData: checkPasswordForm) => {
         // Todos los usuarios deben verificar su contraseña
-        await checkUserPasswordMutation.mutateAsync(formData) // esta mutacion se encarga de verificar el password del usuario
-        await deleteProjectMutation.mutateAsync(deleteProjectId) // esta mutacion se encarga de eliminar el proyecto
+        await checkUserPasswordMutation.mutateAsync(formData)
+        await deleteSectionMutation.mutateAsync({ courseId, sectionId: deleteSectionId })
         navigate(location.pathname, { replace: true })
     }
-
 
     return (
         <Transition appear show={show} as={Fragment}>
@@ -82,9 +80,9 @@ export default function DeleteCourseModal() {
                                 <DialogTitle
                                     as="h3"
                                     className="font-black text-4xl text-red-700 mb-6"
-                                >Eliminar Curso</DialogTitle>
+                                >Eliminar Sección</DialogTitle>
 
-                                <p className="text-lg font-semibold text-gray-700 mb-8">Confirma la eliminación del curso {''}
+                                <p className="text-lg font-semibold text-gray-700 mb-8">Confirma la eliminación de la sección {''}
                                     <span className="text-gradient">colocando tu password</span>
                                 </p>
 
@@ -117,7 +115,7 @@ export default function DeleteCourseModal() {
                                         type="submit"
                                         className="w-full p-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-black text-xl rounded-xl cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                                     >
-                                        Eliminar Curso
+                                        Eliminar Sección
                                     </button>
                                 </form>
                             </DialogPanel>
