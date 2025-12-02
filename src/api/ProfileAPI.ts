@@ -25,4 +25,26 @@ export async function changePassword(formData: UpdateCurrentUserPassword) {
             throw new Error(error.response.data.error);
         }
     }
+}
+
+export async function updateUserRole(email: string, newRole: string) {
+    try {
+        const { data } = await api.patch<string>('/auth/update-role', { email, newRole });
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+    }
+}
+
+export async function getAllUsers() {
+    try {
+        const { data } = await api.get('/auth/all-users');
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+    }
 } 

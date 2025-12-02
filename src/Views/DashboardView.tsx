@@ -11,6 +11,7 @@ import DeleteCourseModal from "@/components/courses/DeleteCourses"
 import { getCourses } from "@/api/CoursesAPI"
 import { useQuery } from "@tanstack/react-query"
 import ReactSpinner from "@/components/ReactSpinner/ReactSpinner"
+import ManageRolesModal from "@/components/profile/ManageRolesModal"
 
 
 export const DashboardView = () => {
@@ -57,6 +58,18 @@ export const DashboardView = () => {
                             }
                         >
                             Gestión de departamentos
+                        </button>
+                    )}
+
+                    {isAdmin(user) && (
+                        <button
+                            type="button"
+                            className="btn-secondary-action"
+                            onClick={() =>
+                                navigate(location.pathname + `?manageRoles=true`)
+                            }
+                        >
+                            Gestionar Roles de Usuario
                         </button>
                     )}
                 </nav>
@@ -160,6 +173,7 @@ export const DashboardView = () => {
                 )}
                 <ModalDeparmentAdd />
                 <DeleteCourseModal />
+                <ManageRolesModal />
               </div>
             </div>
         </>
