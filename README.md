@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# SkillUp - Plataforma de Capacitación Interna
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción General
+SkillUp es una plataforma web de capacitación interna diseñada para empresas. Permite a administradores, managers y usuarios gestionar cursos, departamentos, secciones y lecciones, facilitando el desarrollo profesional y la formación continua dentro de la organización.
 
-Currently, two official plugins are available:
+## Características Principales
+- **Gestión de Usuarios:**
+  - Registro, inicio de sesión y recuperación de contraseña.
+  - Protección de flujo mediante JWT para garantizar la seguridad.
+- **Gestión de Cursos:**
+  - Creación de cursos con descripciones detalladas.
+  - Organización de cursos en secciones y lecciones.
+- **Interfaz Moderna:**
+  - Diseñada con TailwindCSS, incluye transiciones suaves, gradientes y un estilo visual atractivo.
+- **Drag and Drop:**
+  - Organización interactiva de secciones y lecciones utilizando la librería dnd-kit.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Gestión de Roles
+- Los administradores tienen acceso exclusivo a un modal dedicado para gestionar roles de usuario.
+- Los roles determinan los permisos y accesos dentro de la plataforma.
 
-## React Compiler
+## Organización de Cursos, Secciones y Lecciones
+- Los cursos pueden contener múltiples secciones.
+- Cada sección puede incluir varias lecciones.
+- Las secciones y lecciones se pueden reorganizar fácilmente mediante drag and drop.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Tecnologías Utilizadas
+- **Frontend:** React, TypeScript, TailwindCSS.
+- **Backend:** Node.js, Express.
+- **Base de Datos:** MongoDB.
+- **Autenticación:** JSON Web Tokens (JWT).
+- **Interactividad:** dnd-kit para drag and drop.
 
-## Expanding the ESLint configuration
+## Vista Previa
+SkillUp ofrece una interfaz moderna y responsiva que permite a los usuarios gestionar cursos y contenido de capacitación de manera eficiente. Los administradores pueden gestionar roles y departamentos desde modales dedicados, mientras que los usuarios disfrutan de una experiencia fluida y visualmente atractiva.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Instalación y Ejecución
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/JuanAlejo-Rivera/SkillUp_front.git
+   ```
+2. Navega al directorio del proyecto:
+   ```bash
+   cd SkillUp_front
+   ```
+3. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+4. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+5. Abre tu navegador en `http://localhost:3000` para ver la aplicación.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Estructura General del Proyecto
+- **src/**
+  - **api/**: Lógica para interactuar con el backend.
+  - **components/**: Componentes reutilizables de la interfaz.
+  - **hooks/**: Hooks personalizados para manejar lógica de estado.
+  - **layouts/**: Diseños generales de la aplicación.
+  - **types/**: Definiciones de tipos para TypeScript.
+  - **utils/**: Funciones auxiliares y utilidades.
+  - **views/**: Vistas principales de la aplicación.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Notas Finales
+SkillUp está diseñado para ser una solución integral de capacitación interna en empresas. Con su interfaz moderna y funcionalidades avanzadas, es ideal para organizaciones que buscan potenciar el aprendizaje y desarrollo profesional de sus equipos. 
