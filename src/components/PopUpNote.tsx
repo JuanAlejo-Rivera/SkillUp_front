@@ -44,7 +44,7 @@ export default function TooltipNote() {
                         </ul>
                         <p className="mt-3 text-xs text-gray-200 leading-snug">
                             ⚠️ Esto se debe a que los correos de confirmación llegan a
-                            <span className="font-semibold"> Mailtrap</span>, un programa gratuito
+                            <span className="font-semibold"> Mailtrap</span>, un servicio gratuito
                             para pruebas de envío y confirmación de correos.
                         </p>
                         <p className="mt-3 text-xs text-gray-200 leading-snug">

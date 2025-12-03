@@ -35,27 +35,29 @@ export default function RegisterView() {
 
     return (
         <>
-            <h1 className="text-5xl font-black text-white mb-4">Crear Cuenta</h1>
-            <p className="text-xl font-light text-gray-200 mb-10">
-                Llena el formulario para {''}
-                <span className="text-gradient font-bold">crear tu cuenta</span>
-            </p>
+            <div className="text-center mb-12 animate-fade-in">
+                <h1 className="text-6xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-500 bg-clip-text text-transparent mb-4 drop-shadow-lg">
+                    Únete Ahora
+                </h1>
+                <p className="text-lg text-gray-300 font-light">
+                    Comienza tu viaje de aprendizaje hoy
+                </p>
+            </div>
 
             <form
                 onSubmit={handleSubmit(handleRegister)}
-                className="space-y-6 p-10 bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl border-2 border-gray-200"
+                className="space-y-5 p-8 backdrop-blur-xl bg-slate-800/40 border border-slate-700/50 rounded-2xl shadow-2xl shadow-blue-900/20"
                 noValidate
             >
-                <div className="flex flex-col gap-3">
-                    <label
-                        className="font-semibold text-xl text-slate-900"
-                        htmlFor="email"
-                    >Email</label>
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300 tracking-wide" htmlFor="email">
+                        Correo electrónico
+                    </label>
                     <input
                         id="email"
                         type="email"
-                        placeholder="Email de Registro"
-                        className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
+                        placeholder="tu@email.com"
+                        className="w-full px-4 py-3.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 outline-none"
                         {...register("email", {
                             required: "El Email de registro es obligatorio",
                             pattern: {
@@ -69,34 +71,31 @@ export default function RegisterView() {
                     )}
                 </div>
 
-                <div className="flex flex-col gap-3">
-                    <label
-                        className="font-semibold text-xl text-slate-900"
-                    >Nombre</label>
-                    <input
-                        type="name"
-                        placeholder="Nombre de Registro"
-                        className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
-                        {...register("name", {
-                            required: "El Nombre de usuario es obligatorio",
-                        })}
-                    />
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300 tracking-wide">
+                        Nombre completo
+                    </label>
+                            <input
+                                type="text"
+                                placeholder="Juan Pérez"
+                                className="w-full px-4 py-3.5 bg-slate-900/50 border border-white rounded-xl text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 outline-none"
+                                {...register("name", {
+                                    required: "El Nombre de usuario es obligatorio",
+                                })}
+                            />
                     {errors.name && (
                         <ErrorMessage>{errors.name.message}</ErrorMessage>
                     )}
                 </div>
 
-                <div className="flex flex-col gap-3">
-                    <label
-                        className="font-semibold text-xl text-slate-900"
-                    >
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300 tracking-wide">
                         Contraseña
                     </label>
-
                     <input
                         type="password"
-                        placeholder="Contraseña de Registro"
-                        className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
+                        placeholder="Mínimo 8 caracteres"
+                        className="w-full px-4 py-3.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 outline-none"
                         {...register("password", {
                             required: "El Password es obligatorio",
                             minLength: {
@@ -110,22 +109,20 @@ export default function RegisterView() {
                     )}
                 </div>
 
-                <div className="flex flex-col gap-3">
-                    <label
-                        className="font-semibold text-xl text-slate-900"
-                    >Repetir Contraseña</label>
-
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300 tracking-wide">
+                        Confirmar contraseña
+                    </label>
                     <input
                         id="password_confirmation"
                         type="password"
-                        placeholder="Repite Contraseña de Registro"
-                        className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
+                        placeholder="Repite tu contraseña"
+                        className="w-full px-4 py-3.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 outline-none"
                         {...register("password_confirmation", {
                             required: "Repetir Password es obligatorio",
                             validate: value => value === password || 'Los Passwords no son iguales'
                         })}
                     />
-
                     {errors.password_confirmation && (
                         <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>
                     )}
@@ -133,25 +130,27 @@ export default function RegisterView() {
 
                 <button
                     type="submit"
-                    className="bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 w-full p-4 text-white font-black text-xl cursor-pointer rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                    className="w-full mt-6 py-3.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-xl transition-all duration-300 shadow-lg shadow-cyan-600/30 hover:shadow-xl hover:shadow-cyan-500/40 hover:-translate-y-0.5"
                 >
-                    Registrarme
+                    Crear cuenta
                 </button>
             </form>
-            <nav className="space-y-3 mt-8">
+            <div className="mt-8 text-center">
                 <Link
                     to={'/auth/login'}
-                    className="text-center text-gray-200 hover:text-white font-medium block transition-colors"
+                    className="block text-gray-400 hover:text-cyan-400 font-medium transition-colors duration-200"
                 >
-                    ¿Ya tienes cuenta? Iniciar Sesión
+                    ¿Ya tienes cuenta? <span className="text-cyan-400 font-semibold">Inicia sesión</span>
                 </Link>
+            </div>
+            <div className="mt-4 text-center">
                 <Link
                     to={'/auth/forgot-password'}
-                    className="text-center text-gray-200 hover:text-white font-medium block transition-colors"
+                    className="block text-sm text-gray-500 hover:text-gray-300 transition-colors duration-200"
                 >
                     ¿Olvidaste tu contraseña? Reestablecer
                 </Link>
-            </nav>
+            </div>
         </>
     )
 }

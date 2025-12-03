@@ -91,3 +91,19 @@ select {
     @apply bg-gradient-to-br from-blue-50 to-slate-50 border-2 border-dashed border-blue-300 rounded-2xl hover:border-blue-500 hover:bg-blue-100/50 transition-all duration-300
 }
 
+/* Animations for auth pages */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+}
+

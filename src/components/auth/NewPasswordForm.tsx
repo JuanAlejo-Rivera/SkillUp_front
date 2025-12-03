@@ -46,19 +46,18 @@ export default function NewPasswordForm({token} : NewPasswordTokenProps) {
         <>
             <form
                 onSubmit={handleSubmit(handleNewPassword)}
-                className="space-y-6 p-10 bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl border-2 border-gray-200"
+                className="space-y-5 p-8 backdrop-blur-xl bg-slate-800/40 border border-slate-700/50 rounded-2xl shadow-2xl shadow-blue-900/20"
                 noValidate
             >
 
-                <div className="flex flex-col gap-3">
-                    <label
-                        className="font-semibold text-xl text-slate-900"
-                    >Password</label>
-
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300 tracking-wide">
+                        Nueva contraseña
+                    </label>
                     <input
                         type="password"
-                        placeholder="Password de Registro"
-                        className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
+                        placeholder="Mínimo 8 caracteres"
+                        className="w-full px-4 py-3.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 outline-none"
                         {...register("password", {
                             required: "El Password es obligatorio",
                             minLength: {
@@ -72,22 +71,20 @@ export default function NewPasswordForm({token} : NewPasswordTokenProps) {
                     )}
                 </div>
 
-                <div className="flex flex-col gap-3">
-                    <label
-                        className="font-semibold text-xl text-slate-900"
-                    >Repetir Password</label>
-
+                <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300 tracking-wide">
+                        Confirmar contraseña
+                    </label>
                     <input
                         id="password_confirmation"
                         type="password"
-                        placeholder="Repite Password de Registro"
-                        className="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 transition-all"
+                        placeholder="Repite tu contraseña"
+                        className="w-full px-4 py-3.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 outline-none"
                         {...register("password_confirmation", {
                             required: "Repetir Password es obligatorio",
                             validate: value => value === password || 'Los Passwords no son iguales'
                         })}
                     />
-
                     {errors.password_confirmation && (
                         <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>
                     )}
@@ -95,9 +92,9 @@ export default function NewPasswordForm({token} : NewPasswordTokenProps) {
 
                 <button
                     type="submit"
-                    className="bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 w-full p-4 text-white font-black text-xl cursor-pointer rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                    className="w-full mt-6 py-3.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold rounded-xl transition-all duration-300 shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5"
                 >
-                    Establecer Password
+                    Establecer contraseña
                 </button>
             </form>
         </>

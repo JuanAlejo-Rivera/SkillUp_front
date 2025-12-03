@@ -10,11 +10,14 @@ export const NewPasswordView = () => {
 
     return (
         <>
-            <h1 className="text-5xl font-black text-white mb-4">Reestablecer contraseña</h1>
-            <p className="text-xl font-light text-gray-200 mb-10">
-                Ingresa el código que recibiste {''}
-                <span className="text-gradient font-bold">por email</span>
-            </p>
+            <div className="text-center mb-12 animate-fade-in">
+                <h1 className="text-6xl font-black bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent mb-4 drop-shadow-lg">
+                    Nueva contraseña
+                </h1>
+                <p className="text-lg text-gray-300 font-light">
+                    {!isValidToken ? 'Ingresa el código de verificación' : 'Crea tu nueva contraseña'}
+                </p>
+            </div>
             {!isValidToken ?
                 <NewPasswordToken token={token} setToken ={setToken} setIsValidToken = {setIsValidToken} /> :
                 <NewPasswordForm token={token} />}
