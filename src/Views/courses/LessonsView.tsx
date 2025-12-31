@@ -30,6 +30,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import SortableLessonWrapper from "@/components/lessons/SortableLessonWrapper";
+import { ModalDeleteFileAlert } from "@/components/modalAlerts/ModalDeleteFileAlert";
 
 
 export const LessonsView = () => {
@@ -89,6 +90,13 @@ export const LessonsView = () => {
   }>>({});
 
   const [resetTrigger, setResetTrigger] = useState(false);
+  const [uploadingFiles, setUploadingFiles] = useState<Record<string, boolean>>({});
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState<{
+    lessonId: string;
+    fileUrl: string;
+    fileType: 'videoUrl' | 'fileUrl' | 'imageUrl';
+  } | null>(null);
 
   const updateLessonMutation = useMutation({
     mutationFn: updateLesson,
@@ -136,9 +144,27 @@ export const LessonsView = () => {
   });
 
   const handleDeleteFile = (lessonId: string, fileUrl: string, fileType: 'videoUrl' | 'fileUrl' | 'imageUrl') => {
-    if (confirm('¿Estás seguro de que deseas eliminar este archivo?')) {
-      deleteFileMutation.mutate({ courseId, sectionId, lessonId, fileUrl, fileType });
+    setFileToDelete({ lessonId, fileUrl, fileType });
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (fileToDelete) {
+      deleteFileMutation.mutate({
+        courseId,
+        sectionId,
+        lessonId: fileToDelete.lessonId,
+        fileUrl: fileToDelete.fileUrl,
+        fileType: fileToDelete.fileType
+      });
+      setDeleteModalOpen(false);
+      setFileToDelete(null);
     }
+  };
+
+  const cancelDelete = () => {
+    setDeleteModalOpen(false);
+    setFileToDelete(null);
   };
 
   const sensors = useSensors(
@@ -314,6 +340,8 @@ export const LessonsView = () => {
                                       },
                                     }))
                                   }
+                                  onUploadStart={() => setUploadingFiles(prev => ({ ...prev, [lessonsItem._id]: true }))}
+                                  onUploadEnd={() => setUploadingFiles(prev => ({ ...prev, [lessonsItem._id]: false }))}
                                   resetTrigger={resetTrigger}
                                 />
                               </div>
@@ -365,6 +393,8 @@ export const LessonsView = () => {
                                       },
                                     }))
                                   }
+                                  onUploadStart={() => setUploadingFiles(prev => ({ ...prev, [lessonsItem._id]: true }))}
+                                  onUploadEnd={() => setUploadingFiles(prev => ({ ...prev, [lessonsItem._id]: false }))}
                                   resetTrigger={resetTrigger}
                                 />
                               </div>
@@ -423,6 +453,8 @@ export const LessonsView = () => {
                                       },
                                     }))
                                   }
+                                  onUploadStart={() => setUploadingFiles(prev => ({ ...prev, [lessonsItem._id]: true }))}
+                                  onUploadEnd={() => setUploadingFiles(prev => ({ ...prev, [lessonsItem._id]: false }))}
                                   resetTrigger={resetTrigger}
                                 />
                               </div>
@@ -500,7 +532,7 @@ export const LessonsView = () => {
                             <div className="flex justify-end mt-8 pt-6 border-t-2 border-gray-200">
                               <button
                                 type="button"
-                                disabled={updateLessonMutation.isPending}
+                                disabled={updateLessonMutation.isPending || uploadingFiles[lessonsItem._id]}
                                 onPointerDown={(e) => e.stopPropagation()}
                                 onClick={() =>
                                   handleUpdateForm(lessonsItem._id, {
@@ -508,12 +540,16 @@ export const LessonsView = () => {
                                     ...(pendingUpdates[lessonsItem._id] || {}),
                                   })
                                 }
-                                className={`px-8 py-3 rounded-xl text-white font-bold text-lg shadow-lg transition-all duration-300 ${updateLessonMutation.isPending
-                                  ? "bg-gray-400 cursor-not-allowed"
-                                  : "bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 hover:scale-105 hover:shadow-xl"
+                                className={`px-8 py-3 rounded-xl text-white font-bold text-lg shadow-lg transition-all duration-300 ${updateLessonMutation.isPending || uploadingFiles[lessonsItem._id]
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-gradient-to-r from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 hover:scale-105 hover:shadow-xl"
                                   }`}
                               >
-                                {updateLessonMutation.isPending ? "Guardando..." : "Guardar Cambios"}
+                                {uploadingFiles[lessonsItem._id]
+                                  ? "Subiendo archivos..."
+                                  : updateLessonMutation.isPending
+                                    ? "Guardando..."
+                                    : "Guardar Cambios"}
                               </button>
                             </div>
                           )}
@@ -530,6 +566,12 @@ export const LessonsView = () => {
             )}
 
             <ModalLessonAdd />
+            <ModalDeleteFileAlert
+              isOpen={deleteModalOpen}
+              confirmDelete={confirmDelete}
+              cancelDelete={cancelDelete}
+            />
+
           </div>
         </div>
       </>

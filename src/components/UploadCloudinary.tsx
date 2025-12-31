@@ -8,6 +8,8 @@ type UploadFileProps = {
   multiple?: boolean;
   onUploadComplete: (urls: string[]) => void;
   resetTrigger?: boolean;
+  onUploadStart?: () => void;
+  onUploadEnd?: () => void;
 };
 
 type UploadProgress = {
@@ -21,6 +23,8 @@ export default function UploadFile({
   multiple = false,
   onUploadComplete,
   resetTrigger,
+  onUploadStart,
+  onUploadEnd,
 }: UploadFileProps) {
   const [fileUrls, setFileUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -37,6 +41,7 @@ export default function UploadFile({
     if (!files || files.length === 0) return;
 
     setLoading(true);
+    onUploadStart?.(); // Notificar que inicia la carga
     setTotalFiles(files.length);
     const progressArray: UploadProgress[] = Array.from(files).map((file) => ({
       fileName: file.name,
@@ -92,6 +97,7 @@ export default function UploadFile({
       console.error("Error al subir archivos:", err);
     } finally {
       setLoading(false);
+      onUploadEnd?.(); // Notificar que termina la carga
       setTimeout(() => setUploadProgress([]), 1000);
     }
   };
