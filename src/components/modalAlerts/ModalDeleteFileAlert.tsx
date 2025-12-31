@@ -50,8 +50,8 @@ export const ModalDeleteFileAlert = ({ isOpen, confirmDelete, cancelDelete }: De
                                 </div>
 
                                 <div className="mb-6">
-                                    <p className="text-sm text-gray-600">
-                                        ¿Estás seguro de que deseas eliminar este archivo? Esta acción no se puede deshacer y el archivo se eliminará permanentemente de Cloudinary.
+                                    <p className="text-m text-gray-600">
+                                        ¿Estás seguro de que deseas eliminar este archivo? Esta acción no se puede deshacer y el archivo se eliminará <strong className="text-red-600"> permanentemente</strong> de Cloudinary.
                                     </p>
                                 </div>
 

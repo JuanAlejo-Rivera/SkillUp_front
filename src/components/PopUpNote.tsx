@@ -42,8 +42,9 @@ export default function TooltipNote() {
                                 📧 <code>user@email.com</code> / <code>password</code>
                             </li>
                         </ul>
+
                         <p className="mt-3 text-xs text-gray-200 leading-snug">
-                            ⚠️ Esto se debe a que los correos de confirmación llegan a
+                            ⚠️El sistema de correos es funcional pero esto se debe a que los correos de confirmación llegan a
                             <span className="font-semibold"> Mailtrap</span>, un servicio gratuito
                             para pruebas de envío y confirmación de correos.
                         </p>
