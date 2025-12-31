@@ -1,10 +1,10 @@
-import { deleteLesson, getLessons, updateLesson, updateLessonsOrder } from "@/api/LessonsAPI";
+import { deleteLesson, getLessons, updateLesson, updateLessonsOrder, deleteFile } from "@/api/LessonsAPI";
 import { getCourseById } from "@/api/CoursesAPI";
 import ModalLessonAdd from "@/components/lessons/ModalLessonAdd";
 import UploadFile from "@/components/UploadCloudinary";
 import type { LessonFormData, Lesson } from "@/types/index";
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
-import { EllipsisVerticalIcon, DocumentTextIcon } from "@heroicons/react/20/solid";
+import { EllipsisVerticalIcon, DocumentTextIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { Link, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -123,6 +123,23 @@ export const LessonsView = () => {
       queryClient.invalidateQueries({ queryKey: ["lessons"] });
     },
   });
+
+  const deleteFileMutation = useMutation({
+    mutationFn: deleteFile,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data);
+      queryClient.invalidateQueries({ queryKey: ["lessons"] });
+    },
+  });
+
+  const handleDeleteFile = (lessonId: string, fileUrl: string, fileType: 'videoUrl' | 'fileUrl' | 'imageUrl') => {
+    if (confirm('¿Estás seguro de que deseas eliminar este archivo?')) {
+      deleteFileMutation.mutate({ courseId, sectionId, lessonId, fileUrl, fileType });
+    }
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -305,12 +322,24 @@ export const LessonsView = () => {
                             {Array.isArray(lessonsItem.videoUrl) && lessonsItem.videoUrl.length > 0 ? (
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 {lessonsItem.videoUrl.map((url) => (
-                                  <video
-                                    key={url}
-                                    src={url}
-                                    controls
-                                    className="w-200 h-90 rounded-2xl border-2 border-gray-300 shadow-lg"
-                                  />
+                                  <div key={url} className="relative group">
+                                    <video
+                                      src={url}
+                                      controls
+                                      className="w-200 h-90 rounded-2xl border-2 border-gray-300 shadow-lg"
+                                    />
+                                    {canModify(user, course.manager) && (
+                                      <button
+                                        type="button"
+                                        onPointerDown={(e) => e.stopPropagation()}
+                                        onClick={() => handleDeleteFile(lessonsItem._id, url, 'videoUrl')}
+                                        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1.5 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                        title="Eliminar video"
+                                      >
+                                        <XMarkIcon className="h-5 w-5" />
+                                      </button>
+                                    )}
+                                  </div>
                                 ))}
                               </div>
                             ) : (
@@ -344,19 +373,31 @@ export const LessonsView = () => {
                             {Array.isArray(lessonsItem.imageUrl) && lessonsItem.imageUrl.length > 0 ? (
                               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                 {lessonsItem.imageUrl.map((url) => (
-                                  <a
-                                    key={`${lessonsItem._id}-${url}`}
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group"
-                                  >
-                                    <img
-                                      src={url}
-                                      alt="Imagen subida"
-                                      className="w-full h-48 object-cover rounded-2xl border-2 border-gray-300 shadow-md group-hover:scale-105 group-hover:shadow-xl transition-all duration-300"
-                                    />
-                                  </a>
+                                  <div key={`${lessonsItem._id}-${url}`} className="relative group">
+                                    <a
+                                      href={url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="block"
+                                    >
+                                      <img
+                                        src={url}
+                                        alt="Imagen subida"
+                                        className="w-full h-48 object-cover rounded-2xl border-2 border-gray-300 shadow-md group-hover:scale-105 group-hover:shadow-xl transition-all duration-300"
+                                      />
+                                    </a>
+                                    {canModify(user, course.manager) && (
+                                      <button
+                                        type="button"
+                                        onPointerDown={(e) => e.stopPropagation()}
+                                        onClick={() => handleDeleteFile(lessonsItem._id, url, 'imageUrl')}
+                                        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1.5 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+                                        title="Eliminar imagen"
+                                      >
+                                        <XMarkIcon className="h-5 w-5" />
+                                      </button>
+                                    )}
+                                  </div>
                                 ))}
                               </div>
                             ) : (
@@ -401,38 +442,50 @@ export const LessonsView = () => {
                                       : fileUrl;
 
                                   return (
-                                    <a
-                                      key={index}
-                                      href={downloadUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="flex flex-col items-center justify-center p-4 border-2 border-gray-300 rounded-2xl bg-gradient-to-br from-white to-gray-50 hover:border-blue-400 hover:shadow-lg hover:scale-105 transition-all duration-300"
-                                    >
-                                      {isPDF ? (
-                                        <div className="relative w-16 h-16 mb-2">
-                                          <DocumentTextIcon className="w-16 h-16 text-red-600" />
-                                          <span className="absolute top-4 left-4 text-white font-bold text-xs bg-red-600 px-1 rounded">
-                                            PDF
-                                          </span>
-                                        </div>
-                                      ) : isWord ? (
-                                        <div className="relative w-16 h-16 mb-2">
-                                          <DocumentTextIcon className="w-16 h-16 text-blue-700" />
-                                          <span className="absolute top-4 left-5 text-white font-bold text-xs bg-blue-700 px-1 rounded">
-                                            W
-                                          </span>
-                                        </div>
-                                      ) : (
-                                        <div className="relative w-16 h-16 mb-2">
-                                          <DocumentTextIcon className="w-16 h-16 text-gray-600" />
-                                        </div>
-                                      )}
+                                    <div key={index} className="relative group">
+                                      <a
+                                        href={downloadUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex flex-col items-center justify-center p-4 border-2 border-gray-300 rounded-2xl bg-gradient-to-br from-white to-gray-50 hover:border-blue-400 hover:shadow-lg hover:scale-105 transition-all duration-300"
+                                      >
+                                        {isPDF ? (
+                                          <div className="relative w-16 h-16 mb-2">
+                                            <DocumentTextIcon className="w-16 h-16 text-red-600" />
+                                            <span className="absolute top-4 left-4 text-white font-bold text-xs bg-red-600 px-1 rounded">
+                                              PDF
+                                            </span>
+                                          </div>
+                                        ) : isWord ? (
+                                          <div className="relative w-16 h-16 mb-2">
+                                            <DocumentTextIcon className="w-16 h-16 text-blue-700" />
+                                            <span className="absolute top-4 left-5 text-white font-bold text-xs bg-blue-700 px-1 rounded">
+                                              W
+                                            </span>
+                                          </div>
+                                        ) : (
+                                          <div className="relative w-16 h-16 mb-2">
+                                            <DocumentTextIcon className="w-16 h-16 text-gray-600" />
+                                          </div>
+                                        )}
 
-                                      <span className="text-sm text-blue-700 font-semibold mt-2">Abrir</span>
-                                      <span className="text-xs text-gray-500 truncate w-full text-center mt-1">
-                                        {fileName}
-                                      </span>
-                                    </a>
+                                        <span className="text-sm text-blue-700 font-semibold mt-2">Abrir</span>
+                                        <span className="text-xs text-gray-500 truncate w-full text-center mt-1">
+                                          {fileName}
+                                        </span>
+                                      </a>
+                                      {canModify(user, course.manager) && (
+                                        <button
+                                          type="button"
+                                          onPointerDown={(e) => e.stopPropagation()}
+                                          onClick={() => handleDeleteFile(lessonsItem._id, fileUrl, 'fileUrl')}
+                                          className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1.5 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+                                          title="Eliminar archivo"
+                                        >
+                                          <XMarkIcon className="h-4 w-4" />
+                                        </button>
+                                      )}
+                                    </div>
                                   );
                                 })}
                               </div>

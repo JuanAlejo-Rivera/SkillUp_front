@@ -94,3 +94,24 @@ export async function updateLessonsOrder({ courseId, sectionId, lessons }: Updat
         }
     }
 }
+
+type DeleteFileType = {
+    courseId: Course['_id']
+    sectionId: Course['_id']
+    lessonId: Lesson['_id']
+    fileUrl: string
+    fileType: 'videoUrl' | 'fileUrl' | 'imageUrl'
+}
+
+export async function deleteFile({ courseId, sectionId, lessonId, fileUrl, fileType }: DeleteFileType) {
+    try {
+        const { data } = await api.delete(`/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/files`, {
+            data: { fileUrl, fileType }
+        })
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
